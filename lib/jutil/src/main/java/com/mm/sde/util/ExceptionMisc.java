@@ -1,4 +1,4 @@
-package com.moshi.sde.util;
+package com.mm.sde.util;
 
 public class ExceptionMisc {
 	

@@ -1,4 +1,4 @@
-package com.moshi.sde.util;
+package com.mm.sde.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

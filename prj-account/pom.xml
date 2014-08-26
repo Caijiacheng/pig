@@ -8,9 +8,9 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <groupId>com.mm.sde</groupId>
-  <artifactId>prj-zaihu</artifactId>
+  <artifactId>prj-account</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>prj-zaihu</name>
+  <name>prj-account</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

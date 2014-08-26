@@ -12,7 +12,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.moshi.sde.util.FileMisc;
+import com.mm.sde.util.FileMisc;
+
 
 @RunWith(Parameterized.class)
 public class TestFileMisc {
