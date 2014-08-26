@@ -16,6 +16,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
+@Deprecated
 public final class RestNettyServer {
 
 	private int port = 8081;

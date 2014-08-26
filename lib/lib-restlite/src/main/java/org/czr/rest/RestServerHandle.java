@@ -10,6 +10,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Deprecated
 public class RestServerHandle extends SimpleChannelInboundHandler<FullHttpRequest> 
 {
 
