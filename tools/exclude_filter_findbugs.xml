@@ -1,0 +1,18 @@
+<FindBugsFilter>
+	<Match>
+		<Package name="test.*" />
+	</Match>
+
+	<Match>
+		<Package name="unit.*" />
+	</Match>
+    
+	<Match>
+		<Bug code="Co" />
+	</Match>
+
+	<Match>
+		<Bug code="Se" />
+	</Match>
+
+</FindBugsFilter>
