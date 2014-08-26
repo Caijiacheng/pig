@@ -15,9 +15,9 @@
 */
 package org.restexpress.serialization;
 
-import org.restexpress.response.RawResponseWrapper;
-import org.restexpress.serialization.json.JacksonJsonProcessor;
-import org.restexpress.serialization.xml.XstreamXmlProcessor;
+//import org.restexpress.response.RawResponseWrapper;
+//import org.restexpress.serialization.json.JacksonJsonProcessor;
+//import org.restexpress.serialization.xml.XstreamXmlProcessor;
 
 
 /**
@@ -32,7 +32,7 @@ extends AbstractSerializationProvider
 	public DefaultSerializationProvider()
     {
 		super();
-		add(new JacksonJsonProcessor(), new RawResponseWrapper(), true);
-		add(new XstreamXmlProcessor(), new RawResponseWrapper());
+//		add(new JacksonJsonProcessor(), new RawResponseWrapper(), true);
+//		add(new XstreamXmlProcessor(), new RawResponseWrapper());
     }
 }
