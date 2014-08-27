@@ -151,7 +151,8 @@ extends SimpleChannelInboundHandler<FullHttpRequest>
 		{
 			notifyReceived(context);
 			resolveRoute(context);
-			resolveResponseProcessor(context);
+			//skip serializeResponse
+			//resolveResponseProcessor(context);
 			invokePreprocessors(preprocessors, context.getRequest());
 			Object result = context.getAction().invoke(context.getRequest(), context.getResponse());
 
@@ -161,7 +162,8 @@ extends SimpleChannelInboundHandler<FullHttpRequest>
 			}
 	
 			invokePostprocessors(postprocessors, context.getRequest(), context.getResponse());
-			serializeResponse(context, false);
+			
+//			serializeResponse(context, false);
 			enforceHttpSpecification(context);
 			invokeFinallyProcessors(finallyProcessors, context.getRequest(), context.getResponse());
 			writeResponse(ctx, context);
@@ -170,7 +172,7 @@ extends SimpleChannelInboundHandler<FullHttpRequest>
 		catch(Throwable t)
 		{
 			
-//			LOG.error("MessageReceive Exception: {}", t);
+			LOG.error("MessageReceive Exception: {}", t);
 			handleRestExpressException(ctx, t);
 		}
 		finally
@@ -181,6 +183,9 @@ extends SimpleChannelInboundHandler<FullHttpRequest>
 
 	static Logger LOG = LoggerFactory.getLogger(DefaultRequestHandler.class);
 	
+	
+	
+	@SuppressWarnings("unused")
 	private void resolveResponseProcessor(MessageContext context)
     {
 		SerializationSettings s = serializationProvider.resolveResponse(context.getRequest(), context.getResponse(), false);

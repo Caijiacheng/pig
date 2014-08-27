@@ -578,7 +578,7 @@ public class RestExpress
 		bootstrap = new ServerBootstrap();
 		bootstrap.group(bossGroup, IOGroup)
 		.channel(NioServerSocketChannel.class)
-		.handler(new LoggingHandler(LogLevel.INFO))
+		.handler(new LoggingHandler(LogLevel.DEBUG))
 		.childHandler(pf);
 		
 		setBootstrapOptions();

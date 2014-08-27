@@ -25,10 +25,8 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.restexpress.pipeline.MessageObserver;
-import org.restexpress.pipeline.SimpleConsoleLogMessageObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -197,7 +195,7 @@ public class TestRestExpress {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void test() throws InterruptedException {
 		RestServer server = new RestServer();
 		server.run();
@@ -228,7 +226,7 @@ public class TestRestExpress {
 
 	}
 
-	@Ignore
+	@Test
 	public void testErrorUrl() throws InterruptedException {
 		srv = new RestExpress().setName("testErrorUrl")
 				.setBaseUrl(HTTP_LOCALHOST)
@@ -262,7 +260,7 @@ public class TestRestExpress {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void testParamUrl() throws InterruptedException {
 		srv = new RestExpress().setName("testParamUrl")
 				.setBaseUrl(HTTP_LOCALHOST)
@@ -301,7 +299,7 @@ public class TestRestExpress {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void testQuta() throws InterruptedException, UnsupportedEncodingException {
 		srv = new RestExpress().setName("testQuta").setBaseUrl(HTTP_LOCALHOST)
 				.addMessageObserver(new ErrorMsgObserver());
@@ -344,7 +342,7 @@ public class TestRestExpress {
 		}
 	}
 
-	@Ignore
+	@Test
 	public void testActionMapping() throws InterruptedException {
 		srv = new RestExpress().setName("testActionMapping").setBaseUrl(
 				HTTP_LOCALHOST);
@@ -403,10 +401,8 @@ public class TestRestExpress {
 				//out.writeBytes(CONTENT);
 				out.flush();
 				out.close();
-
 				
 				if (conn.getResponseCode() == 200) {
-					
 					
 					try(GZIPInputStream gzipinput = new GZIPInputStream(conn.getInputStream()))
 					{
@@ -421,9 +417,9 @@ public class TestRestExpress {
 						LOG.error("get Response Content: {}", sb.toString());
 						sb.trimToSize();
 						String sbb = sb.toString();
-						String wrapperContent = "\"" + CONTENT + "\"";
+						String wrapperContent = CONTENT;
 						
-						LOG.debug("Equals? {}, len: sbb={}, content={}", sbb.equals(wrapperContent), sbb.length(), wrapperContent.length());
+						LOG.debug("Equals? {}, len: sbb={}, content={}", sbb.equals(wrapperContent), sbb, wrapperContent);
 						
 						isEchoOK = Objects.equals(sbb, wrapperContent );
 					}
@@ -458,7 +454,7 @@ public class TestRestExpress {
 
 	
 	
-	@Ignore
+	@Test
 	public void testCompress() throws InterruptedException {
 		srv = new RestExpress().setName("testActionMapping").setBaseUrl(
 				HTTP_LOCALHOST);
@@ -546,28 +542,28 @@ public class TestRestExpress {
 	}
 	
 	
-	@Test
-	public void testKeepAlive() throws InterruptedException
-	{
-		srv = new RestExpress().setName("testKeepAlive").setBaseUrl(
-				HTTP_LOCALHOST).addMessageObserver(new SimpleConsoleLogMessageObserver());
-		srv.uri("/index.html", new ExampleController()).method(HttpMethod.GET)
-				.name("DEFAULT_HTML");
-
-		srv.bind(SRV_PORT);
-
-		RestKeepAliveGet client = new RestKeepAliveGet("index.html");
-		client.run();
-
-		Assert.assertTrue(client.isEchoOK);
-	}
+//	@Test
+//	public void testKeepAlive() throws InterruptedException
+//	{
+//		srv = new RestExpress().setName("testKeepAlive").setBaseUrl(
+//				HTTP_LOCALHOST).addMessageObserver(new SimpleConsoleLogMessageObserver());
+//		srv.uri("/index.html", new ExampleController()).method(HttpMethod.GET)
+//				.name("DEFAULT_HTML");
+//
+//		srv.bind(SRV_PORT);
+//
+//		RestKeepAliveGet client = new RestKeepAliveGet("index.html");
+//		client.run();
+//
+//		Assert.assertTrue(client.isEchoOK);
+//	}
 	
 //	static class RestEchoPostJSON
 //	{
 //		
 //	}
 //	
-//	@Ignore
+//	@Test
 //	public void testJSON() throws InterruptedException
 //	{
 //		srv = new RestExpress().setName("testActionMapping").setBaseUrl(

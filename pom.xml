@@ -6,10 +6,9 @@
 	<artifactId>jpig</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<!-- <scm>
-		<connection>scm:svn:https://192.168.1.100:8443/svn/cilent/trunk/code/AndroidCode/ZaiHu/trunk/</connection>
-		<developerConnection>scm:svn:https://192.168.1.100:8443/svn/cilent/trunk/code/AndroidCode/ZaiHu/trunk/</developerConnection>
-	</scm> -->
+	<!-- <scm> <connection>scm:svn:https://192.168.1.100:8443/svn/cilent/trunk/code/AndroidCode/ZaiHu/trunk/</connection> 
+		<developerConnection>scm:svn:https://192.168.1.100:8443/svn/cilent/trunk/code/AndroidCode/ZaiHu/trunk/</developerConnection> 
+		</scm> -->
 	<properties>
 		<top.dir>${basedir}</top.dir>
 		<nexus.server>http://192.168.1.100:8081</nexus.server>
@@ -35,6 +34,12 @@
 				<version>4.8.2</version>
 				<scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.32</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -106,7 +111,7 @@
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>1.7</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.tomcat.maven</groupId>
 					<artifactId>tomcat7-maven-plugin</artifactId>
@@ -156,22 +161,10 @@
 
 			</plugins>
 		</pluginManagement>
-		<!-- resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>*.xml</include>
-					<include>*.properties</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>*.*</include>
-				</includes>
-			</resource>
-		</resources-->
+		<!-- resources> <resource> <directory>src/main/resources</directory> <filtering>true</filtering> 
+			<includes> <include>*.xml</include> <include>*.properties</include> </includes> 
+			</resource> <resource> <directory>src/main/resources</directory> <includes> 
+			<include>*.*</include> </includes> </resource> </resources -->
 	</build>
 
 	<distributionManagement>
@@ -191,7 +184,7 @@
 		<profile>
 			<id>Release</id>
 			<properties>
-				<!--test.skip>true</test.skip-->
+				<!--test.skip>true</test.skip -->
 			</properties>
 		</profile>
 	</profiles>

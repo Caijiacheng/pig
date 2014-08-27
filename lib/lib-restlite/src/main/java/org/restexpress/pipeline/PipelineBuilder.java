@@ -14,7 +14,6 @@ import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 
@@ -124,7 +123,7 @@ public class PipelineBuilder extends ChannelInitializer<SocketChannel>
 		pipeline.addLast("chunkWriter", new ChunkedWriteHandler());
 		
 
-		pipeline.addLast("keepalive", new IdleStateHandler(0, 0, 1));
+//		pipeline.addLast("keepalive", new IdleStateHandler(0, 0, 1));
 		for (ChannelHandler handler : requestHandlers)
 		{
 			//pipeline.addLast(handler.getClass().getSimpleName(), handler);

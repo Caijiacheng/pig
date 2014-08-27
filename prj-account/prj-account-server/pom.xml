@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.mm.sde</groupId>
+		<artifactId>prj-account</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>com.mm.sde</groupId>
+	<artifactId>prj-account-server</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>prj-account-server</name>
+	<url>http://maven.apache.org</url>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<redis.master.server>127.0.0.1:6379</redis.master.server>
+		<mysql.master.server>127.0.0.1:3660</mysql.master.server>
+	</properties>
+
+
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.mm.sde</groupId>
+			<artifactId>lib-restlite</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+	    	<resources>
+	    <resource>
+	        <directory>src/main/resources</directory>
+	        <filtering>true</filtering>
+	    </resource>
+	</resources>
+	</build>
+	
+</project>
