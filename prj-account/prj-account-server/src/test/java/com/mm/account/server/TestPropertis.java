@@ -1,9 +1,8 @@
 package com.mm.account.server;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -28,18 +27,19 @@ public class TestPropertis
         assertTrue( true );
     }
 	
+	
 	Logger LOG = LoggerFactory.getLogger(TestPropertis.class);
 	
 	@Test
 	public void testPropertis() throws FileNotFoundException, IOException
 	{
 		Properties prop = new Properties();
-		prop.load(this.getClass().getResourceAsStream("release.propertis"));
+		prop.load(this.getClass().getResourceAsStream("test.propertis"));
 		
 		for (Entry<Object, Object> obj : prop.entrySet())
 		{
 			LOG.error("key:{}, value:{}", obj.getKey(), obj.getValue());
-			
 		}
+		
 	}
 }

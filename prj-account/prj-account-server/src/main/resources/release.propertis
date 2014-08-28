@@ -1,0 +1,9 @@
+redis.server=${redis.master.server}
+redis.password=${redis.password}
+redis.dbnum=${redis.dbnum}
+
+mysql.server=${mysql.master.server}
+mysql.user=${mysql.user}
+mysql.password=${mysql.password}
+
+restful.bind.port=${restful.bind.port}

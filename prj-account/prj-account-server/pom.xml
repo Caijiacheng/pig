@@ -13,15 +13,18 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>prj-account-server</name>
 	<url>http://maven.apache.org</url>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<redis.master.server>127.0.0.1:6379</redis.master.server>
+		<redis.master.server>127.0.0.1:6370</redis.master.server>
+		<redis.password>qwe123!</redis.password>
+		<redis.dbnum>0</redis.dbnum>
 		<mysql.master.server>127.0.0.1:3660</mysql.master.server>
+		<mysql.user>root</mysql.user>
+		<mysql.password>qwe123!</mysql.password>
+		<restful.bind.port>8081</restful.bind.port>
 	</properties>
 
-
-	
 	<dependencies>
 		<dependency>
 			<groupId>com.mm.sde</groupId>
@@ -32,15 +35,28 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
-	    	<resources>
-	    <resource>
-	        <directory>src/main/resources</directory>
-	        <filtering>true</filtering>
-	    </resource>
-	</resources>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
-	
+
 </project>
