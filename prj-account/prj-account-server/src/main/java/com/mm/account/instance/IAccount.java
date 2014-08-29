@@ -8,11 +8,11 @@ public interface IAccount {
 	
 	Optional<String> name();
 	
-	Optional<Long> phoneid();
+	Optional<String> phoneid();
 	
-	Optional<Long> weiboid();
+	Optional<String> weiboid();
 	
-	Optional<Long> qqid(); 
+	Optional<String> qqid(); 
 	
-	
+	int version();
 }

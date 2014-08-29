@@ -17,6 +17,7 @@ abstract public class AbsDBHandle<T> implements IDBHandle<T> {
 		if (h == null)
 		{
 			h = doConnect();
+			s_conn_threadlocal.set(h);
 		}
 		return h;
 	}

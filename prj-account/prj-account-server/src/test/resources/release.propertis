@@ -1,0 +1,9 @@
+redis.server=127.0.0.1:6379
+redis.password=qwe123!
+redis.dbnum=0
+
+mysql.server=127.0.0.1:3306
+mysql.user=root
+mysql.password=qwe123!
+
+restful.bind.port=8081

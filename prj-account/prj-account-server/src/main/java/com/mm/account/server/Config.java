@@ -1,11 +1,7 @@
 package com.mm.account.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Properties;
 
 
@@ -45,12 +41,10 @@ final public class Config {
 	
 	private void init()
 	{
-		Path property_file = FileSystems.getDefault().getPath("", DEFAULT_PROPERTIES);
 		
-		try(BufferedReader reader = Files.newBufferedReader(property_file, DEFAULT_CHARSET))
+		try
 		{
-			prop.load(reader);
-			
+			prop.load(ClassLoader.getSystemResourceAsStream(DEFAULT_PROPERTIES));
 		} catch (IOException e) {
 			throw new RuntimeException("Init Conf failed", e);
 		}

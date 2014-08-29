@@ -20,11 +20,14 @@ public class MysqlDB extends AbsDBHandle<Connection> {
 		}
 	}
 	
-	static String MYSQL_CONN;
+	private final String mysql_conn;
+	
+	public MysqlDB(String db)
 	{
 		Properties prop = Config.ins().getProperties();
-		MYSQL_CONN = String.format("jdbc:mysql://%s?user=%s&password=%s", 
+		mysql_conn = String.format("jdbc:mysql://%s/%s?user=%s&password=%s", 
 				prop.get(Config.PROP_MYSQL_SERVER), 
+				db,
 				prop.get(Config.PROP_MYSQL_USER), 
 				prop.get(Config.PROP_MYSQL_PWD));
 	}
@@ -34,7 +37,7 @@ public class MysqlDB extends AbsDBHandle<Connection> {
 		Connection conn;
 		try {
 		    conn =
-		       DriverManager.getConnection(MYSQL_CONN);
+		       DriverManager.getConnection(mysql_conn);
 		} catch (SQLException ex) {
 		   throw new RuntimeException(ex);
 		}
@@ -49,10 +52,5 @@ public class MysqlDB extends AbsDBHandle<Connection> {
 		} catch (SQLException e) {
 		}
 	}
-
-	
-
-	
-	
 
 }
