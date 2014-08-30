@@ -1,13 +1,12 @@
 package com.mm.account.instance;
 
-import static org.junit.Assert.assertTrue;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,6 +14,7 @@ import org.junit.Test;
 import com.google.common.base.Optional;
 import com.mm.account.db.MysqlDB;
 import com.mm.account.error.DBException;
+import com.mm.account.error.DupRegException;
 
 public class TestDefaultAccount {
 
@@ -64,13 +64,27 @@ public class TestDefaultAccount {
 	}
 	
 	@Test
-	public void testRegisterAccount() {
+	public void testRegisterAccountWithPhoneid() {
 		String phoneid = "13699267982";
 		IAccountService service = new _DefautAccoutService();
 		removeIfExistPhoneid(service, phoneid);
 		IAccount acc = service.register(phoneid);
-		assertTrue(service.exist(acc.id()));
-		assertTrue(service.get(acc.id()).isPresent());
+		Assert.assertNotNull(acc);
+		Assert.assertTrue(service.exist(acc.id()));
+		Assert.assertTrue(service.get(acc.id()).isPresent());
+		Assert.assertEquals(service.get(acc.id()).get().phoneid().get(), phoneid);
 	}
+	
+	@Test(expected=DupRegException.class)
+	public void testRegisterDupFailedWithPhoneid()
+	{
+		String phoneid = "2222";
+		IAccountService service = new _DefautAccoutService();
+		removeIfExistPhoneid(service, phoneid);
+		Assert.assertNotNull(service.register(phoneid));
+		service.register(phoneid);
+	}
+	
+	
 
 }

@@ -1,0 +1,6 @@
+package com.mm.account.proto;
+
+message AccountInfoDetail
+{
+	required int32 version = 1;
+}

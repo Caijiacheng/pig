@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 import com.mm.account.db.MysqlDB;
 import com.mm.account.error.DBException;
+import com.mm.account.error.DupRegException;
 import com.mm.account.error.NotExistException;
 
 
@@ -93,7 +94,7 @@ public class DefaultAccount extends AbsAccount {
 				try(Statement stmt = conn.createStatement()) {
 					if ( stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS) != 1)
 					{
-						throw new DBException("dup register? " + phoneid);
+						throw new DupRegException("dup register? " + phoneid);
 					}
 					try(ResultSet rs = stmt.getGeneratedKeys())
 					{
