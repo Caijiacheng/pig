@@ -1,6 +1,32 @@
 package com.mm.account.proto;
 
-message AccountInfoDetail
+enum Gender
+{
+	MALE = 1;
+	FEMALE = 2;
+}
+
+message AccountUserInfo
 {
 	required int32 version = 1;
+	required int32 uid = 2;
+	optional Gender gender = 3;
+	optional string first_name = 4;
+	optional string last_name = 5;
 }
+
+enum DeviceType
+{
+	ANDROID = 1;
+	IOS = 2;
+}
+
+message AccountPhoneInfo
+{
+	required int32 uid = 1;
+	required int32 phone_num = 2;
+	optional string imei = 3;
+	optional string device_id = 4;
+	optional DeviceType device_type = 5;
+}
+

@@ -15,4 +15,6 @@ public interface IAccount {
 	Optional<String> qqid(); 
 	
 	int version();
+	
+	String passwd();
 }

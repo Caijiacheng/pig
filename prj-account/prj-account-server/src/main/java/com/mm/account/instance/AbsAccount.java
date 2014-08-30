@@ -10,6 +10,7 @@ abstract class AbsAccount implements IAccount, ILoad {
 	 String _phoneid;
 	 String _weiboid;
 	 String _qqid;
+	 String _pwd;
 	 Integer _infover;  
 	
 	@Override
@@ -43,4 +44,9 @@ abstract class AbsAccount implements IAccount, ILoad {
 	}
 
 
+	@Override
+	public String passwd() {
+		return _pwd;
+	}
+	
 }

@@ -48,6 +48,12 @@
 			<version>18.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -67,7 +73,6 @@
 				<groupId>com.github.os72</groupId>
 				<artifactId>protoc-jar-maven-plugin</artifactId>
 				<version>2.5.0.1</version> <!-- for protobuf 2.5.0 -->
-				<!-- <version>2.4.1.1</version> --> <!-- for protobuf 2.4.1 -->
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
@@ -76,11 +81,8 @@
 						</goals>
 						<configuration>
 							<addSources>main</addSources>
-<!-- 							<outputDirectory>src/java/main</outputDirectory>
- -->							<cleanOutputFolder>false</cleanOutputFolder>
-							<includeDirectories>
-								<include>proto</include>
-							</includeDirectories>
+							<outputDirectory>src/main/protoc</outputDirectory>
+							<!-- <includeDirectories> <include>proto</include> </includeDirectories> -->
 							<inputDirectories>
 								<include>proto</include>
 							</inputDirectories>

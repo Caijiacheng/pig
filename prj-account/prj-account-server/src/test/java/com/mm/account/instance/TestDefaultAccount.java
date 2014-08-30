@@ -15,6 +15,7 @@ import com.google.common.base.Optional;
 import com.mm.account.db.MysqlDB;
 import com.mm.account.error.DBException;
 import com.mm.account.error.DupRegException;
+import com.mm.account.error.NotExistException;
 
 public class TestDefaultAccount {
 
@@ -66,25 +67,40 @@ public class TestDefaultAccount {
 	@Test
 	public void testRegisterAccountWithPhoneid() {
 		String phoneid = "13699267982";
+		String pwd = "2";
 		IAccountService service = new _DefautAccoutService();
 		removeIfExistPhoneid(service, phoneid);
-		IAccount acc = service.register(phoneid);
+		IAccount acc = service.register(phoneid, pwd);
 		Assert.assertNotNull(acc);
 		Assert.assertTrue(service.exist(acc.id()));
 		Assert.assertTrue(service.get(acc.id()).isPresent());
 		Assert.assertEquals(service.get(acc.id()).get().phoneid().get(), phoneid);
+		Assert.assertEquals(service.get(acc.id()).get().passwd(), pwd);		
+		String modify_pwd = "1";
+		service.modifyPasswd(acc.id(), modify_pwd);
+		Assert.assertEquals(service.get(acc.id()).get().passwd(), modify_pwd);		
+	}
+	
+	@Test(expected=NotExistException.class)
+	public void testNotExistUseridInModifyPasswd()
+	{
+		String phoneid = "22221";
+		String pwd = "111";
+		IAccountService service = new _DefautAccoutService();
+		removeIfExistPhoneid(service, phoneid);
+		IAccount acc = service.register(phoneid, pwd);
+		removeIfExistPhoneid(service, phoneid);
+		service.modifyPasswd(acc.id(), "333");
 	}
 	
 	@Test(expected=DupRegException.class)
 	public void testRegisterDupFailedWithPhoneid()
 	{
 		String phoneid = "2222";
+		String pwd = "3";
 		IAccountService service = new _DefautAccoutService();
 		removeIfExistPhoneid(service, phoneid);
-		Assert.assertNotNull(service.register(phoneid));
-		service.register(phoneid);
+		Assert.assertNotNull(service.register(phoneid, pwd));
+		service.register(phoneid, pwd);
 	}
-	
-	
-
 }
