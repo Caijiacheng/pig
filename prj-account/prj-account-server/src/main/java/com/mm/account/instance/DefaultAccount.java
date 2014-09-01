@@ -23,7 +23,7 @@ import com.mm.account.error.NotExistException;
  *
  */
 
-public class DefaultAccount extends AbsAccount {
+public class DefaultAccount extends PojoAccount {
 
 	static final String DB_NAME = "account";
 	static final String TABLE_NAME = "user";
@@ -52,11 +52,6 @@ public class DefaultAccount extends AbsAccount {
 						throw new NotExistException(sql);
 					}
 					initAccWithResultSet(this, rs);
-//					_name = rs.getString("name");
-//					_phoneid = rs.getString("phone_id");
-//					_qqid = rs.getString("qq_id");
-//					_weiboid = rs.getString("weibo_id");
-//					_infover = rs.getInt("info_version");
 				}
 			} 
 		}catch (SQLException e) {
@@ -86,14 +81,6 @@ public class DefaultAccount extends AbsAccount {
 		{
 			DefaultAccount acc = new DefaultAccount(rs.getLong("id"));
 			return initAccWithResultSet(acc, rs);
-			
-//			acc._name = rs.getString("name");
-//			acc._phoneid = rs.getString("phone_id");
-//			acc._infover = rs.getInt("info_version");
-//			acc._qqid = rs.getString("qq_id");
-//			acc._weiboid = rs.getString("weibo_id");
-//			acc._pwd = rs.getString("passwd");
-//			return acc;
 		}
 		
 		@Override
@@ -259,16 +246,6 @@ public class DefaultAccount extends AbsAccount {
 			}catch (SQLException e) {
 				throw new DBException(e);
 			}
-			
 		}
-
-		
 	}
-
-
-
-
-	
-	
-	
 }

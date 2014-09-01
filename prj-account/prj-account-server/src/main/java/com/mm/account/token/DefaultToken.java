@@ -1,0 +1,110 @@
+package com.mm.account.token;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
+import redis.clients.jedis.Response;
+
+import com.google.common.base.Objects;
+import com.mm.account.db.RedisDB;
+
+
+public class DefaultToken extends PojoToken {
+
+	
+	
+	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	public static String bytesToHex(byte[] bytes) {
+	    char[] hexChars = new char[bytes.length * 2];
+	    for ( int j = 0; j < bytes.length; j++ ) {
+	        int v = bytes[j] & 0xFF;
+	        hexChars[j * 2] = hexArray[v >>> 4];
+	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+	    }
+	    return new String(hexChars);
+	}
+	
+	String getTokenKey()
+	{
+		return "TOKEN:" + _token;
+	}
+	
+	public static class Service implements ITokenService
+	{
+
+		static int TOKEN_VAILD_PERIOD = 7 * 24 * 60 * 60;
+		
+		String getTokenIDKey(long userid)
+		{
+			return "TOKEN:" + "USERID:" + Long.toString(userid); 
+		}
+		
+		@Override
+		public IToken newToken(long id) {
+			
+			String st = Long.toString(id) + Long.toString(System.currentTimeMillis());
+			
+			MessageDigest md;
+			try {
+				md = MessageDigest.getInstance("md5");
+				md.update(st.getBytes());
+				
+			} catch (NoSuchAlgorithmException e) {
+				throw new RuntimeException(e);
+			}
+
+			String md5 = bytesToHex(md.digest());
+			DefaultToken token = new DefaultToken();
+			
+			token._id = id;
+			token._token = md5;
+			token._duration = TOKEN_VAILD_PERIOD;
+			
+			RedisDB db = new RedisDB();
+			try(Jedis jh = db.getConn())
+			{
+				Pipeline pipe =  jh.pipelined();
+				pipe.set(token.getTokenKey(), Long.toString(token.id()));
+				pipe.expire(token.getTokenKey(), token.duration());
+				pipe.set(getTokenIDKey(token.id()), token.token());
+				pipe.expire(getTokenIDKey(token.id()), token.duration());
+				pipe.sync();
+			}
+			
+			return token;
+		}
+
+		@Override
+		public boolean checkValid(IToken token) {
+			DefaultToken t = (DefaultToken)token;
+			RedisDB db = new RedisDB();
+			try(Jedis jh = db.getConn())
+			{
+				Pipeline pipe = jh.pipelined();
+				Response<Boolean> t1 = pipe.exists(t.getTokenKey());
+				Response<String> t2 = pipe.get(getTokenIDKey(t.id()));
+				pipe.sync();
+				return t1.get() && Objects.equal(t2.get(), t.token());
+			}
+		}
+
+		@Override
+		public void expireToken(IToken token) {
+			
+			DefaultToken t = (DefaultToken)token;
+			
+			RedisDB db = new RedisDB();
+			try(Jedis jh = db.getConn())
+			{
+				Pipeline pipe = jh.pipelined();
+				pipe.del(t.getTokenKey());
+				pipe.del(getTokenIDKey(t.id()));
+				pipe.sync();
+			}
+		}
+		
+	}
+	
+}

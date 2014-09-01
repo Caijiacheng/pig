@@ -2,8 +2,7 @@ package com.mm.account.instance;
 
 import com.google.common.base.Optional;
 
-abstract class AbsAccount implements IAccount, ILoad {
-
+abstract class PojoAccount implements IAccount, ILoad {
 	
 	 long _id;
 	 String _name;

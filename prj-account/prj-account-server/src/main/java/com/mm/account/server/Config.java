@@ -1,7 +1,6 @@
 package com.mm.account.server;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Properties;
 
 
@@ -9,7 +8,6 @@ final public class Config {
 
 	static Config conf = new Config();
 	static final String DEFAULT_PROPERTIES = "release.propertis";
-	public static final Charset DEFAULT_CHARSET = Charset.forName("utf-8"); 
 	
 	public final static String PROP_REDIS_SERVER = "redis.server";
 	public final static String PROP_REDIS_PASSWORD = "redis.password";
