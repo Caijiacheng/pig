@@ -4,7 +4,7 @@ import com.mm.account.token.IToken;
 
 public class DefaultLoginService implements ILoginService {
 	
-//	IEmsService _ems_service = new 
+	
 	
 
 	@Override
