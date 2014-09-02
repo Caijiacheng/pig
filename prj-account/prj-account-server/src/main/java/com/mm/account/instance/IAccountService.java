@@ -1,8 +1,9 @@
 package com.mm.account.instance;
 
 import com.google.common.base.Optional;
+import com.mm.account.server.IService;
 
-public interface IAccountService {
+public interface IAccountService extends IService{
 	IAccount register(String phoneid, String pwdmd5);
 	
 	void unregister(long userid);

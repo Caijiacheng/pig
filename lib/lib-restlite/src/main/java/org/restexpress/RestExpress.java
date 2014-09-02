@@ -23,9 +23,11 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,6 +36,7 @@ import java.util.Map;
 
 import javax.net.ssl.SSLContext;
 
+import org.restexpress.annotations.RequestMethod;
 import org.restexpress.domain.metadata.RouteMetadata;
 import org.restexpress.domain.metadata.ServerMetadata;
 import org.restexpress.exception.DefaultExceptionMapper;
@@ -811,7 +814,6 @@ public class RestExpress
 		}
 	}
 
-
 	// SECTION: ROUTE CREATION
 
 	public ParameterizedRouteBuilder uri(String uriPattern, Object controller)
@@ -823,4 +825,19 @@ public class RestExpress
 	{
 		return routeDeclarations.regex(uriPattern, controller, routeDefaults);
 	}
+	
+	public void routeBuildWithAnnotations(Object obj)
+	{
+		Method[] methods = obj.getClass().getMethods();
+		for (Method m : methods)
+		{
+			RequestMethod rm = m.getAnnotation(RequestMethod.class);
+			if ( rm == null)
+			{
+				continue;
+			}
+			this.uri(rm.value(), obj).action(m.getName(), HttpMethod.valueOf(rm.method())).name(m.getName());
+		}
+	}
+	
 }

@@ -4,6 +4,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.mm.account.ems.IEms.EMS_TYPE;
+
 public class TestEmsService {
 	@Test
 	public void testEmsService()
@@ -12,11 +14,11 @@ public class TestEmsService {
 		String phonenum2 = "234";
 		
 		MockEmsService service = new MockEmsService();
-		IEms ems = service.getEms(phonenum1);
+		IEms ems = service.getEms(phonenum1, EMS_TYPE.REG);
 		Assert.assertEquals(ems.phonenum(), phonenum1);
 		Assert.assertTrue(service.checkEmsVaild(ems));
 		
-		IEms ems1 = service.getEms(phonenum2);
+		IEms ems1 = service.getEms(phonenum2, EMS_TYPE.REG);
 		Assert.assertEquals(ems1.phonenum(), phonenum2);
 	}
 	
@@ -28,14 +30,14 @@ public class TestEmsService {
 		CacheEmsService.DURATION_EMS = 1;
 		
 		MockEmsService service = new MockEmsService();
-		IEms ems = service.getEms(phonenum1);
+		IEms ems = service.getEms(phonenum1, EMS_TYPE.REG);
 		Assert.assertEquals(ems.phonenum(), phonenum1);
 		Assert.assertTrue(service.checkEmsVaild(ems));
 		Thread.sleep(2000);
 		
 		Assert.assertFalse(service.checkEmsVaild(ems));
 		
-		IEms ems1 = service.getEms(phonenum1);
+		IEms ems1 = service.getEms(phonenum1, EMS_TYPE.REG);
 		Assert.assertTrue(service.checkEmsVaild(ems1));
 		Assert.assertNotSame(ems.code(), ems1.code());
 	}

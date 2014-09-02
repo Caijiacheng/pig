@@ -247,5 +247,18 @@ public class DefaultAccount extends PojoAccount {
 				throw new DBException(e);
 			}
 		}
+
+		@Override
+		public boolean ping() {
+			MysqlDB db = new MysqlDB(DB_NAME);
+			
+			try(Connection conn = db.getConn())
+			{
+				conn.createStatement().execute(String.format("select * from %s limit 1", TABLE_NAME));
+				return true;
+			} catch (SQLException e) {
+				return false;
+			}
+		}
 	}
 }

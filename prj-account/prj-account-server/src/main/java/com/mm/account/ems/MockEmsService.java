@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mm.account.ems.IEms.EMS_TYPE;
 import com.mm.account.error.EMSException;
 
 public class MockEmsService extends CacheEmsService {
@@ -43,10 +44,12 @@ public class MockEmsService extends CacheEmsService {
 	}
 	
 	@Override
-	public IEms getEms(String phone)
+	public IEms getEms(String phonenum, EMS_TYPE type)
 	{
 		try {
-			return _emsCache.get(phone);
+			MockEms ems = (MockEms) _emsCache.get(phonenum);
+			ems._type = type;
+			return ems;
 		} catch (ExecutionException e) {
 			throw new EMSException(e);
 		}
@@ -57,6 +60,21 @@ public class MockEmsService extends CacheEmsService {
 	{
 		return Objects.equals(ems, _emsCache.getIfPresent(ems.phonenum()));
 	}
-	
+
+	@Override
+	public boolean checkEmsVaild(String phone, String authcode, EMS_TYPE type) {
+		
+		MockEms ems = new MockEms();
+		ems._phonenum = 
+				phone;
+		ems._code = authcode;
+		ems._type = type;
+		return checkEmsVaild(ems);
+	}
+
+	@Override
+	public boolean ping() {
+		return true;
+	}
 
 }

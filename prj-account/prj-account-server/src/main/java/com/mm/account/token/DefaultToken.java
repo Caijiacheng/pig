@@ -2,12 +2,12 @@ package com.mm.account.token;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Response;
 
-import com.google.common.base.Objects;
 import com.mm.account.db.RedisDB;
 
 
@@ -83,13 +83,35 @@ public class DefaultToken extends PojoToken {
 			try(Jedis jh = db.getConn())
 			{
 				Pipeline pipe = jh.pipelined();
-				Response<Boolean> t1 = pipe.exists(t.getTokenKey());
+				Response<String> t1 = pipe.get(t.getTokenKey());
 				Response<String> t2 = pipe.get(getTokenIDKey(t.id()));
 				pipe.sync();
-				return t1.get() && Objects.equal(t2.get(), t.token());
+				
+				return Objects.equals(t1.get(), Long.toString(t.id())) && Objects.equals(t2.get(), t.token());
 			}
 		}
 
+		
+		@Override
+		public boolean checkValid(String token) {
+			DefaultToken t = new DefaultToken();
+			t._token = token;
+			RedisDB db = new RedisDB();			
+			try(Jedis jh = db.getConn())
+			{
+				String id = jh.get(t.getTokenKey());
+				if (id == null)
+				{
+					return false;
+				}
+				t._id = Long.parseLong(id);
+				String tt = jh.get(getTokenIDKey(t.id()));
+				return Objects.equals(tt, token);		
+			}
+		}
+		
+		
+		
 		@Override
 		public void expireToken(IToken token) {
 			
@@ -104,6 +126,40 @@ public class DefaultToken extends PojoToken {
 				pipe.sync();
 			}
 		}
+		
+		@Override
+		public void expireToken(String token)
+		{
+			DefaultToken t = new DefaultToken();
+			t._token = token;
+			RedisDB db = new RedisDB();			
+			try(Jedis jh = db.getConn())
+			{
+				String id = jh.get(t.getTokenKey());
+				if (id == null)
+				{
+					return;
+				}
+				jh.del(t.getTokenKey());
+				t._id = Long.parseLong(id);
+				jh.del(getTokenIDKey(t.id()));
+			}
+		}
+
+		@Override
+		public boolean ping() {
+			RedisDB db = new RedisDB();
+			
+			try(Jedis jh = db.getConn())
+			{
+				jh.get("1");
+				return true;
+			}catch (Throwable e) {
+				return false;
+			}
+		}
+
+
 		
 	}
 	

@@ -41,6 +41,20 @@ public class TestDefaultToken {
 	}
 	
 	@Test
+	public void testToken_1()
+	{
+		ITokenService service = new DefaultToken.Service();
+		
+		IToken token = service.newToken(134343);
+		
+		Assert.assertTrue(service.checkValid(token.token()));
+		
+		service.expireToken(token.token());
+		
+		Assert.assertFalse(service.checkValid(token.token()));
+	}
+	
+	@Test
 	public void testTokenTimeExpire() throws InterruptedException
 	{
 		DefaultToken.Service.TOKEN_VAILD_PERIOD = 1;

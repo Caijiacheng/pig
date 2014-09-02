@@ -1,6 +1,10 @@
 package com.mm.account.ems;
 
-public interface IEmsService {
+import com.mm.account.server.IService;
+
+public interface IEmsService extends IService{
 	public boolean checkEmsVaild(IEms ems);
-	public IEms getEms(String phone);
+	public boolean checkEmsVaild(String phone, String authcode, IEms.EMS_TYPE type);
+	public IEms getEms(String phone, IEms.EMS_TYPE type);
+	
 }
