@@ -8,6 +8,7 @@ import java.sql.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.mm.account.db.MysqlDB;
 import com.mm.account.error.DBException;
@@ -25,8 +26,8 @@ import com.mm.account.error.NotExistException;
 
 public class DefaultAccount extends PojoAccount {
 
-	static final String DB_NAME = "account";
-	static final String TABLE_NAME = "user";
+	public static final String DB_NAME = "account";
+	public static final String TABLE_NAME = "user";
 	
 	static final Logger LOG = LoggerFactory.getLogger(DefaultAccount.class);
 	
@@ -34,6 +35,16 @@ public class DefaultAccount extends PojoAccount {
 		this._id = id;
 	}
 	
+	
+	public DefaultAccount(IAccount acc) {
+		this._id = acc.id();
+		this._infover = acc.version();
+		this._name = acc.name().orNull();
+		this._phoneid = acc.phoneid().orNull();
+		this._pwd = acc.passwd();
+		this._weiboid = acc.weiboid().orNull();
+		this._qqid = acc.qqid().orNull();
+	}
 	
 	@Override
 	public void load() {
@@ -254,10 +265,54 @@ public class DefaultAccount extends PojoAccount {
 			
 			try(Connection conn = db.getConn())
 			{
-				conn.createStatement().execute(String.format("select * from %s limit 1", TABLE_NAME));
+				try(Statement stmt = conn.createStatement())
+				{
+					stmt.execute(String.format("select * from %s limit 1", TABLE_NAME));
+				}
 				return true;
 			} catch (SQLException e) {
 				return false;
+			}
+		}
+
+		@Override
+		public IAccount incrVersion(IAccount acc) {
+			
+			MysqlDB db = new MysqlDB(DB_NAME);
+			
+			String[] sqls = new String[]{
+					String.format("update %s set info_version = LAST_INSERT_ID(info_version + 1) where id=%s", TABLE_NAME, acc.id()),
+					String.format("select LAST_INSERT_ID()"),
+			};
+			
+			try(Connection conn = db.getConn())
+			{
+				try(Statement stmt = conn.createStatement())
+				{
+					if (stmt.executeUpdate(sqls[0]) != 1)
+					{
+						throw new DBException(sqls[0]);
+					}
+					
+					if (!stmt.execute(sqls[1]))
+					{
+						throw new DBException(sqls[1]);
+					}
+					
+					ResultSet rs = stmt.getResultSet();
+					if (!rs.next())
+					{
+						throw new DBException("not resultSet return");
+					}
+					int new_ver = rs.getInt(1);
+					LOG.error("ver:{}", new_ver);
+					DefaultAccount dac =  new DefaultAccount(acc);
+					dac._infover = new_ver;
+					return dac;
+				}
+				
+			} catch (SQLException e) {
+				throw new DBException(e);
 			}
 		}
 	}

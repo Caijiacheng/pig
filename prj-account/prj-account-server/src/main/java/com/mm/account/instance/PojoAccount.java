@@ -24,22 +24,22 @@ abstract class PojoAccount implements IAccount, ILoad {
 
 	@Override
 	public Optional<String> name() {
-		return Optional.of(_name);
+		return Optional.fromNullable(_name);
 	}
 
 	@Override
 	public Optional<String> phoneid() {
-		return Optional.of(_phoneid);
+		return Optional.fromNullable(_phoneid);
 	}
 
 	@Override
 	public Optional<String> weiboid() {
-		return Optional.of(_weiboid);
+		return Optional.fromNullable(_weiboid);
 	}
 
 	@Override
 	public Optional<String> qqid() {
-		return Optional.of(_qqid);
+		return Optional.fromNullable(_qqid);
 	}
 
 

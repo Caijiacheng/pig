@@ -81,6 +81,22 @@ public class TestDefaultAccount {
 		Assert.assertEquals(service.get(acc.id()).get().passwd(), modify_pwd);		
 	}
 	
+	
+	@Test
+	public void testAccoutIncrInfoVersion()
+	{
+		String phoneid = "1369926798222";
+		String pwd = "2";
+		IAccountService service = new _DefautAccoutService();
+		removeIfExistPhoneid(service, phoneid);
+		IAccount acc = service.register(phoneid, pwd);
+		Assert.assertNotNull(acc);
+		IAccount incr_acc = service.incrVersion(acc);
+		
+		Assert.assertEquals(acc.version() + 1, incr_acc.version());
+		
+	}
+	
 	@Test(expected=NotExistException.class)
 	public void testNotExistUseridInModifyPasswd()
 	{

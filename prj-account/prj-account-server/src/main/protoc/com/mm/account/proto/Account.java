@@ -172,7 +172,7 @@ public final class Account {
     // @@protoc_insertion_point(enum_scope:com.mm.account.proto.DeviceType)
   }
 
-  public interface AccountUserInfoOrBuilder
+  public interface UserDataOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
     // required int32 version = 1;
@@ -234,26 +234,41 @@ public final class Account {
      */
     com.google.protobuf.ByteString
         getLastNameBytes();
+
+    // optional string head_url = 6;
+    /**
+     * <code>optional string head_url = 6;</code>
+     */
+    boolean hasHeadUrl();
+    /**
+     * <code>optional string head_url = 6;</code>
+     */
+    java.lang.String getHeadUrl();
+    /**
+     * <code>optional string head_url = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getHeadUrlBytes();
   }
   /**
-   * Protobuf type {@code com.mm.account.proto.AccountUserInfo}
+   * Protobuf type {@code com.mm.account.proto.UserData}
    */
-  public static final class AccountUserInfo extends
+  public static final class UserData extends
       com.google.protobuf.GeneratedMessage
-      implements AccountUserInfoOrBuilder {
-    // Use AccountUserInfo.newBuilder() to construct.
-    private AccountUserInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      implements UserDataOrBuilder {
+    // Use UserData.newBuilder() to construct.
+    private UserData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private AccountUserInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private UserData(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final AccountUserInfo defaultInstance;
-    public static AccountUserInfo getDefaultInstance() {
+    private static final UserData defaultInstance;
+    public static UserData getDefaultInstance() {
       return defaultInstance;
     }
 
-    public AccountUserInfo getDefaultInstanceForType() {
+    public UserData getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -263,7 +278,7 @@ public final class Account {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private AccountUserInfo(
+    private UserData(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -317,6 +332,11 @@ public final class Account {
               lastName_ = input.readBytes();
               break;
             }
+            case 50: {
+              bitField0_ |= 0x00000020;
+              headUrl_ = input.readBytes();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -331,28 +351,28 @@ public final class Account {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.mm.account.proto.Account.internal_static_com_mm_account_proto_AccountUserInfo_descriptor;
+      return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserData_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.mm.account.proto.Account.internal_static_com_mm_account_proto_AccountUserInfo_fieldAccessorTable
+      return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserData_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.mm.account.proto.Account.AccountUserInfo.class, com.mm.account.proto.Account.AccountUserInfo.Builder.class);
+              com.mm.account.proto.Account.UserData.class, com.mm.account.proto.Account.UserData.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<AccountUserInfo> PARSER =
-        new com.google.protobuf.AbstractParser<AccountUserInfo>() {
-      public AccountUserInfo parsePartialFrom(
+    public static com.google.protobuf.Parser<UserData> PARSER =
+        new com.google.protobuf.AbstractParser<UserData>() {
+      public UserData parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new AccountUserInfo(input, extensionRegistry);
+        return new UserData(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<AccountUserInfo> getParserForType() {
+    public com.google.protobuf.Parser<UserData> getParserForType() {
       return PARSER;
     }
 
@@ -491,12 +511,56 @@ public final class Account {
       }
     }
 
+    // optional string head_url = 6;
+    public static final int HEAD_URL_FIELD_NUMBER = 6;
+    private java.lang.Object headUrl_;
+    /**
+     * <code>optional string head_url = 6;</code>
+     */
+    public boolean hasHeadUrl() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string head_url = 6;</code>
+     */
+    public java.lang.String getHeadUrl() {
+      java.lang.Object ref = headUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          headUrl_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string head_url = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHeadUrlBytes() {
+      java.lang.Object ref = headUrl_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        headUrl_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       version_ = 0;
       uid_ = 0;
       gender_ = com.mm.account.proto.Account.Gender.MALE;
       firstName_ = "";
       lastName_ = "";
+      headUrl_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -533,6 +597,9 @@ public final class Account {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBytes(5, getLastNameBytes());
       }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getHeadUrlBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -562,6 +629,10 @@ public final class Account {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(5, getLastNameBytes());
       }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getHeadUrlBytes());
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
@@ -574,53 +645,53 @@ public final class Account {
       return super.writeReplace();
     }
 
-    public static com.mm.account.proto.Account.AccountUserInfo parseFrom(
+    public static com.mm.account.proto.Account.UserData parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.mm.account.proto.Account.AccountUserInfo parseFrom(
+    public static com.mm.account.proto.Account.UserData parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.mm.account.proto.Account.AccountUserInfo parseFrom(byte[] data)
+    public static com.mm.account.proto.Account.UserData parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.mm.account.proto.Account.AccountUserInfo parseFrom(
+    public static com.mm.account.proto.Account.UserData parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.mm.account.proto.Account.AccountUserInfo parseFrom(java.io.InputStream input)
+    public static com.mm.account.proto.Account.UserData parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.mm.account.proto.Account.AccountUserInfo parseFrom(
+    public static com.mm.account.proto.Account.UserData parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.mm.account.proto.Account.AccountUserInfo parseDelimitedFrom(java.io.InputStream input)
+    public static com.mm.account.proto.Account.UserData parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.mm.account.proto.Account.AccountUserInfo parseDelimitedFrom(
+    public static com.mm.account.proto.Account.UserData parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.mm.account.proto.Account.AccountUserInfo parseFrom(
+    public static com.mm.account.proto.Account.UserData parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.mm.account.proto.Account.AccountUserInfo parseFrom(
+    public static com.mm.account.proto.Account.UserData parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -629,7 +700,7 @@ public final class Account {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mm.account.proto.Account.AccountUserInfo prototype) {
+    public static Builder newBuilder(com.mm.account.proto.Account.UserData prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -641,24 +712,24 @@ public final class Account {
       return builder;
     }
     /**
-     * Protobuf type {@code com.mm.account.proto.AccountUserInfo}
+     * Protobuf type {@code com.mm.account.proto.UserData}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mm.account.proto.Account.AccountUserInfoOrBuilder {
+       implements com.mm.account.proto.Account.UserDataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_AccountUserInfo_descriptor;
+        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserData_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_AccountUserInfo_fieldAccessorTable
+        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserData_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.mm.account.proto.Account.AccountUserInfo.class, com.mm.account.proto.Account.AccountUserInfo.Builder.class);
+                com.mm.account.proto.Account.UserData.class, com.mm.account.proto.Account.UserData.Builder.class);
       }
 
-      // Construct using com.mm.account.proto.Account.AccountUserInfo.newBuilder()
+      // Construct using com.mm.account.proto.Account.UserData.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -688,6 +759,8 @@ public final class Account {
         bitField0_ = (bitField0_ & ~0x00000008);
         lastName_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
+        headUrl_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -697,23 +770,23 @@ public final class Account {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_AccountUserInfo_descriptor;
+        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserData_descriptor;
       }
 
-      public com.mm.account.proto.Account.AccountUserInfo getDefaultInstanceForType() {
-        return com.mm.account.proto.Account.AccountUserInfo.getDefaultInstance();
+      public com.mm.account.proto.Account.UserData getDefaultInstanceForType() {
+        return com.mm.account.proto.Account.UserData.getDefaultInstance();
       }
 
-      public com.mm.account.proto.Account.AccountUserInfo build() {
-        com.mm.account.proto.Account.AccountUserInfo result = buildPartial();
+      public com.mm.account.proto.Account.UserData build() {
+        com.mm.account.proto.Account.UserData result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.mm.account.proto.Account.AccountUserInfo buildPartial() {
-        com.mm.account.proto.Account.AccountUserInfo result = new com.mm.account.proto.Account.AccountUserInfo(this);
+      public com.mm.account.proto.Account.UserData buildPartial() {
+        com.mm.account.proto.Account.UserData result = new com.mm.account.proto.Account.UserData(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -736,22 +809,26 @@ public final class Account {
           to_bitField0_ |= 0x00000010;
         }
         result.lastName_ = lastName_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.headUrl_ = headUrl_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mm.account.proto.Account.AccountUserInfo) {
-          return mergeFrom((com.mm.account.proto.Account.AccountUserInfo)other);
+        if (other instanceof com.mm.account.proto.Account.UserData) {
+          return mergeFrom((com.mm.account.proto.Account.UserData)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.mm.account.proto.Account.AccountUserInfo other) {
-        if (other == com.mm.account.proto.Account.AccountUserInfo.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.mm.account.proto.Account.UserData other) {
+        if (other == com.mm.account.proto.Account.UserData.getDefaultInstance()) return this;
         if (other.hasVersion()) {
           setVersion(other.getVersion());
         }
@@ -769,6 +846,11 @@ public final class Account {
         if (other.hasLastName()) {
           bitField0_ |= 0x00000010;
           lastName_ = other.lastName_;
+          onChanged();
+        }
+        if (other.hasHeadUrl()) {
+          bitField0_ |= 0x00000020;
+          headUrl_ = other.headUrl_;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -791,11 +873,11 @@ public final class Account {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.mm.account.proto.Account.AccountUserInfo parsedMessage = null;
+        com.mm.account.proto.Account.UserData parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mm.account.proto.Account.AccountUserInfo) e.getUnfinishedMessage();
+          parsedMessage = (com.mm.account.proto.Account.UserData) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -1056,18 +1138,92 @@ public final class Account {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.mm.account.proto.AccountUserInfo)
+      // optional string head_url = 6;
+      private java.lang.Object headUrl_ = "";
+      /**
+       * <code>optional string head_url = 6;</code>
+       */
+      public boolean hasHeadUrl() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string head_url = 6;</code>
+       */
+      public java.lang.String getHeadUrl() {
+        java.lang.Object ref = headUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          headUrl_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string head_url = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHeadUrlBytes() {
+        java.lang.Object ref = headUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          headUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string head_url = 6;</code>
+       */
+      public Builder setHeadUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        headUrl_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string head_url = 6;</code>
+       */
+      public Builder clearHeadUrl() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        headUrl_ = getDefaultInstance().getHeadUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string head_url = 6;</code>
+       */
+      public Builder setHeadUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        headUrl_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.mm.account.proto.UserData)
     }
 
     static {
-      defaultInstance = new AccountUserInfo(true);
+      defaultInstance = new UserData(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.mm.account.proto.AccountUserInfo)
+    // @@protoc_insertion_point(class_scope:com.mm.account.proto.UserData)
   }
 
-  public interface AccountPhoneInfoOrBuilder
+  public interface UserPhoneInfoOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
     // required int32 uid = 1;
@@ -1131,24 +1287,24 @@ public final class Account {
     com.mm.account.proto.Account.DeviceType getDeviceType();
   }
   /**
-   * Protobuf type {@code com.mm.account.proto.AccountPhoneInfo}
+   * Protobuf type {@code com.mm.account.proto.UserPhoneInfo}
    */
-  public static final class AccountPhoneInfo extends
+  public static final class UserPhoneInfo extends
       com.google.protobuf.GeneratedMessage
-      implements AccountPhoneInfoOrBuilder {
-    // Use AccountPhoneInfo.newBuilder() to construct.
-    private AccountPhoneInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      implements UserPhoneInfoOrBuilder {
+    // Use UserPhoneInfo.newBuilder() to construct.
+    private UserPhoneInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private AccountPhoneInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private UserPhoneInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final AccountPhoneInfo defaultInstance;
-    public static AccountPhoneInfo getDefaultInstance() {
+    private static final UserPhoneInfo defaultInstance;
+    public static UserPhoneInfo getDefaultInstance() {
       return defaultInstance;
     }
 
-    public AccountPhoneInfo getDefaultInstanceForType() {
+    public UserPhoneInfo getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -1158,7 +1314,7 @@ public final class Account {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private AccountPhoneInfo(
+    private UserPhoneInfo(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1226,28 +1382,28 @@ public final class Account {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.mm.account.proto.Account.internal_static_com_mm_account_proto_AccountPhoneInfo_descriptor;
+      return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserPhoneInfo_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.mm.account.proto.Account.internal_static_com_mm_account_proto_AccountPhoneInfo_fieldAccessorTable
+      return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserPhoneInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.mm.account.proto.Account.AccountPhoneInfo.class, com.mm.account.proto.Account.AccountPhoneInfo.Builder.class);
+              com.mm.account.proto.Account.UserPhoneInfo.class, com.mm.account.proto.Account.UserPhoneInfo.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<AccountPhoneInfo> PARSER =
-        new com.google.protobuf.AbstractParser<AccountPhoneInfo>() {
-      public AccountPhoneInfo parsePartialFrom(
+    public static com.google.protobuf.Parser<UserPhoneInfo> PARSER =
+        new com.google.protobuf.AbstractParser<UserPhoneInfo>() {
+      public UserPhoneInfo parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new AccountPhoneInfo(input, extensionRegistry);
+        return new UserPhoneInfo(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<AccountPhoneInfo> getParserForType() {
+    public com.google.protobuf.Parser<UserPhoneInfo> getParserForType() {
       return PARSER;
     }
 
@@ -1469,53 +1625,53 @@ public final class Account {
       return super.writeReplace();
     }
 
-    public static com.mm.account.proto.Account.AccountPhoneInfo parseFrom(
+    public static com.mm.account.proto.Account.UserPhoneInfo parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.mm.account.proto.Account.AccountPhoneInfo parseFrom(
+    public static com.mm.account.proto.Account.UserPhoneInfo parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.mm.account.proto.Account.AccountPhoneInfo parseFrom(byte[] data)
+    public static com.mm.account.proto.Account.UserPhoneInfo parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.mm.account.proto.Account.AccountPhoneInfo parseFrom(
+    public static com.mm.account.proto.Account.UserPhoneInfo parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.mm.account.proto.Account.AccountPhoneInfo parseFrom(java.io.InputStream input)
+    public static com.mm.account.proto.Account.UserPhoneInfo parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.mm.account.proto.Account.AccountPhoneInfo parseFrom(
+    public static com.mm.account.proto.Account.UserPhoneInfo parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.mm.account.proto.Account.AccountPhoneInfo parseDelimitedFrom(java.io.InputStream input)
+    public static com.mm.account.proto.Account.UserPhoneInfo parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.mm.account.proto.Account.AccountPhoneInfo parseDelimitedFrom(
+    public static com.mm.account.proto.Account.UserPhoneInfo parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.mm.account.proto.Account.AccountPhoneInfo parseFrom(
+    public static com.mm.account.proto.Account.UserPhoneInfo parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.mm.account.proto.Account.AccountPhoneInfo parseFrom(
+    public static com.mm.account.proto.Account.UserPhoneInfo parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1524,7 +1680,7 @@ public final class Account {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.mm.account.proto.Account.AccountPhoneInfo prototype) {
+    public static Builder newBuilder(com.mm.account.proto.Account.UserPhoneInfo prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -1536,24 +1692,24 @@ public final class Account {
       return builder;
     }
     /**
-     * Protobuf type {@code com.mm.account.proto.AccountPhoneInfo}
+     * Protobuf type {@code com.mm.account.proto.UserPhoneInfo}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.mm.account.proto.Account.AccountPhoneInfoOrBuilder {
+       implements com.mm.account.proto.Account.UserPhoneInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_AccountPhoneInfo_descriptor;
+        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserPhoneInfo_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_AccountPhoneInfo_fieldAccessorTable
+        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserPhoneInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.mm.account.proto.Account.AccountPhoneInfo.class, com.mm.account.proto.Account.AccountPhoneInfo.Builder.class);
+                com.mm.account.proto.Account.UserPhoneInfo.class, com.mm.account.proto.Account.UserPhoneInfo.Builder.class);
       }
 
-      // Construct using com.mm.account.proto.Account.AccountPhoneInfo.newBuilder()
+      // Construct using com.mm.account.proto.Account.UserPhoneInfo.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1592,23 +1748,23 @@ public final class Account {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_AccountPhoneInfo_descriptor;
+        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserPhoneInfo_descriptor;
       }
 
-      public com.mm.account.proto.Account.AccountPhoneInfo getDefaultInstanceForType() {
-        return com.mm.account.proto.Account.AccountPhoneInfo.getDefaultInstance();
+      public com.mm.account.proto.Account.UserPhoneInfo getDefaultInstanceForType() {
+        return com.mm.account.proto.Account.UserPhoneInfo.getDefaultInstance();
       }
 
-      public com.mm.account.proto.Account.AccountPhoneInfo build() {
-        com.mm.account.proto.Account.AccountPhoneInfo result = buildPartial();
+      public com.mm.account.proto.Account.UserPhoneInfo build() {
+        com.mm.account.proto.Account.UserPhoneInfo result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.mm.account.proto.Account.AccountPhoneInfo buildPartial() {
-        com.mm.account.proto.Account.AccountPhoneInfo result = new com.mm.account.proto.Account.AccountPhoneInfo(this);
+      public com.mm.account.proto.Account.UserPhoneInfo buildPartial() {
+        com.mm.account.proto.Account.UserPhoneInfo result = new com.mm.account.proto.Account.UserPhoneInfo(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -1637,16 +1793,16 @@ public final class Account {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.mm.account.proto.Account.AccountPhoneInfo) {
-          return mergeFrom((com.mm.account.proto.Account.AccountPhoneInfo)other);
+        if (other instanceof com.mm.account.proto.Account.UserPhoneInfo) {
+          return mergeFrom((com.mm.account.proto.Account.UserPhoneInfo)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.mm.account.proto.Account.AccountPhoneInfo other) {
-        if (other == com.mm.account.proto.Account.AccountPhoneInfo.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.mm.account.proto.Account.UserPhoneInfo other) {
+        if (other == com.mm.account.proto.Account.UserPhoneInfo.getDefaultInstance()) return this;
         if (other.hasUid()) {
           setUid(other.getUid());
         }
@@ -1686,11 +1842,11 @@ public final class Account {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.mm.account.proto.Account.AccountPhoneInfo parsedMessage = null;
+        com.mm.account.proto.Account.UserPhoneInfo parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.mm.account.proto.Account.AccountPhoneInfo) e.getUnfinishedMessage();
+          parsedMessage = (com.mm.account.proto.Account.UserPhoneInfo) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -1951,27 +2107,27 @@ public final class Account {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.mm.account.proto.AccountPhoneInfo)
+      // @@protoc_insertion_point(builder_scope:com.mm.account.proto.UserPhoneInfo)
     }
 
     static {
-      defaultInstance = new AccountPhoneInfo(true);
+      defaultInstance = new UserPhoneInfo(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.mm.account.proto.AccountPhoneInfo)
+    // @@protoc_insertion_point(class_scope:com.mm.account.proto.UserPhoneInfo)
   }
 
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mm_account_proto_AccountUserInfo_descriptor;
+    internal_static_com_mm_account_proto_UserData_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mm_account_proto_AccountUserInfo_fieldAccessorTable;
+      internal_static_com_mm_account_proto_UserData_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_mm_account_proto_AccountPhoneInfo_descriptor;
+    internal_static_com_mm_account_proto_UserPhoneInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_mm_account_proto_AccountPhoneInfo_fieldAccessorTable;
+      internal_static_com_mm_account_proto_UserPhoneInfo_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1981,33 +2137,33 @@ public final class Account {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\raccount.proto\022\024com.mm.account.proto\"\204\001" +
-      "\n\017AccountUserInfo\022\017\n\007version\030\001 \002(\005\022\013\n\003ui" +
-      "d\030\002 \002(\005\022,\n\006gender\030\003 \001(\0162\034.com.mm.account" +
-      ".proto.Gender\022\022\n\nfirst_name\030\004 \001(\t\022\021\n\tlas" +
-      "t_name\030\005 \001(\t\"\212\001\n\020AccountPhoneInfo\022\013\n\003uid" +
-      "\030\001 \002(\005\022\021\n\tphone_num\030\002 \002(\005\022\014\n\004imei\030\003 \001(\t\022" +
-      "\021\n\tdevice_id\030\004 \001(\t\0225\n\013device_type\030\005 \001(\0162" +
-      " .com.mm.account.proto.DeviceType*\036\n\006Gen" +
-      "der\022\010\n\004MALE\020\001\022\n\n\006FEMALE\020\002*\"\n\nDeviceType\022" +
-      "\013\n\007ANDROID\020\001\022\007\n\003IOS\020\002"
+      "\n\raccount.proto\022\024com.mm.account.proto\"\217\001" +
+      "\n\010UserData\022\017\n\007version\030\001 \002(\005\022\013\n\003uid\030\002 \002(\005" +
+      "\022,\n\006gender\030\003 \001(\0162\034.com.mm.account.proto." +
+      "Gender\022\022\n\nfirst_name\030\004 \001(\t\022\021\n\tlast_name\030" +
+      "\005 \001(\t\022\020\n\010head_url\030\006 \001(\t\"\207\001\n\rUserPhoneInf" +
+      "o\022\013\n\003uid\030\001 \002(\005\022\021\n\tphone_num\030\002 \002(\005\022\014\n\004ime" +
+      "i\030\003 \001(\t\022\021\n\tdevice_id\030\004 \001(\t\0225\n\013device_typ" +
+      "e\030\005 \001(\0162 .com.mm.account.proto.DeviceTyp" +
+      "e*\036\n\006Gender\022\010\n\004MALE\020\001\022\n\n\006FEMALE\020\002*\"\n\nDev" +
+      "iceType\022\013\n\007ANDROID\020\001\022\007\n\003IOS\020\002"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_com_mm_account_proto_AccountUserInfo_descriptor =
+          internal_static_com_mm_account_proto_UserData_descriptor =
             getDescriptor().getMessageTypes().get(0);
-          internal_static_com_mm_account_proto_AccountUserInfo_fieldAccessorTable = new
+          internal_static_com_mm_account_proto_UserData_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mm_account_proto_AccountUserInfo_descriptor,
-              new java.lang.String[] { "Version", "Uid", "Gender", "FirstName", "LastName", });
-          internal_static_com_mm_account_proto_AccountPhoneInfo_descriptor =
+              internal_static_com_mm_account_proto_UserData_descriptor,
+              new java.lang.String[] { "Version", "Uid", "Gender", "FirstName", "LastName", "HeadUrl", });
+          internal_static_com_mm_account_proto_UserPhoneInfo_descriptor =
             getDescriptor().getMessageTypes().get(1);
-          internal_static_com_mm_account_proto_AccountPhoneInfo_fieldAccessorTable = new
+          internal_static_com_mm_account_proto_UserPhoneInfo_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_mm_account_proto_AccountPhoneInfo_descriptor,
+              internal_static_com_mm_account_proto_UserPhoneInfo_descriptor,
               new java.lang.String[] { "Uid", "PhoneNum", "Imei", "DeviceId", "DeviceType", });
           return null;
         }

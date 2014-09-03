@@ -47,11 +47,13 @@ public class TestDefaultToken {
 		
 		IToken token = service.newToken(134343);
 		
-		Assert.assertTrue(service.checkValid(token.token()));
+		IToken token_0 = service.getToken(token.token()).get();
 		
-		service.expireToken(token.token());
+		Assert.assertTrue(service.checkValid(token_0));
 		
-		Assert.assertFalse(service.checkValid(token.token()));
+		service.expireToken(token_0);
+		
+		Assert.assertFalse(service.checkValid(token_0));
 	}
 	
 	@Test

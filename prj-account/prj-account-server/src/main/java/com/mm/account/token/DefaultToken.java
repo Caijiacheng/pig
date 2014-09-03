@@ -4,16 +4,18 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Response;
 
+import com.google.common.base.Optional;
 import com.mm.account.db.RedisDB;
 
 
 public class DefaultToken extends PojoToken {
-
-	
 	
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 	public static String bytesToHex(byte[] bytes) {
@@ -91,23 +93,34 @@ public class DefaultToken extends PojoToken {
 			}
 		}
 
+		static final Logger LOG = LoggerFactory.getLogger(Service.class);
 		
 		@Override
-		public boolean checkValid(String token) {
+		public Optional<IToken> getToken(String token) {
 			DefaultToken t = new DefaultToken();
 			t._token = token;
-			RedisDB db = new RedisDB();			
+			
+			RedisDB db = new RedisDB();
 			try(Jedis jh = db.getConn())
 			{
 				String id = jh.get(t.getTokenKey());
 				if (id == null)
 				{
-					return false;
+					return Optional.absent();
 				}
+				//comfirm
 				t._id = Long.parseLong(id);
 				String tt = jh.get(getTokenIDKey(t.id()));
-				return Objects.equals(tt, token);		
+				if (!Objects.equals(tt, token))
+				{
+					//
+					LOG.warn("Consist Error?token:{}, id:{}", token, id);
+					jh.del(t.getTokenKey());
+					jh.del(getTokenIDKey(t.id()));
+					return Optional.absent();
+				}
 			}
+			return Optional.of((IToken)t);
 		}
 		
 		
@@ -126,25 +139,6 @@ public class DefaultToken extends PojoToken {
 				pipe.sync();
 			}
 		}
-		
-		@Override
-		public void expireToken(String token)
-		{
-			DefaultToken t = new DefaultToken();
-			t._token = token;
-			RedisDB db = new RedisDB();			
-			try(Jedis jh = db.getConn())
-			{
-				String id = jh.get(t.getTokenKey());
-				if (id == null)
-				{
-					return;
-				}
-				jh.del(t.getTokenKey());
-				t._id = Long.parseLong(id);
-				jh.del(getTokenIDKey(t.id()));
-			}
-		}
 
 		@Override
 		public boolean ping() {
@@ -160,7 +154,6 @@ public class DefaultToken extends PojoToken {
 		}
 
 
-		
 	}
 	
 }

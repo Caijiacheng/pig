@@ -17,5 +17,7 @@ public interface IAccountService extends IService{
 	
 	boolean exist(long id);
 	
+	IAccount incrVersion(IAccount acc);
+	
 	
 }

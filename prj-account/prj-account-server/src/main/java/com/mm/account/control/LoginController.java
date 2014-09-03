@@ -1,8 +1,5 @@
 package com.mm.account.control;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.restexpress.Request;
 import org.restexpress.Response;
 import org.restexpress.annotations.RequestMethod;
@@ -14,9 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.mm.account.ems.IEms;
 import com.mm.account.ems.IEms.EMS_TYPE;
@@ -295,8 +290,6 @@ public class LoginController {
 		{
 			throw new ServiceException(e);
 		}
-		
-		
 	}
 	
 	@RequestMethod(value="/addressbook/rest/pass/login/JH_user_token_login/{token}", 
@@ -304,7 +297,7 @@ public class LoginController {
 	public String loginWithToken(Request request, Response response)
 	{
 		String token = request.getHeader("token", "not param token ?");
-		if (!token_service.checkValid(token))
+		if (!token_service.getToken(token).isPresent())
 		{
 			return ErrorRet.ERROR(51008);
 		}
@@ -364,11 +357,15 @@ public class LoginController {
 		{
 			TokenJson info = new Gson().fromJson(
 					request.getBody().toString(Charsets.UTF_8), TokenJson.class );
-			if (!token_service.checkValid(info.token))
+			
+			Optional<IToken> token = token_service.getToken(info.token);
+			
+			if (!token.isPresent())
 			{
 				return ErrorRet.ERROR(20007);
 			}
-			token_service.expireToken(info.token);
+			
+			token_service.expireToken(token.get());
 			return ErrorRet.ERROR(20008);
 			
 		}catch(JsonSyntaxException e)
@@ -392,25 +389,27 @@ public class LoginController {
 	public String updateUserinfo(Request request, Response response)
 	{
 		
-		return "";
-//		try
-//		{
-//			UserDetailInfo info = new Gson().fromJson(
-//					request.getBody().toString(Charsets.UTF_8), UserDetailInfo.class );
-//			if (!token_service.checkValid(info.token))
-//			{
-//				return ErrorRet.ERROR(20007);
-//			}
-//			token_service.expireToken(info.token);
-//			return ErrorRet.ERROR(20008);
-//			
-//		}catch(JsonSyntaxException e)
-//		{
-//			throw new BadRequestException(e);
-//		}catch(Throwable e)
-//		{
-//			throw new ServiceException(e);
-//		}
+		String token = request.getHeader("token", "auth without Token?");
+		
+		try
+		{
+			UserDetailInfo info = new Gson().fromJson(
+					request.getBody().toString(Charsets.UTF_8), UserDetailInfo.class );
+			if (!token_service.getToken(token).isPresent())
+			{
+				return ErrorRet.ERROR(20002);
+			}
+			
+			
+			return ErrorRet.ERROR(20001);
+			
+		}catch(JsonSyntaxException e)
+		{
+			throw new BadRequestException(e);
+		}catch(Throwable e)
+		{
+			throw new ServiceException(e);
+		}
 	}
 	
 	@RequestMethod(value="/addressbook/rest/auth/user/JH_user_info", 
