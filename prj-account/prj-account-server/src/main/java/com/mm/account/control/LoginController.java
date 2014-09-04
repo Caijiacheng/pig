@@ -12,6 +12,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.mm.account.ems.IEms;
 import com.mm.account.ems.IEms.EMS_TYPE;
@@ -20,8 +21,11 @@ import com.mm.account.ems.MockEmsService;
 import com.mm.account.error.AccountException;
 import com.mm.account.error.DupRegException;
 import com.mm.account.instance.DefaultAccount;
+import com.mm.account.instance.DefaultUserData;
 import com.mm.account.instance.IAccount;
 import com.mm.account.instance.IAccountService;
+import com.mm.account.proto.Account.Gender;
+import com.mm.account.proto.Account.UserData.Builder;
 import com.mm.account.token.DefaultToken;
 import com.mm.account.token.IToken;
 import com.mm.account.token.ITokenService;
@@ -382,6 +386,7 @@ public class LoginController {
 		String firstName;
 		String lastName;
 		String gender;
+		String headUrl;
 	}
 	
 	@RequestMethod(value="/addressbook/rest/auth/user/JH_user_update", 
@@ -393,13 +398,35 @@ public class LoginController {
 		
 		try
 		{
-			UserDetailInfo info = new Gson().fromJson(
+			final UserDetailInfo info = new Gson().fromJson(
 					request.getBody().toString(Charsets.UTF_8), UserDetailInfo.class );
-			if (!token_service.getToken(token).isPresent())
+			
+			Optional<IToken> itoken = token_service.getToken(token);
+			
+			if (!itoken.isPresent())
 			{
 				return ErrorRet.ERROR(20002);
 			}
 			
+			Optional<IAccount> acc = acc_service.get(itoken.get().id());
+			
+			if (!acc.isPresent())
+			{
+				return ErrorRet.ERROR(20002);
+			}
+			
+			DefaultUserData userdata = new DefaultUserData(acc.get()) {
+				
+				@Override
+				public Builder transform(Builder builder) {
+					
+					return builder.setFirstName(info.firstName)
+							.setLastName(info.lastName)
+							.setGender(Gender.valueOf(info.gender));
+				}
+			};
+			
+			userdata.save();
 			
 			return ErrorRet.ERROR(20001);
 			
@@ -412,11 +439,66 @@ public class LoginController {
 		}
 	}
 	
+	
+	static class UsetInfoRet
+	{
+		String errorCode;
+		UserDetailInfo data;
+	}
+	
+	
 	@RequestMethod(value="/addressbook/rest/auth/user/JH_user_info", 
 			method="GET")		
 	public String getUserinfo(Request request, Response response)
 	{
-		return "";
+		String token = request.getHeader("token", "auth without Token?");
+		
+		try
+		{
+			
+			Optional<IToken> itoken = token_service.getToken(token);
+			
+			if (!itoken.isPresent())
+			{
+				return ErrorRet.ERROR(20002);
+			}
+			
+			Optional<IAccount> acc = acc_service.get(itoken.get().id());
+			
+			if (!acc.isPresent())
+			{
+				return ErrorRet.ERROR(20002);
+			}
+			
+			DefaultUserData userdata = new DefaultUserData(acc.get()) {
+				
+				@Override
+				public Builder transform(Builder builder) {
+					return null;
+				}
+			};
+			
+			userdata.load();
+			
+			UserDetailInfo info = new UserDetailInfo();
+			info.firstName = userdata.data().getFirstName();
+			info.lastName = userdata.data().getLastName();
+			info.gender = String.valueOf(userdata.data().getGender());
+			info.headUrl = userdata.data().getHeadUrl();
+			
+			UsetInfoRet inforet = new UsetInfoRet();
+			inforet.data = info;
+			inforet.errorCode = "20001";
+			
+			return new GsonBuilder().serializeNulls().create().toJson(info, UsetInfoRet.class);
+			
+		}catch(JsonSyntaxException e)
+		{
+			throw new BadRequestException(e);
+		}catch(Throwable e)
+		{
+			throw new ServiceException(e);
+		}
 	}
 	
 	@RequestMethod(value="/addressbook/rest/auth/user/JH_user_save_img", 
@@ -426,11 +508,57 @@ public class LoginController {
 		return "";
 	}
 	
+	static class UserUpdatePwd
+	{
+		String oldPassword;
+		String password;
+		String passwordConfirm;
+	}
+	
 	@RequestMethod(value="/addressbook/rest/auth/user/JH_user_password", 
 			method="POST")	
 	public String updatePasswd(Request request, Response response)
 	{
-		return "";
+		String token = request.getHeader("token", "auth without Token?");
+		
+		try
+		{
+			
+			Optional<IToken> itoken = token_service.getToken(token);
+			
+			if (!itoken.isPresent())
+			{
+				return ErrorRet.ERROR(20002);
+			}
+			
+			Optional<IAccount> acc = acc_service.get(itoken.get().id());
+			
+			if (!acc.isPresent())
+			{
+				return ErrorRet.ERROR(20002);
+			}
+			
+			final UserUpdatePwd info = new Gson().fromJson(
+					request.getBody().toString(Charsets.UTF_8), UserUpdatePwd.class );
+			
+			if (info.oldPassword.equalsIgnoreCase(acc.get().passwd())
+					&& info.password.equalsIgnoreCase(info.passwordConfirm))
+			{
+				acc_service.modifyPasswd(acc.get().id(), info.password);
+				return ErrorRet.SUCESS();
+			}
+			else
+			{
+				return ErrorRet.ERROR(20002);
+			}
+			
+		}catch(JsonSyntaxException e)
+		{
+			throw new BadRequestException(e);
+		}catch(Throwable e)
+		{
+			throw new ServiceException(e);
+		}
 	}
 	
 	

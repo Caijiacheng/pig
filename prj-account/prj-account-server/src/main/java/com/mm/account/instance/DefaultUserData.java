@@ -1,5 +1,8 @@
 package com.mm.account.instance;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import redis.clients.jedis.Jedis;
 
 import com.google.common.base.Charsets;
@@ -8,6 +11,14 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.mm.account.db.RedisDB;
 import com.mm.account.error.DBException;
 import com.mm.account.proto.Account.UserData;
+
+/**
+ * 这里的class封装肯定有问题.但暂时先这样.以后再找更合适的方式来处理
+ * 
+ * @author caijiacheng
+ *
+ */
+
 
 abstract public class DefaultUserData implements IVersion, ILoad, ISave {
 
@@ -31,8 +42,14 @@ abstract public class DefaultUserData implements IVersion, ILoad, ISave {
 		return String.format("DefaultUserData:%s:version:%s", acc.id(), acc.version());
 	}
 	
-	abstract public <T> void transform(T obj);
+	final static Logger LOG = LoggerFactory.getLogger(DefaultUserData.class);
 	
+	abstract public UserData.Builder transform(UserData.Builder builder);
+	
+	public UserData data()
+	{
+		return data;
+	}
 	@Override
 	public void load() {
 		
@@ -48,7 +65,11 @@ abstract public class DefaultUserData implements IVersion, ILoad, ISave {
 			String s = handle.get(getRedisKey(acc));
 			if (s == null)
 			{
-				data = UserData.newBuilder().build();
+				if (acc.version() != 0)
+				{
+					LOG.error("DB didnot store the UserData correct? {}", acc );
+				}
+				data = UserData.newBuilder().setUid(acc.id()).setVersion(acc.version()).build();
 			}else
 			{
 				try {
@@ -71,20 +92,23 @@ abstract public class DefaultUserData implements IVersion, ILoad, ISave {
 		return true;
 	}
 	
+	/**
+	 * XXX:这里increment是使用mysql中的version,存储具体信息是使用redis,这里在version变化的时候,没有保证一致性.有断电的时候,这里可能会造成错误
+	 * 
+	 * FIXME: increment的时候,使用mysql的行数据的事务锁来解决这里的问题
+	 */
+	
 	@Override
 	public void save() {
 		
-		if (!needToSync())
-		{
-			return;
-		}
-		
 		increment();
-		
 		RedisDB db = new RedisDB();
 		try(Jedis handle = db.getConn())
 		{
+			UserData.Builder ud = UserData.newBuilder().setUid(acc.id()).setVersion(acc.version());
+			data = transform(ud).build();
 			Preconditions.checkNotNull(data);
+			Preconditions.checkArgument(data.getVersion() == acc.version(), "need to set the same version");
 			handle.set(getRedisKey(acc), new String(data.toByteArray(), Charsets.UTF_8));
 		}
 		

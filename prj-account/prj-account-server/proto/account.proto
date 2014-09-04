@@ -3,13 +3,13 @@ package com.mm.account.proto;
 enum Gender
 {
 	MALE = 1;
-	FEMALE = 2;
+	FEMALE = 0;
 }
 
 message UserData
 {
-	required int32 version = 1;
-	required int32 uid = 2;
+	required int32 version = 1 [default = 0];
+	required int64 uid = 2;
 	optional Gender gender = 3;
 	optional string first_name = 4;
 	optional string last_name = 5;

@@ -8,7 +8,6 @@ import java.sql.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.mm.account.db.MysqlDB;
 import com.mm.account.error.DBException;
@@ -305,7 +304,7 @@ public class DefaultAccount extends PojoAccount {
 						throw new DBException("not resultSet return");
 					}
 					int new_ver = rs.getInt(1);
-					LOG.error("ver:{}", new_ver);
+//					LOG.error("ver:{}", new_ver);
 					DefaultAccount dac =  new DefaultAccount(acc);
 					dac._infover = new_ver;
 					return dac;

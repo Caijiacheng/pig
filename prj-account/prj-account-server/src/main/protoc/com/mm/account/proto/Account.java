@@ -18,9 +18,9 @@ public final class Account {
      */
     MALE(0, 1),
     /**
-     * <code>FEMALE = 2;</code>
+     * <code>FEMALE = 0;</code>
      */
-    FEMALE(1, 2),
+    FEMALE(1, 0),
     ;
 
     /**
@@ -28,9 +28,9 @@ public final class Account {
      */
     public static final int MALE_VALUE = 1;
     /**
-     * <code>FEMALE = 2;</code>
+     * <code>FEMALE = 0;</code>
      */
-    public static final int FEMALE_VALUE = 2;
+    public static final int FEMALE_VALUE = 0;
 
 
     public final int getNumber() { return value; }
@@ -38,7 +38,7 @@ public final class Account {
     public static Gender valueOf(int value) {
       switch (value) {
         case 1: return MALE;
-        case 2: return FEMALE;
+        case 0: return FEMALE;
         default: return null;
       }
     }
@@ -175,25 +175,25 @@ public final class Account {
   public interface UserDataOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required int32 version = 1;
+    // required int32 version = 1 [default = 0];
     /**
-     * <code>required int32 version = 1;</code>
+     * <code>required int32 version = 1 [default = 0];</code>
      */
     boolean hasVersion();
     /**
-     * <code>required int32 version = 1;</code>
+     * <code>required int32 version = 1 [default = 0];</code>
      */
     int getVersion();
 
-    // required int32 uid = 2;
+    // required int64 uid = 2;
     /**
-     * <code>required int32 uid = 2;</code>
+     * <code>required int64 uid = 2;</code>
      */
     boolean hasUid();
     /**
-     * <code>required int32 uid = 2;</code>
+     * <code>required int64 uid = 2;</code>
      */
-    int getUid();
+    long getUid();
 
     // optional .com.mm.account.proto.Gender gender = 3;
     /**
@@ -308,7 +308,7 @@ public final class Account {
             }
             case 16: {
               bitField0_ |= 0x00000002;
-              uid_ = input.readInt32();
+              uid_ = input.readInt64();
               break;
             }
             case 24: {
@@ -377,35 +377,35 @@ public final class Account {
     }
 
     private int bitField0_;
-    // required int32 version = 1;
+    // required int32 version = 1 [default = 0];
     public static final int VERSION_FIELD_NUMBER = 1;
     private int version_;
     /**
-     * <code>required int32 version = 1;</code>
+     * <code>required int32 version = 1 [default = 0];</code>
      */
     public boolean hasVersion() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required int32 version = 1;</code>
+     * <code>required int32 version = 1 [default = 0];</code>
      */
     public int getVersion() {
       return version_;
     }
 
-    // required int32 uid = 2;
+    // required int64 uid = 2;
     public static final int UID_FIELD_NUMBER = 2;
-    private int uid_;
+    private long uid_;
     /**
-     * <code>required int32 uid = 2;</code>
+     * <code>required int64 uid = 2;</code>
      */
     public boolean hasUid() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required int32 uid = 2;</code>
+     * <code>required int64 uid = 2;</code>
      */
-    public int getUid() {
+    public long getUid() {
       return uid_;
     }
 
@@ -556,7 +556,7 @@ public final class Account {
 
     private void initFields() {
       version_ = 0;
-      uid_ = 0;
+      uid_ = 0L;
       gender_ = com.mm.account.proto.Account.Gender.MALE;
       firstName_ = "";
       lastName_ = "";
@@ -586,7 +586,7 @@ public final class Account {
         output.writeInt32(1, version_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, uid_);
+        output.writeInt64(2, uid_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeEnum(3, gender_.getNumber());
@@ -615,7 +615,7 @@ public final class Account {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, uid_);
+          .computeInt64Size(2, uid_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
@@ -751,7 +751,7 @@ public final class Account {
         super.clear();
         version_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
-        uid_ = 0;
+        uid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
         gender_ = com.mm.account.proto.Account.Gender.MALE;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -888,22 +888,22 @@ public final class Account {
       }
       private int bitField0_;
 
-      // required int32 version = 1;
+      // required int32 version = 1 [default = 0];
       private int version_ ;
       /**
-       * <code>required int32 version = 1;</code>
+       * <code>required int32 version = 1 [default = 0];</code>
        */
       public boolean hasVersion() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required int32 version = 1;</code>
+       * <code>required int32 version = 1 [default = 0];</code>
        */
       public int getVersion() {
         return version_;
       }
       /**
-       * <code>required int32 version = 1;</code>
+       * <code>required int32 version = 1 [default = 0];</code>
        */
       public Builder setVersion(int value) {
         bitField0_ |= 0x00000001;
@@ -912,7 +912,7 @@ public final class Account {
         return this;
       }
       /**
-       * <code>required int32 version = 1;</code>
+       * <code>required int32 version = 1 [default = 0];</code>
        */
       public Builder clearVersion() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -921,35 +921,35 @@ public final class Account {
         return this;
       }
 
-      // required int32 uid = 2;
-      private int uid_ ;
+      // required int64 uid = 2;
+      private long uid_ ;
       /**
-       * <code>required int32 uid = 2;</code>
+       * <code>required int64 uid = 2;</code>
        */
       public boolean hasUid() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required int32 uid = 2;</code>
+       * <code>required int64 uid = 2;</code>
        */
-      public int getUid() {
+      public long getUid() {
         return uid_;
       }
       /**
-       * <code>required int32 uid = 2;</code>
+       * <code>required int64 uid = 2;</code>
        */
-      public Builder setUid(int value) {
+      public Builder setUid(long value) {
         bitField0_ |= 0x00000002;
         uid_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int32 uid = 2;</code>
+       * <code>required int64 uid = 2;</code>
        */
       public Builder clearUid() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        uid_ = 0;
+        uid_ = 0L;
         onChanged();
         return this;
       }
@@ -2137,16 +2137,16 @@ public final class Account {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\raccount.proto\022\024com.mm.account.proto\"\217\001" +
-      "\n\010UserData\022\017\n\007version\030\001 \002(\005\022\013\n\003uid\030\002 \002(\005" +
-      "\022,\n\006gender\030\003 \001(\0162\034.com.mm.account.proto." +
-      "Gender\022\022\n\nfirst_name\030\004 \001(\t\022\021\n\tlast_name\030" +
-      "\005 \001(\t\022\020\n\010head_url\030\006 \001(\t\"\207\001\n\rUserPhoneInf" +
-      "o\022\013\n\003uid\030\001 \002(\005\022\021\n\tphone_num\030\002 \002(\005\022\014\n\004ime" +
-      "i\030\003 \001(\t\022\021\n\tdevice_id\030\004 \001(\t\0225\n\013device_typ" +
-      "e\030\005 \001(\0162 .com.mm.account.proto.DeviceTyp" +
-      "e*\036\n\006Gender\022\010\n\004MALE\020\001\022\n\n\006FEMALE\020\002*\"\n\nDev" +
-      "iceType\022\013\n\007ANDROID\020\001\022\007\n\003IOS\020\002"
+      "\n\raccount.proto\022\024com.mm.account.proto\"\222\001" +
+      "\n\010UserData\022\022\n\007version\030\001 \002(\005:\0010\022\013\n\003uid\030\002 " +
+      "\002(\003\022,\n\006gender\030\003 \001(\0162\034.com.mm.account.pro" +
+      "to.Gender\022\022\n\nfirst_name\030\004 \001(\t\022\021\n\tlast_na" +
+      "me\030\005 \001(\t\022\020\n\010head_url\030\006 \001(\t\"\207\001\n\rUserPhone" +
+      "Info\022\013\n\003uid\030\001 \002(\005\022\021\n\tphone_num\030\002 \002(\005\022\014\n\004" +
+      "imei\030\003 \001(\t\022\021\n\tdevice_id\030\004 \001(\t\0225\n\013device_" +
+      "type\030\005 \001(\0162 .com.mm.account.proto.Device" +
+      "Type*\036\n\006Gender\022\010\n\004MALE\020\001\022\n\n\006FEMALE\020\000*\"\n\n" +
+      "DeviceType\022\013\n\007ANDROID\020\001\022\007\n\003IOS\020\002"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
