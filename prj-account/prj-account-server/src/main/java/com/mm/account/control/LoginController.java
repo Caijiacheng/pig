@@ -158,9 +158,6 @@ public class LoginController {
 		}
 	}
 
-	
-	
-	
 	static public class RegUserInfo extends UserInfo
 	{
 		
@@ -457,10 +454,10 @@ public class LoginController {
 				
 				@Override
 				public Builder transform(Builder builder) {
-					
+		//			LOG.error("info.gender={}", info.gender);
 					return builder.setFirstName(info.firstName)
 							.setLastName(info.lastName)
-							.setGender(Gender.valueOf(info.gender));
+							.setGender(Gender.valueOf(Integer.parseInt(info.gender)));
 				}
 			}.save();
 			
@@ -518,16 +515,29 @@ public class LoginController {
 			userdata.load();
 			
 			UserDetailInfo info = new UserDetailInfo();
-			info.firstName = userdata.data().getFirstName();
-			info.lastName = userdata.data().getLastName();
-			info.gender = String.valueOf(userdata.data().getGender());
-			info.headUrl = userdata.data().getHeadUrl();
+			if (userdata.data().hasFirstName())
+			{
+				info.firstName = userdata.data().getFirstName();
+			}
+			if (userdata.data().hasLastName())
+			{
+				info.lastName = userdata.data().getLastName();
+			}
+			if (userdata.data().hasGender())
+			{
+				info.gender = String.valueOf(
+						userdata.data().getGender().getNumber());
+			}
+			if (userdata.data().hasHeadUrl())
+			{
+				info.headUrl = userdata.data().getHeadUrl();
+			}
 			
 			UsetInfoRet inforet = new UsetInfoRet();
 			inforet.data = info;
 			inforet.errorCode = "20001";
 			
-			return new GsonBuilder().serializeNulls().create().toJson(info, UsetInfoRet.class);
+			return new GsonBuilder().serializeNulls().create().toJson(inforet, UsetInfoRet.class);
 			
 		}catch(JsonSyntaxException e)
 		{

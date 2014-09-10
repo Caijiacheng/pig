@@ -1,9 +1,7 @@
 package com.mm.account.control;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.PrematureChannelClosureException;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
@@ -12,13 +10,11 @@ import io.netty.handler.codec.http.HttpVersion;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import junit.framework.Assert;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.restexpress.Request;
 import org.restexpress.Response;
@@ -30,13 +26,14 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
+import com.mm.account.control.LoginController.ErrorCodeImgRet;
 import com.mm.account.control.LoginController.ErrorRet;
 import com.mm.account.control.LoginController.PasswdAuthCode;
-import com.mm.account.control.LoginController.RegUserInfo;
 import com.mm.account.control.LoginController.Token_Data;
+import com.mm.account.control.LoginController.UserDetailInfo;
 import com.mm.account.control.LoginController.UserInfo;
 import com.mm.account.control.LoginController.UserUpdatePwd;
-import com.mm.account.ems.IEms;
+import com.mm.account.control.LoginController.UsetInfoRet;
 
 public class TestLoginController {
 
@@ -321,7 +318,6 @@ public class TestLoginController {
 		
 		Assert.assertEquals(login.updatePasswd(r_user_update_pwd, null), ErrorRet.SUCESS());
 		
-		
 		//re-login OK
 		user_info.password = userpwd.password;
 		Request r_re_login = buildRequestFromAnnotation(LoginController.class,
@@ -333,6 +329,74 @@ public class TestLoginController {
 	@Test
 	public void testUpdateUserInfo()
 	{
+		// register
+		String phonenum = getRandomPhoneNum();
+		String authcode = getRegAuthCode(phonenum, LoginController.TYPE_EMS_REG);
+
+		LoginController.RegUserInfo reginfo = new LoginController.RegUserInfo();
+
+		reginfo.deviceId = "111";
+		reginfo.deviceType = "ios";
+		reginfo.password = "3333";
+		reginfo.phoneNumber = phonenum;
+
+		//correct_register
+		reginfo.authCode = authcode;
+		Request r = buildRequestFromAnnotation(LoginController.class,
+				"register", null, new Gson().toJson(reginfo));
+		String ret_json = login.register(r, null);
+		Assert.assertTrue(ret_json, ret_json.contains("token"));
+
+		//get token
+		
+		Token_Data.Ret token_data = 
+				new Gson().fromJson(ret_json, Token_Data.Ret.class);
+		Map<String, String> token_map = 
+				ImmutableMap.of("token", token_data.data.token);
+		
+		//call getUserInfo
+		Request r_get_user_info = buildRequestFromAnnotation(LoginController.class,
+				"getUserinfo", token_map, null);
+		ret_json = login.getUserinfo(r_get_user_info, null);
+		
+		Assert.assertTrue(ret_json, ret_json.contains("20001"));
+		LOG.error("ret_json={}", ret_json);
+		UsetInfoRet userinfo = new Gson().fromJson(ret_json, UsetInfoRet.class);
+		UserDetailInfo user_detail = userinfo.data;
+		Assert.assertNull(user_detail.firstName);
+		Assert.assertNull(user_detail.gender);
+		Assert.assertNull(user_detail.headUrl);
+		
+		//update userinfo
+		user_detail.firstName = "hello";
+		user_detail.lastName = "bbb";
+		user_detail.gender = "1";
+		
+		Request r_update_user_info = buildRequestFromAnnotation(
+				LoginController.class, "updateUserinfo", 
+				token_map, new Gson().toJson(user_detail));
+		Assert.assertEquals(login.updateUserinfo(r_update_user_info, null),
+				ErrorRet.ERROR(20001));
+		
+		//upload img
+		Request r_upload_img = buildRequestFromAnnotation(
+				LoginController.class, "uploadUserFaceImg", 
+				token_map, "img.bin");
+		
+		ret_json = login.uploadUserFaceImg(r_upload_img, null);
+		
+		ErrorCodeImgRet ret = 
+				new Gson().fromJson(ret_json, ErrorCodeImgRet.class);
+		Assert.assertEquals(ret.errorCode, "0");
+		
+		//getUserInfo
+		ret_json = login.getUserinfo(r_get_user_info, null);
+		Assert.assertTrue(ret_json, ret_json.contains("20001"));
+		userinfo = new Gson().fromJson(ret_json, UsetInfoRet.class);
+		UserDetailInfo user_detail_update = userinfo.data;
+		Assert.assertEquals(user_detail_update.firstName, user_detail.firstName);
+		Assert.assertEquals(user_detail_update.gender, user_detail.gender);
+		Assert.assertEquals(user_detail_update.headUrl, ret.data.headUrl);
 		
 	}
 

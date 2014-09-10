@@ -70,6 +70,7 @@ abstract public class DefaultUserData implements IVersion, ILoad, ISave {
 					LOG.error("DB didnot store the UserData correct? {}", acc );
 				}
 				data = UserData.newBuilder().setUid(acc.id()).setVersion(acc.version()).build();
+//				LOG.error("init userdata:{}", data.toString());
 			}else
 			{
 				try {
@@ -93,7 +94,8 @@ abstract public class DefaultUserData implements IVersion, ILoad, ISave {
 	}
 	
 	/**
-	 * XXX:这里increment是使用mysql中的version,存储具体信息是使用redis,这里在version变化的时候,没有保证一致性.有断电的时候,这里可能会造成错误
+	 * XXX:这里increment是使用mysql中的version,存储具体信息是使用redis,
+	 * 这里在version变化的时候,没有保证一致性.有断电的时候,这里可能会造成错误
 	 * 
 	 * FIXME: increment的时候,使用mysql的行数据的事务锁来解决这里的问题
 	 */
@@ -105,8 +107,8 @@ abstract public class DefaultUserData implements IVersion, ILoad, ISave {
 		RedisDB db = new RedisDB();
 		try(Jedis handle = db.getConn())
 		{
-			UserData.Builder ud = UserData.newBuilder().setUid(acc.id()).setVersion(acc.version());
-			data = transform(ud).build();
+			UserData.Builder ud = UserData.newBuilder();
+			data = transform(ud).setUid(acc.id()).setVersion(acc.version()).build();
 			Preconditions.checkNotNull(data);
 			Preconditions.checkArgument(data.getVersion() == acc.version(), "need to set the same version");
 			handle.set(getRedisKey(acc), new String(data.toByteArray(), Charsets.UTF_8));
