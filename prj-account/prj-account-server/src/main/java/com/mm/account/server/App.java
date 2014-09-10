@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Map.Entry;
 
+import org.restexpress.RestExpress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.mm.account.control.LoginController;
 
 /**
  * Hello world!
@@ -24,5 +27,16 @@ public class App
 		{
 			LOG.error("key:{}, value:{}", obj.getKey(), obj.getValue());
 		}
+		
+		RestExpress srv;
+		srv = new RestExpress()
+		.setName("account-server")
+		.setBaseUrl("0.0.0.0");
+		
+		LoginController login = new LoginController();
+		srv.routeBuildWithAnnotations(login);
+		srv.bind(8080);
+		
+		srv.awaitShutdown();
     }
 }

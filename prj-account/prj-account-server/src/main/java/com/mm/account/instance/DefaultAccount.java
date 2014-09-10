@@ -161,8 +161,20 @@ public class DefaultAccount extends PojoAccount {
 
 		@Override
 		public void unregister(long id) {
-			throw new UnsupportedOperationException();
+			//throw new UnsupportedOperationException();
+			String query = 
+					String.format("delete from %s where id=%s", DefaultAccount.TABLE_NAME, id);
 			
+			MysqlDB db = new MysqlDB(DefaultAccount.DB_NAME);
+			
+			try(Connection conn = db.getConn())
+			{
+				try(Statement stmt = conn.createStatement()) {
+					stmt.execute(query);
+				} 
+			}catch (SQLException e) {
+				throw new DBException(e);
+			}	
 		}
 
 		@Override
@@ -242,7 +254,7 @@ public class DefaultAccount extends PojoAccount {
 		@Override
 		public void modifyPasswd(long userid, String pwdmd5) {
 			String sql = 
-					String.format("update %s set passwd=%s where id='%s'", TABLE_NAME, pwdmd5, userid);
+					String.format("update %s set passwd='%s' where id=%s", TABLE_NAME, pwdmd5, userid);
 			
 			MysqlDB db = new MysqlDB(DB_NAME);
 			try(Connection conn = db.getConn())
@@ -254,7 +266,7 @@ public class DefaultAccount extends PojoAccount {
 					}
 				} 
 			}catch (SQLException e) {
-				throw new DBException(e);
+				throw new DBException(sql, e);
 			}
 		}
 

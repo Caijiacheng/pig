@@ -22,8 +22,8 @@ import com.mm.account.proto.Account.UserData;
 
 abstract public class DefaultUserData implements IVersion, ILoad, ISave {
 
-	UserData data;
-	IAccount acc;
+	protected UserData data;
+	protected IAccount acc;
 	IAccountService acc_service = new DefaultAccount.Service();
 	
 	int load_version = -1;

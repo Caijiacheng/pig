@@ -31,11 +31,7 @@ import com.mm.account.error.UnknowAccException;
 
 public class DefaultPhoto implements IPhoto {
 	
-	
-	
-	
 	ByteSource in;
-
 	long userid;
 	
 	DefaultPhoto(String file) {
@@ -44,6 +40,11 @@ public class DefaultPhoto implements IPhoto {
 	
 	DefaultPhoto(File f) {
 		in = Files.asByteSource(f);
+	}
+	
+	public DefaultPhoto(byte[] bytes)
+	{
+		in = ByteSource.wrap(bytes);
 	}
 	
 	@Override
@@ -120,7 +121,7 @@ public class DefaultPhoto implements IPhoto {
 					}
 					byte[] bb = new byte[num];
 					System.arraycopy(b, 0, bb, 0, num);
-					LOG.debug("append .. {}", num);
+//					LOG.debug("append .. {}", num);
 					handle.append(photokey, bb);
 				}
 				return new Url(photokey);
@@ -150,7 +151,7 @@ public class DefaultPhoto implements IPhoto {
 						byte[] bb = handle.getrange(u.reskey, begin, begin + bytes);
 						ots.write(bb);
 						begin += bb.length;
-						LOG.debug("getrange ..{}", bb.length);
+//						LOG.debug("getrange ..{}", bb.length);
 						if (bb.length < bytes)
 						{
 							return new DefaultPhoto(f);

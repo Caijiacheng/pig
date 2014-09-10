@@ -14,6 +14,10 @@ import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.mm.account.data.DefaultPhoto;
+import com.mm.account.data.IPhoto;
+import com.mm.account.data.IPhotoService;
+import com.mm.account.data.IUrl;
 import com.mm.account.ems.IEms;
 import com.mm.account.ems.IEms.EMS_TYPE;
 import com.mm.account.ems.IEmsService;
@@ -31,6 +35,10 @@ import com.mm.account.token.IToken;
 import com.mm.account.token.ITokenService;
 
 public class LoginController {
+	
+	
+	final static String TYPE_EMS_GET_PWD = "1";
+	final static String TYPE_EMS_REG = "0";
 	
 	
 	static Logger LOG = LoggerFactory.getLogger(LoginController.class);
@@ -93,10 +101,10 @@ public class LoginController {
 		
 		try
 		{
-			if (type == "1")
+			if (type == TYPE_EMS_GET_PWD)
 			{//reg
 				ems_service.getEms(phonenum, IEms.EMS_TYPE.GET_PWD);
-			}else if (type == "0")
+			}else if (type == TYPE_EMS_REG)
 			{//get passwd
 				ems_service.getEms(phonenum, IEms.EMS_TYPE.REG);
 			}else
@@ -125,10 +133,10 @@ public class LoginController {
 		
 		try
 		{
-			if (type == "1")
+			if (type == TYPE_EMS_REG)
 			{//reg
 				ems_type = IEms.EMS_TYPE.REG;
-			}else if (type == "0")
+			}else if (type == TYPE_EMS_GET_PWD)
 			{//get passwd
 				ems_type = IEms.EMS_TYPE.GET_PWD;
 			}else
@@ -157,10 +165,6 @@ public class LoginController {
 	{
 		
 		String phoneNumber;
-		String password;
-		String deviceId;
-		String deviceType;
-		
 		String authCode;
 		static public RegUserInfo fromJson(String json)
 		{
@@ -192,6 +196,39 @@ public class LoginController {
 	}
 	
 	
+	void removeAccountForTestWithPhoneNum(String phone)
+	{
+		Optional<IAccount> acc = acc_service.getByPhoneId(phone);
+		if ( !acc.isPresent() )
+		{
+			return;
+		}
+		
+		acc_service.unregister(acc.get().id());
+	}
+	
+	IEms getEMSForTest(String phone, IEms.EMS_TYPE type)
+	{
+		return ems_service.getEms(phone, type);
+	}
+	
+	IEms getEMSForTest(String phone, String type)
+	{
+		IEms.EMS_TYPE ems_type;
+		if (type == TYPE_EMS_REG)
+		{
+			ems_type = IEms.EMS_TYPE.REG;
+		}else if(type == TYPE_EMS_GET_PWD)
+		{
+			ems_type = IEms.EMS_TYPE.GET_PWD;
+		}else
+		{
+			throw new RuntimeException();
+		}
+		
+		return ems_service.getEms(phone, ems_type);
+	}
+	
 	@RequestMethod(value="/addressbook/rest/pass/register/JH_reg_save", 
 			method="POST")
 	public String register(Request request, Response response)
@@ -203,7 +240,7 @@ public class LoginController {
 							request.getBody().toString(Charsets.UTF_8));
 			
 			Optional<IAccount> acc = acc_service.getByPhoneId(info.phoneNumber);
-			if ( !acc.isPresent() )
+			if ( acc.isPresent() )
 			{
 				return ErrorRet.ERROR(51007);
 			}
@@ -278,7 +315,7 @@ public class LoginController {
 				return ErrorRet.ERROR(51006);
 			}
 			
-			if (!acc.get().passwd().equalsIgnoreCase(info.password))
+			if (!acc.get().passwd().equals(info.password))
 			{
 				return ErrorRet.ERROR(51003);
 			}
@@ -337,6 +374,7 @@ public class LoginController {
 				return ErrorRet.ERROR(51011);
 			}
 			
+			acc_service.modifyPasswd(acc.get().id(), info.password);
 			return ErrorRet.SUCESS();
 			
 		}catch(JsonSyntaxException e)
@@ -415,7 +453,7 @@ public class LoginController {
 				return ErrorRet.ERROR(20002);
 			}
 			
-			DefaultUserData userdata = new DefaultUserData(acc.get()) {
+			new DefaultUserData(acc.get()) {
 				
 				@Override
 				public Builder transform(Builder builder) {
@@ -424,9 +462,8 @@ public class LoginController {
 							.setLastName(info.lastName)
 							.setGender(Gender.valueOf(info.gender));
 				}
-			};
+			}.save();
 			
-			userdata.save();
 			
 			return ErrorRet.ERROR(20001);
 			
@@ -501,11 +538,70 @@ public class LoginController {
 		}
 	}
 	
+	static class ErrorCodeImgRet
+	{
+		public ErrorCodeImgRet(String url) {
+			data = new _data();
+			data.headUrl = url;
+		}
+		
+		String errorCode = "0";
+		_data data;
+		static class _data
+		{
+			String headUrl;
+		}
+	}
+	
 	@RequestMethod(value="/addressbook/rest/auth/user/JH_user_save_img", 
 			method="POST")	
 	public String uploadUserFaceImg(Request request, Response response)
 	{
-		return "";
+		
+		String token = request.getHeader("token", "auth without Token?");
+		
+		try
+		{
+			
+			Optional<IToken> itoken = token_service.getToken(token);
+			
+			if (!itoken.isPresent())
+			{
+				return ErrorRet.ERROR(20002);
+			}
+			
+			Optional<IAccount> acc = acc_service.get(itoken.get().id());
+			
+			if (!acc.isPresent())
+			{
+				return ErrorRet.ERROR(20002);
+			}
+			
+			IPhotoService service = new DefaultPhoto.Service();
+			IPhoto photo = new DefaultPhoto(request.getBody().array());
+			final IUrl url = service.upload(photo);
+			
+			DefaultUserData userdata = new DefaultUserData(acc.get()) {
+				
+				@Override
+				public Builder transform(Builder builder) {
+					return builder.mergeFrom(data).setHeadUrl(url.url());
+				}
+			};
+			
+			userdata.load();
+			userdata.save();//save to the db
+			
+			return new Gson().toJson(new ErrorCodeImgRet(url.url()), ErrorCodeImgRet.class);
+			
+		}catch(AccountException e)
+		{
+			return ErrorRet.ERROR(20002);
+		}catch(Throwable e)
+		{
+			throw new ServiceException(e);
+		}
+		
 	}
 	
 	static class UserUpdatePwd
@@ -541,8 +637,8 @@ public class LoginController {
 			final UserUpdatePwd info = new Gson().fromJson(
 					request.getBody().toString(Charsets.UTF_8), UserUpdatePwd.class );
 			
-			if (info.oldPassword.equalsIgnoreCase(acc.get().passwd())
-					&& info.password.equalsIgnoreCase(info.passwordConfirm))
+			if (info.oldPassword.equals(acc.get().passwd())
+					&& info.password.equals(info.passwordConfirm))
 			{
 				acc_service.modifyPasswd(acc.get().id(), info.password);
 				return ErrorRet.SUCESS();
