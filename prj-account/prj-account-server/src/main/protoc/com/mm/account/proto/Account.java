@@ -1223,6 +1223,900 @@ public final class Account {
     // @@protoc_insertion_point(class_scope:com.mm.account.proto.UserData)
   }
 
+  public interface UserRelateOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required int64 userid_a = 1;
+    /**
+     * <code>required int64 userid_a = 1;</code>
+     */
+    boolean hasUseridA();
+    /**
+     * <code>required int64 userid_a = 1;</code>
+     */
+    long getUseridA();
+
+    // required int64 userid_b = 2;
+    /**
+     * <code>required int64 userid_b = 2;</code>
+     */
+    boolean hasUseridB();
+    /**
+     * <code>required int64 userid_b = 2;</code>
+     */
+    long getUseridB();
+
+    // optional string a_ask_b = 3;
+    /**
+     * <code>optional string a_ask_b = 3;</code>
+     */
+    boolean hasAAskB();
+    /**
+     * <code>optional string a_ask_b = 3;</code>
+     */
+    java.lang.String getAAskB();
+    /**
+     * <code>optional string a_ask_b = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getAAskBBytes();
+
+    // optional string b_ask_a = 4;
+    /**
+     * <code>optional string b_ask_a = 4;</code>
+     */
+    boolean hasBAskA();
+    /**
+     * <code>optional string b_ask_a = 4;</code>
+     */
+    java.lang.String getBAskA();
+    /**
+     * <code>optional string b_ask_a = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getBAskABytes();
+
+    // required bool a_b_pair = 5 [default = false];
+    /**
+     * <code>required bool a_b_pair = 5 [default = false];</code>
+     */
+    boolean hasABPair();
+    /**
+     * <code>required bool a_b_pair = 5 [default = false];</code>
+     */
+    boolean getABPair();
+  }
+  /**
+   * Protobuf type {@code com.mm.account.proto.UserRelate}
+   */
+  public static final class UserRelate extends
+      com.google.protobuf.GeneratedMessage
+      implements UserRelateOrBuilder {
+    // Use UserRelate.newBuilder() to construct.
+    private UserRelate(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private UserRelate(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final UserRelate defaultInstance;
+    public static UserRelate getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public UserRelate getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UserRelate(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              useridA_ = input.readInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              useridB_ = input.readInt64();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              aAskB_ = input.readBytes();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
+              bAskA_ = input.readBytes();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              aBPair_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserRelate_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserRelate_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mm.account.proto.Account.UserRelate.class, com.mm.account.proto.Account.UserRelate.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<UserRelate> PARSER =
+        new com.google.protobuf.AbstractParser<UserRelate>() {
+      public UserRelate parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UserRelate(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UserRelate> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required int64 userid_a = 1;
+    public static final int USERID_A_FIELD_NUMBER = 1;
+    private long useridA_;
+    /**
+     * <code>required int64 userid_a = 1;</code>
+     */
+    public boolean hasUseridA() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int64 userid_a = 1;</code>
+     */
+    public long getUseridA() {
+      return useridA_;
+    }
+
+    // required int64 userid_b = 2;
+    public static final int USERID_B_FIELD_NUMBER = 2;
+    private long useridB_;
+    /**
+     * <code>required int64 userid_b = 2;</code>
+     */
+    public boolean hasUseridB() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int64 userid_b = 2;</code>
+     */
+    public long getUseridB() {
+      return useridB_;
+    }
+
+    // optional string a_ask_b = 3;
+    public static final int A_ASK_B_FIELD_NUMBER = 3;
+    private java.lang.Object aAskB_;
+    /**
+     * <code>optional string a_ask_b = 3;</code>
+     */
+    public boolean hasAAskB() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string a_ask_b = 3;</code>
+     */
+    public java.lang.String getAAskB() {
+      java.lang.Object ref = aAskB_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          aAskB_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string a_ask_b = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAAskBBytes() {
+      java.lang.Object ref = aAskB_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        aAskB_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional string b_ask_a = 4;
+    public static final int B_ASK_A_FIELD_NUMBER = 4;
+    private java.lang.Object bAskA_;
+    /**
+     * <code>optional string b_ask_a = 4;</code>
+     */
+    public boolean hasBAskA() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string b_ask_a = 4;</code>
+     */
+    public java.lang.String getBAskA() {
+      java.lang.Object ref = bAskA_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          bAskA_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string b_ask_a = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getBAskABytes() {
+      java.lang.Object ref = bAskA_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bAskA_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required bool a_b_pair = 5 [default = false];
+    public static final int A_B_PAIR_FIELD_NUMBER = 5;
+    private boolean aBPair_;
+    /**
+     * <code>required bool a_b_pair = 5 [default = false];</code>
+     */
+    public boolean hasABPair() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>required bool a_b_pair = 5 [default = false];</code>
+     */
+    public boolean getABPair() {
+      return aBPair_;
+    }
+
+    private void initFields() {
+      useridA_ = 0L;
+      useridB_ = 0L;
+      aAskB_ = "";
+      bAskA_ = "";
+      aBPair_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasUseridA()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUseridB()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasABPair()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt64(1, useridA_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt64(2, useridB_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getAAskBBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getBAskABytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBool(5, aBPair_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, useridA_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, useridB_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getAAskBBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getBAskABytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, aBPair_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mm.account.proto.Account.UserRelate parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mm.account.proto.Account.UserRelate parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mm.account.proto.Account.UserRelate parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mm.account.proto.Account.UserRelate parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mm.account.proto.Account.UserRelate parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mm.account.proto.Account.UserRelate parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mm.account.proto.Account.UserRelate parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mm.account.proto.Account.UserRelate parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mm.account.proto.Account.UserRelate parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mm.account.proto.Account.UserRelate parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mm.account.proto.Account.UserRelate prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.mm.account.proto.UserRelate}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mm.account.proto.Account.UserRelateOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserRelate_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserRelate_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mm.account.proto.Account.UserRelate.class, com.mm.account.proto.Account.UserRelate.Builder.class);
+      }
+
+      // Construct using com.mm.account.proto.Account.UserRelate.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        useridA_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        useridB_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        aAskB_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        bAskA_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        aBPair_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mm.account.proto.Account.internal_static_com_mm_account_proto_UserRelate_descriptor;
+      }
+
+      public com.mm.account.proto.Account.UserRelate getDefaultInstanceForType() {
+        return com.mm.account.proto.Account.UserRelate.getDefaultInstance();
+      }
+
+      public com.mm.account.proto.Account.UserRelate build() {
+        com.mm.account.proto.Account.UserRelate result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mm.account.proto.Account.UserRelate buildPartial() {
+        com.mm.account.proto.Account.UserRelate result = new com.mm.account.proto.Account.UserRelate(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.useridA_ = useridA_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.useridB_ = useridB_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.aAskB_ = aAskB_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.bAskA_ = bAskA_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.aBPair_ = aBPair_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mm.account.proto.Account.UserRelate) {
+          return mergeFrom((com.mm.account.proto.Account.UserRelate)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mm.account.proto.Account.UserRelate other) {
+        if (other == com.mm.account.proto.Account.UserRelate.getDefaultInstance()) return this;
+        if (other.hasUseridA()) {
+          setUseridA(other.getUseridA());
+        }
+        if (other.hasUseridB()) {
+          setUseridB(other.getUseridB());
+        }
+        if (other.hasAAskB()) {
+          bitField0_ |= 0x00000004;
+          aAskB_ = other.aAskB_;
+          onChanged();
+        }
+        if (other.hasBAskA()) {
+          bitField0_ |= 0x00000008;
+          bAskA_ = other.bAskA_;
+          onChanged();
+        }
+        if (other.hasABPair()) {
+          setABPair(other.getABPair());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasUseridA()) {
+          
+          return false;
+        }
+        if (!hasUseridB()) {
+          
+          return false;
+        }
+        if (!hasABPair()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mm.account.proto.Account.UserRelate parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mm.account.proto.Account.UserRelate) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required int64 userid_a = 1;
+      private long useridA_ ;
+      /**
+       * <code>required int64 userid_a = 1;</code>
+       */
+      public boolean hasUseridA() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int64 userid_a = 1;</code>
+       */
+      public long getUseridA() {
+        return useridA_;
+      }
+      /**
+       * <code>required int64 userid_a = 1;</code>
+       */
+      public Builder setUseridA(long value) {
+        bitField0_ |= 0x00000001;
+        useridA_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 userid_a = 1;</code>
+       */
+      public Builder clearUseridA() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        useridA_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // required int64 userid_b = 2;
+      private long useridB_ ;
+      /**
+       * <code>required int64 userid_b = 2;</code>
+       */
+      public boolean hasUseridB() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int64 userid_b = 2;</code>
+       */
+      public long getUseridB() {
+        return useridB_;
+      }
+      /**
+       * <code>required int64 userid_b = 2;</code>
+       */
+      public Builder setUseridB(long value) {
+        bitField0_ |= 0x00000002;
+        useridB_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 userid_b = 2;</code>
+       */
+      public Builder clearUseridB() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        useridB_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // optional string a_ask_b = 3;
+      private java.lang.Object aAskB_ = "";
+      /**
+       * <code>optional string a_ask_b = 3;</code>
+       */
+      public boolean hasAAskB() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string a_ask_b = 3;</code>
+       */
+      public java.lang.String getAAskB() {
+        java.lang.Object ref = aAskB_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          aAskB_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string a_ask_b = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAAskBBytes() {
+        java.lang.Object ref = aAskB_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          aAskB_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string a_ask_b = 3;</code>
+       */
+      public Builder setAAskB(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        aAskB_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string a_ask_b = 3;</code>
+       */
+      public Builder clearAAskB() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        aAskB_ = getDefaultInstance().getAAskB();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string a_ask_b = 3;</code>
+       */
+      public Builder setAAskBBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        aAskB_ = value;
+        onChanged();
+        return this;
+      }
+
+      // optional string b_ask_a = 4;
+      private java.lang.Object bAskA_ = "";
+      /**
+       * <code>optional string b_ask_a = 4;</code>
+       */
+      public boolean hasBAskA() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string b_ask_a = 4;</code>
+       */
+      public java.lang.String getBAskA() {
+        java.lang.Object ref = bAskA_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          bAskA_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string b_ask_a = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getBAskABytes() {
+        java.lang.Object ref = bAskA_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bAskA_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string b_ask_a = 4;</code>
+       */
+      public Builder setBAskA(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        bAskA_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string b_ask_a = 4;</code>
+       */
+      public Builder clearBAskA() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        bAskA_ = getDefaultInstance().getBAskA();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string b_ask_a = 4;</code>
+       */
+      public Builder setBAskABytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        bAskA_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required bool a_b_pair = 5 [default = false];
+      private boolean aBPair_ ;
+      /**
+       * <code>required bool a_b_pair = 5 [default = false];</code>
+       */
+      public boolean hasABPair() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>required bool a_b_pair = 5 [default = false];</code>
+       */
+      public boolean getABPair() {
+        return aBPair_;
+      }
+      /**
+       * <code>required bool a_b_pair = 5 [default = false];</code>
+       */
+      public Builder setABPair(boolean value) {
+        bitField0_ |= 0x00000010;
+        aBPair_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool a_b_pair = 5 [default = false];</code>
+       */
+      public Builder clearABPair() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        aBPair_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.mm.account.proto.UserRelate)
+    }
+
+    static {
+      defaultInstance = new UserRelate(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.mm.account.proto.UserRelate)
+  }
+
   public interface UserPhoneInfoOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
@@ -2124,6 +3018,11 @@ public final class Account {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mm_account_proto_UserData_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_mm_account_proto_UserRelate_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_mm_account_proto_UserRelate_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mm_account_proto_UserPhoneInfo_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -2141,12 +3040,15 @@ public final class Account {
       "\n\010UserData\022\022\n\007version\030\001 \002(\005:\0010\022\013\n\003uid\030\002 " +
       "\002(\003\022,\n\006gender\030\003 \001(\0162\034.com.mm.account.pro" +
       "to.Gender\022\022\n\nfirst_name\030\004 \001(\t\022\021\n\tlast_na" +
-      "me\030\005 \001(\t\022\020\n\010head_url\030\006 \001(\t\"\207\001\n\rUserPhone" +
-      "Info\022\013\n\003uid\030\001 \002(\005\022\021\n\tphone_num\030\002 \002(\005\022\014\n\004" +
-      "imei\030\003 \001(\t\022\021\n\tdevice_id\030\004 \001(\t\0225\n\013device_" +
-      "type\030\005 \001(\0162 .com.mm.account.proto.Device" +
-      "Type*\036\n\006Gender\022\010\n\004MALE\020\001\022\n\n\006FEMALE\020\000*\"\n\n" +
-      "DeviceType\022\013\n\007ANDROID\020\001\022\007\n\003IOS\020\002"
+      "me\030\005 \001(\t\022\020\n\010head_url\030\006 \001(\t\"k\n\nUserRelate" +
+      "\022\020\n\010userid_a\030\001 \002(\003\022\020\n\010userid_b\030\002 \002(\003\022\017\n\007" +
+      "a_ask_b\030\003 \001(\t\022\017\n\007b_ask_a\030\004 \001(\t\022\027\n\010a_b_pa" +
+      "ir\030\005 \002(\010:\005false\"\207\001\n\rUserPhoneInfo\022\013\n\003uid" +
+      "\030\001 \002(\005\022\021\n\tphone_num\030\002 \002(\005\022\014\n\004imei\030\003 \001(\t\022" +
+      "\021\n\tdevice_id\030\004 \001(\t\0225\n\013device_type\030\005 \001(\0162",
+      " .com.mm.account.proto.DeviceType*\036\n\006Gen" +
+      "der\022\010\n\004MALE\020\001\022\n\n\006FEMALE\020\000*\"\n\nDeviceType\022" +
+      "\013\n\007ANDROID\020\001\022\007\n\003IOS\020\002"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -2159,8 +3061,14 @@ public final class Account {
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_account_proto_UserData_descriptor,
               new java.lang.String[] { "Version", "Uid", "Gender", "FirstName", "LastName", "HeadUrl", });
-          internal_static_com_mm_account_proto_UserPhoneInfo_descriptor =
+          internal_static_com_mm_account_proto_UserRelate_descriptor =
             getDescriptor().getMessageTypes().get(1);
+          internal_static_com_mm_account_proto_UserRelate_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_com_mm_account_proto_UserRelate_descriptor,
+              new java.lang.String[] { "UseridA", "UseridB", "AAskB", "BAskA", "ABPair", });
+          internal_static_com_mm_account_proto_UserPhoneInfo_descriptor =
+            getDescriptor().getMessageTypes().get(2);
           internal_static_com_mm_account_proto_UserPhoneInfo_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_account_proto_UserPhoneInfo_descriptor,

@@ -16,6 +16,16 @@ message UserData
 	optional string head_url = 6;
 }
 
+
+message UserRelate
+{
+	required int64 userid_a = 1;
+	required int64 userid_b = 2;
+	optional string a_ask_b = 3;
+	optional string b_ask_a = 4;
+	required bool a_b_pair = 5 [default = false];
+}
+
 enum DeviceType
 {
 	ANDROID = 1;

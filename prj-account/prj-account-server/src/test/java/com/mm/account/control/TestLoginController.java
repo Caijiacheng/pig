@@ -391,6 +391,7 @@ public class TestLoginController {
 		
 		//getUserInfo
 		ret_json = login.getUserinfo(r_get_user_info, null);
+		LOG.error("getUserInfo:{}", ret_json);
 		Assert.assertTrue(ret_json, ret_json.contains("20001"));
 		userinfo = new Gson().fromJson(ret_json, UsetInfoRet.class);
 		UserDetailInfo user_detail_update = userinfo.data;

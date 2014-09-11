@@ -1,5 +1,7 @@
 package com.mm.account.instance;
 
+import java.util.Collection;
+
 import com.google.common.base.Optional;
 import com.mm.account.server.IService;
 
@@ -17,7 +19,19 @@ public interface IAccountService extends IService{
 	
 	boolean exist(long id);
 	
+	@Deprecated
 	IAccount incrVersion(IAccount acc);
 	
+	String getPairAskMsg(IAccount acc_from, IAccount acc_to);
+	
+	boolean makePair(IAccount acc_from, IAccount acc_to, String ask_msg);
+	
+	boolean makePair(IAccount acc_from, IAccount acc_to);
+	
+	boolean isPair(IAccount acc_a, IAccount acc_b);
+	
+	void unPair(IAccount acc_a, IAccount acc_b);
+	
+	Collection<IAccount> getPairsList(IAccount acc);
 	
 }

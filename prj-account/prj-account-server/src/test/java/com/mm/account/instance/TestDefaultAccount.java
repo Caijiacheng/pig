@@ -1,19 +1,14 @@
 package com.mm.account.instance;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.base.Optional;
-import com.mm.account.db.MysqlDB;
-import com.mm.account.error.DBException;
 import com.mm.account.error.DupRegException;
 import com.mm.account.error.NotExistException;
 import com.mm.account.proto.Account.UserData;
@@ -39,22 +34,7 @@ public class TestDefaultAccount {
 	
 	static public class _DefautAccoutService extends DefaultAccount.Service
 	{
-		@Override
-		public void unregister(long id) {
-			String query = 
-					String.format("delete from %s where id=%s", DefaultAccount.TABLE_NAME, id);
-			
-			MysqlDB db = new MysqlDB(DefaultAccount.DB_NAME);
-			
-			try(Connection conn = db.getConn())
-			{
-				try(Statement stmt = conn.createStatement()) {
-					stmt.execute(query);
-				} 
-			}catch (SQLException e) {
-				throw new DBException(e);
-			}	
-		}
+		
 	}
 	
 	void removeIfExistPhoneid(IAccountService service, String phoneid)
@@ -84,7 +64,8 @@ public class TestDefaultAccount {
 	}
 	
 	
-	@Test
+	@Deprecated
+	@Ignore
 	public void testAccoutIncrInfoVersion()
 	{
 		String phoneid = "1369926798222";
@@ -131,6 +112,59 @@ public class TestDefaultAccount {
 	
 	
 	@Test
+	public void testDefaultUserData0()
+	{
+		String phoneid = "1369926798222";
+		String pwd = "2";
+		IAccountService service = new _DefautAccoutService();
+		removeIfExistPhoneid(service, phoneid);
+		IAccount acc = service.register(phoneid, pwd);
+		Assert.assertNotNull(acc);
+		
+		final NetUserData n_data = new NetUserData();
+		n_data.a = "111";
+		n_data.b = "222";
+		n_data.c = "ccc";
+		
+		DefaultUserData0 userdata = new DefaultUserData0(acc) {
+			
+			@Override
+			public  UserData.Builder transform(UserData.Builder builder) {
+				return builder.setFirstName(n_data.a).setLastName(n_data.b).setHeadUrl(n_data.c);
+				
+			}
+		};
+		
+		userdata.load();
+		Assert.assertNotNull(userdata.data.getFirstName());
+		Assert.assertEquals(userdata.data.getVersion(), 0);
+		
+		userdata.save();
+		
+		Assert.assertEquals(userdata.data.getFirstName(), n_data.a);
+		Assert.assertEquals(userdata.data.getLastName(), n_data.b);
+		Assert.assertEquals(userdata.current(), acc.version() + 1);
+		
+		//re get acc_count
+		IAccount acc_1 = service.get(acc.id()).get();
+		Assert.assertEquals(acc_1.version(), acc.version() + 1);
+
+		DefaultUserData0 userdata_1 = new DefaultUserData0(acc_1) {
+			@Override
+			public Builder transform(Builder builder) {
+				throw new UnsupportedOperationException();
+			}
+		};
+		userdata_1.load();
+		
+		Assert.assertEquals(userdata_1.data.getFirstName(), n_data.a);
+		Assert.assertEquals(userdata_1.data.getLastName(), n_data.b);
+	}
+	
+	
+	
+	@Deprecated
+	@Ignore
 	public void testDefaultUserData()
 	{
 		String phoneid = "1369926798222";
@@ -179,8 +213,9 @@ public class TestDefaultAccount {
 		
 		Assert.assertEquals(userdata_1.data.getFirstName(), n_data.a);
 		Assert.assertEquals(userdata_1.data.getLastName(), n_data.b);
-		
-		
 	}
 	
 }
+
+
+

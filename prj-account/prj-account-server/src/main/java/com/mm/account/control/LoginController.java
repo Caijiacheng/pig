@@ -25,7 +25,7 @@ import com.mm.account.ems.MockEmsService;
 import com.mm.account.error.AccountException;
 import com.mm.account.error.DupRegException;
 import com.mm.account.instance.DefaultAccount;
-import com.mm.account.instance.DefaultUserData;
+import com.mm.account.instance.DefaultUserData0;
 import com.mm.account.instance.IAccount;
 import com.mm.account.instance.IAccountService;
 import com.mm.account.proto.Account.Gender;
@@ -450,11 +450,10 @@ public class LoginController {
 				return ErrorRet.ERROR(20002);
 			}
 			
-			new DefaultUserData(acc.get()) {
+			new DefaultUserData0(acc.get()) {
 				
 				@Override
 				public Builder transform(Builder builder) {
-		//			LOG.error("info.gender={}", info.gender);
 					return builder.setFirstName(info.firstName)
 							.setLastName(info.lastName)
 							.setGender(Gender.valueOf(Integer.parseInt(info.gender)));
@@ -504,7 +503,7 @@ public class LoginController {
 				return ErrorRet.ERROR(20002);
 			}
 			
-			DefaultUserData userdata = new DefaultUserData(acc.get()) {
+			DefaultUserData0 userdata = new DefaultUserData0(acc.get()) {
 				
 				@Override
 				public Builder transform(Builder builder) {
@@ -591,7 +590,7 @@ public class LoginController {
 			IPhoto photo = new DefaultPhoto(request.getBody().array());
 			final IUrl url = service.upload(photo);
 			
-			DefaultUserData userdata = new DefaultUserData(acc.get()) {
+			DefaultUserData0 userdata = new DefaultUserData0(acc.get()) {
 				
 				@Override
 				public Builder transform(Builder builder) {

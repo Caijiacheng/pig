@@ -13,13 +13,15 @@ import com.mm.account.error.DBException;
 import com.mm.account.proto.Account.UserData;
 
 /**
+ * 
+ * store to redis
  * 这里的class封装肯定有问题.但暂时先这样.以后再找更合适的方式来处理
  * 
  * @author caijiacheng
  *
  */
 
-
+@Deprecated
 abstract public class DefaultUserData implements IVersion, ILoad, ISave {
 
 	protected UserData data;
