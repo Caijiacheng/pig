@@ -17,4 +17,6 @@ public interface IAccount {
 	int version();
 	
 	String passwd();
+	
+	boolean validate();
 }

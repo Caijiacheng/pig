@@ -11,10 +11,16 @@ abstract class PojoAccount implements IAccount, ILoad {
 	 String _qqid;
 	 String _pwd;
 	 Integer _infover;  
+	 boolean _validate;
 	
 	@Override
 	public long id() {
 		return _id;
+	}
+	
+	public boolean validate()
+	{
+		return _validate;
 	}
 	
 	@Override

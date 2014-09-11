@@ -51,6 +51,7 @@ public class DefaultAccount extends PojoAccount {
 		this._pwd = acc.passwd();
 		this._weiboid = acc.weiboid().orNull();
 		this._qqid = acc.qqid().orNull();
+		this._validate = acc.validate();
 	}
 	
 	@Override
@@ -87,6 +88,7 @@ public class DefaultAccount extends PojoAccount {
 		acc._qqid = rs.getString("qq_id");
 		acc._weiboid = rs.getString("weibo_id");
 		acc._pwd = rs.getString("passwd");
+		acc._validate = rs.getBoolean("friend_validate");
 		return acc;
 	}
 	

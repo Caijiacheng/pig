@@ -44,7 +44,42 @@ public class TestDefaultAccRelate {
 	}
 	
 	
-	
+	@Test
+	public void testMakePairList()
+	{
+		for (String phone_a : s_test_phone_num)
+		{
+			for (String phone_b : s_test_phone_num)
+			{
+				if (!phone_a.equals(phone_b))
+				{
+					IAccount acc1 = 
+							service.getByPhoneId(phone_a).get();
+					IAccount acc2 = 
+							service.getByPhoneId(phone_b).get();
+					service.makePair(acc1, acc2);
+				}
+			}
+		}
+		
+		
+		for (String phone_a : s_test_phone_num)
+		{
+			for (String phone_b : s_test_phone_num)
+			{
+				if (!phone_a.equals(phone_b))
+				{
+					IAccount acc1 = 
+							service.getByPhoneId(phone_a).get();
+					IAccount acc2 = 
+							service.getByPhoneId(phone_b).get();
+					Assert.assertTrue(service.isPair(acc1, acc2));
+					Assert.assertEquals(service.getPairsList(acc1).size(), s_test_phone_num.length - 1);
+				}
+			}
+		}
+		
+	}
 	
 	@Test
 	public void testOneByOneMakePair()
