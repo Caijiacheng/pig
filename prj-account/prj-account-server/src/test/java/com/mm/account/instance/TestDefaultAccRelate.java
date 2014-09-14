@@ -93,8 +93,8 @@ public class TestDefaultAccRelate {
 				service.getByPhoneId(phone2).get();
 		
 		Assert.assertFalse(service.isPair(acc1, acc2));
-		Assert.assertNull(service.getPairAskMsg(acc1, acc2));
-		Assert.assertNull(service.getPairAskMsg(acc2, acc1));
+		Assert.assertNull(service.getPairAskMsg(acc1, acc2).orNull());
+		Assert.assertNull(service.getPairAskMsg(acc2, acc1).orNull());
 		Assert.assertEquals(service.getPairsList(acc1).size(), 0);
 		
 		
@@ -106,8 +106,8 @@ public class TestDefaultAccRelate {
 		Assert.assertTrue(service.makePair(acc2, acc1, b_ask_a));
 		
 		Assert.assertTrue(service.isPair(acc1, acc2));
-		Assert.assertEquals(a_ask_b, service.getPairAskMsg(acc1, acc2));
-		Assert.assertEquals(b_ask_a, service.getPairAskMsg(acc2, acc1));
+		Assert.assertEquals(a_ask_b, service.getPairAskMsg(acc1, acc2).orNull());
+		Assert.assertEquals(b_ask_a, service.getPairAskMsg(acc2, acc1).orNull());
 		
 		Assert.assertEquals(service.getPairsList(acc1).size(), 1);
 		Assert.assertEquals(service.getPairsList(acc2).size(), 1);
@@ -116,8 +116,8 @@ public class TestDefaultAccRelate {
 		service.unPair(acc1, acc2);
 		
 		Assert.assertFalse(service.isPair(acc1, acc2));
-		Assert.assertNull(service.getPairAskMsg(acc1, acc2));
-		Assert.assertNull(service.getPairAskMsg(acc2, acc1));
+		Assert.assertNull(service.getPairAskMsg(acc1, acc2).orNull());
+		Assert.assertNull(service.getPairAskMsg(acc2, acc1).orNull());
 		Assert.assertEquals(service.getPairsList(acc1).size(), 0);
 	}
 }

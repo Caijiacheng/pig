@@ -516,7 +516,7 @@ public class DefaultAccount extends PojoAccount {
 		}
 
 		@Override
-		public String getPairAskMsg(IAccount acc_from, IAccount acc_to) 
+		public Optional<String> getPairAskMsg(IAccount acc_from, IAccount acc_to) 
 		{
 			IAccount user_a = acc_from.id() < acc_to.id() ? acc_from : acc_to;
 			IAccount user_b = acc_from.id() > acc_to.id() ? acc_from : acc_to;
@@ -541,7 +541,7 @@ public class DefaultAccount extends PojoAccount {
 					{
 						if (rs.next())
 						{
-							return rs.getString(tap);
+							return Optional.fromNullable(rs.getString(tap));
 						}
 					}
 				}
@@ -549,8 +549,7 @@ public class DefaultAccount extends PojoAccount {
 				throw new DBException(sql_relate, e);
 			}
 			
-			
-			return null;
+			return Optional.absent();
 		}
 
 		@Override
@@ -610,5 +609,83 @@ public class DefaultAccount extends PojoAccount {
 			
 			return accs;
 		}
+
+		@Override
+		public Collection<IAccount> getByPhoneId(
+				Collection<String> phones) {
+			
+			String phone_join = Joiner.on(",").join(phones);
+
+			String sql = 
+					String.format("select * from %s where phone_id in (%s) ", TABLE_NAME, phone_join);
+			
+			List<IAccount> accs = Lists.newArrayList();
+			
+			MysqlDB db = new MysqlDB(DB_NAME);
+			try(Connection conn = db.getConn())
+			{
+				try(Statement stmt = conn.createStatement()) {
+					try(ResultSet rs = stmt.executeQuery(sql))
+					{
+						while (rs.next())
+						{
+							accs.add(transform(rs));
+						}
+					}
+				} 
+			}catch (SQLException e) {
+				throw new DBException(sql, e);
+			}
+			
+			return accs;
+		}
+
+		
+		static UserRelate transform(UserRelate.Builder builder, ResultSet rs) throws SQLException
+		{
+			
+			String a_ask_b = rs.getString("a_ask_b");
+			String b_ask_a = rs.getString("b_ask_a");
+			
+			if (a_ask_b != null){
+				builder.setAAskB(a_ask_b);
+			}
+			if (b_ask_a != null)
+			{
+				builder.setBAskA(b_ask_a);
+			}
+			
+			return builder.setUseridA(rs.getLong("user_id_a"))
+			.setUseridB(rs.getLong("user_id_b"))
+			.setABPair(rs.getBoolean("a_b_pair")).build();
+		}
+		
+		@Override
+		public Collection<UserRelate> getPairRelate(IAccount acc) {
+			
+			List<UserRelate> relates = Lists.newArrayList();
+			
+			String sql_user = String.format("select * from %s where user_id_a=%s or user_id_b=%s",
+					TABLE_RELATE_NAME, acc.id(), acc.id());
+			
+			MysqlDB db = new MysqlDB(DB_NAME);
+			try(Connection conn = db.getConn())
+			{
+				try(Statement stmt = conn.createStatement()) {
+					try(ResultSet rs = stmt.executeQuery(sql_user))
+					{
+						while (rs.next())
+						{
+							relates.add(transform(UserRelate.newBuilder(), rs));
+						}
+					}
+				} 
+			}catch (SQLException e) {
+				throw new DBException(sql_user, e);
+			}
+			
+			return relates;
+		}
+
 	}
 }
