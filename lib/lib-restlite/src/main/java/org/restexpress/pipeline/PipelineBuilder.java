@@ -12,6 +12,8 @@ import io.netty.handler.codec.http.HttpContentDecompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.concurrent.DefaultEventExecutor;
@@ -115,8 +117,8 @@ public class PipelineBuilder extends ChannelInitializer<SocketChannel>
 		pipeline.addLast("inflater", new HttpContentDecompressor());
 		pipeline.addLast("aggregator", new HttpObjectAggregator(maxContentLength));
 
-//		pipeline.addLast("logger", 
-//				new LoggingHandler(LogLevel.DEBUG));
+		pipeline.addLast("logger", 
+				new LoggingHandler(LogLevel.WARN));
 		
 		pipeline.addLast("encoder", new HttpResponseEncoder());
 		pipeline.addLast("deflater", new HttpContentCompressor());

@@ -3,7 +3,6 @@ package com.mm.account.data;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import redis.clients.jedis.Jedis;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
-import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
 import com.mm.account.db.RedisDB;
@@ -57,6 +55,59 @@ public class DefaultPhoto implements IPhoto {
 		}
 	}
 
+	static public class StreamPhoto implements IPhoto
+	{
+
+		IUrl url;
+		public StreamPhoto(IUrl url) {
+			this.url = url;
+		}
+		
+		@Override
+		public InputStream data() {
+			return new RedisStream(((Url)url).reskey);
+		}
+		
+	}
+	
+	static public class RedisStream extends InputStream
+	{
+		
+		Jedis handle;
+		static final int maxsize = 16384;
+		byte[] hold = null;
+		int offset = 0;
+		int next = 0; 
+		byte[] key_stream;
+		
+		
+		public RedisStream(byte[] key_stream) {
+			handle = new RedisDB().getConn();
+			this.key_stream = key_stream;
+		}
+		
+		@Override
+		public int read() throws IOException {
+			if (hold == null || next >= hold.length )
+			{
+				if (hold != null && hold.length < maxsize)
+				{
+					return -1;//end
+				}
+				hold = handle.getrange(key_stream, offset, offset + maxsize);
+				offset = offset + hold.length;
+				next = 0;
+			}
+			return hold[next++];
+		}
+		@Override
+		public void close() throws IOException {
+			handle.close();
+			super.close();
+		}
+		
+		
+	}
 	
 	static class Url implements IUrl
 	{
@@ -131,37 +182,38 @@ public class DefaultPhoto implements IPhoto {
 		}
 
 		
-		
 		@Override
 		public IPhoto download(IUrl url) {
-			Url u = (Url)url;
 			
-			File f = new File(downloadDir + u.url());
-			ByteSink sink = Files.asByteSink(f);
-			
-			RedisDB db = new RedisDB();
-			int bytes = 16384;
-			try(Jedis handle = db.getConn())
-			{
-				try(OutputStream ots = sink.openBufferedStream())
-				{
-					int begin = 0;
-					while(true)
-					{
-						byte[] bb = handle.getrange(u.reskey, begin, begin + bytes);
-						ots.write(bb);
-						begin += bb.length;
-//						LOG.debug("getrange ..{}", bb.length);
-						if (bb.length < bytes)
-						{
-							return new DefaultPhoto(f);
-						}
-					}
-				}
-				
-			} catch (IOException e) {
-				throw new UnknowAccException(e);
-			}
+			return new StreamPhoto(url);
+//			Url u = (Url)url;
+//			
+//			File f = new File(downloadDir + u.url());
+//			ByteSink sink = Files.asByteSink(f);
+//			
+//			RedisDB db = new RedisDB();
+//			int bytes = 16384;
+//			try(Jedis handle = db.getConn())
+//			{
+//				try(OutputStream ots = sink.openBufferedStream())
+//				{
+//					int begin = 0;
+//					while(true)
+//					{
+//						byte[] bb = handle.getrange(u.reskey, begin, begin + bytes);
+//						ots.write(bb);
+//						begin += bb.length;
+////						LOG.debug("getrange ..{}", bb.length);
+//						if (bb.length < bytes)
+//						{
+//							return new DefaultPhoto(f);
+//						}
+//					}
+//				}
+//				
+//			} catch (IOException e) {
+//				throw new UnknowAccException(e);
+//			}
 		}
 		
 	}
