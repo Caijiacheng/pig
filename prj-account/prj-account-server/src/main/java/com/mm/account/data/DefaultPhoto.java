@@ -97,6 +97,10 @@ public class DefaultPhoto implements IPhoto {
 				hold = handle.getrange(key_stream, offset, offset + maxsize);
 				offset = offset + hold.length;
 				next = 0;
+				if (hold.length == 0)
+				{
+					return -1;
+				}
 			}
 			return hold[next++];
 		}
@@ -105,8 +109,6 @@ public class DefaultPhoto implements IPhoto {
 			handle.close();
 			super.close();
 		}
-		
-		
 	}
 	
 	static class Url implements IUrl

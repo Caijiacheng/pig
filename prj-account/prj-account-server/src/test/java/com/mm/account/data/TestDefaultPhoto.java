@@ -24,7 +24,6 @@ public class TestDefaultPhoto {
           return new String(temp);
 
 	  }
-
 	
 	public String getMd5(InputStream fis) throws NoSuchAlgorithmException, IOException
 	{
