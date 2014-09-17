@@ -193,5 +193,7 @@
 		<module>lib</module>
 		<module>test</module>
 		<module>prj-account</module>
+		<module>prj-photo</module>
+		<module>prj-tinylove</module>
 	</modules>
 </project>

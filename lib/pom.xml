@@ -25,7 +25,8 @@
 	</dependencies>
 
 	<modules>
-		<module>jutil</module>
-		<module>lib-restlite</module>
+<!-- 		<module>jutil</module>
+ -->		<module>lib-restlite</module>
+		<module>lib-util</module>
 	</modules>
 </project>

@@ -7,16 +7,12 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
   <groupId>com.mm.sde</groupId>
-  <artifactId>prj-account</artifactId>
+  <artifactId>prj-tinylove</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>prj-account</name>
+  <name>prj-tinylove</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  <modules>
-    <module>prj-account-server</module>
-    
-  </modules>
 </project>

@@ -36,8 +36,6 @@ public class RestMainServer {
 			return "done";
 		}
 
-		
-
 	}
 	
 	final static int SRV_PORT = 10000;

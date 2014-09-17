@@ -186,7 +186,6 @@ public class DefaultPhoto implements IPhoto {
 		
 		@Override
 		public IPhoto download(IUrl url) {
-			
 			return new StreamPhoto(url);
 //			Url u = (Url)url;
 //			
