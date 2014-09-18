@@ -14,6 +14,7 @@
 		<nexus.server>http://192.168.1.100:8081</nexus.server>
 		<tools.path>${top.dir}/tools</tools.path>
 		<release.dir>release</release.dir>
+		<netty.version>5.0.0.Alpha1</netty.version>
 	</properties>
 	<!-- all open source version -->
 	<dependencyManagement>

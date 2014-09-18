@@ -1,0 +1,14 @@
+package com.mm.photo.proto;
+
+message ImageKey
+{
+	required string url = 1;
+}
+
+message ImageFragInfo
+{
+	required bool isSplit = 1 [default = false];
+	repeated ImageKey frageKeys = 2;
+	optional bytes data = 3;
+	//repeated byte data = 3;
+}

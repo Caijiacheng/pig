@@ -190,6 +190,7 @@ public class TestDB {
 						if (!thread_share_conn.equals(share_conn))
 						{
 							LOG.error("error here");
+							throw new RuntimeException("not share mode?");
 						}
 					}
 					
