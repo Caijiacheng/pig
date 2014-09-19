@@ -528,18 +528,10 @@ public final class Storage {
     // optional bytes data = 3;
     /**
      * <code>optional bytes data = 3;</code>
-     *
-     * <pre>
-     *repeated byte data = 3;
-     * </pre>
      */
     boolean hasData();
     /**
      * <code>optional bytes data = 3;</code>
-     *
-     * <pre>
-     *repeated byte data = 3;
-     * </pre>
      */
     com.google.protobuf.ByteString getData();
   }
@@ -712,20 +704,12 @@ public final class Storage {
     private com.google.protobuf.ByteString data_;
     /**
      * <code>optional bytes data = 3;</code>
-     *
-     * <pre>
-     *repeated byte data = 3;
-     * </pre>
      */
     public boolean hasData() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
      * <code>optional bytes data = 3;</code>
-     *
-     * <pre>
-     *repeated byte data = 3;
-     * </pre>
      */
     public com.google.protobuf.ByteString getData() {
       return data_;
@@ -1322,30 +1306,18 @@ public final class Storage {
       private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>optional bytes data = 3;</code>
-       *
-       * <pre>
-       *repeated byte data = 3;
-       * </pre>
        */
       public boolean hasData() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
        * <code>optional bytes data = 3;</code>
-       *
-       * <pre>
-       *repeated byte data = 3;
-       * </pre>
        */
       public com.google.protobuf.ByteString getData() {
         return data_;
       }
       /**
        * <code>optional bytes data = 3;</code>
-       *
-       * <pre>
-       *repeated byte data = 3;
-       * </pre>
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1358,10 +1330,6 @@ public final class Storage {
       }
       /**
        * <code>optional bytes data = 3;</code>
-       *
-       * <pre>
-       *repeated byte data = 3;
-       * </pre>
        */
       public Builder clearData() {
         bitField0_ = (bitField0_ & ~0x00000004);

@@ -3,6 +3,7 @@ package com.mm.photo.storage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.fusesource.leveldbjni.JniDBFactory;
 import org.iq80.leveldb.DB;
@@ -49,6 +50,23 @@ public class LevelDB {
 			nameDBMap.put(name, db);
 		}
 		return db;
+	}
+	
+	synchronized void close(DB db)
+	{
+		for (Entry<String, DB> ent : nameDBMap.entrySet())
+		{
+			try {
+				if (ent.getValue() == db)
+				{
+					db.close();
+					nameDBMap.remove(ent.getKey());
+					break;
+				}
+				
+			} catch (IOException e) {
+			}
+		}
 	}
 	
 	synchronized void close()

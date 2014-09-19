@@ -10,10 +10,14 @@ import java.nio.file.Files;
 import java.nio.file.attribute.FileAttribute;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
 import junit.framework.Assert;
 
 import org.iq80.leveldb.DB;
+import org.iq80.leveldb.DBIterator;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +54,29 @@ public class TestLevelDBPhoto {
 	}
 	
 	
+	static DB db;
+	
+	@Before
+	public void setup()
+	{
+		db = LevelDB.ins().getDB("temp");
+		
+		DBIterator iter = db.iterator();
+		iter.seekToFirst();
+		while(iter.hasNext())
+		{
+			Map.Entry<byte[], byte[]> entry = iter.next();
+			db.delete(entry.getKey());
+		}
+		
+	}
+	
+	@After
+	public void teardown() throws IOException
+	{
+		LevelDB.ins().close(db);
+	}
+	
 	static Logger LOG = LoggerFactory.getLogger(TestLevelDBPhoto.class);
 	
 	@Test
@@ -57,8 +84,6 @@ public class TestLevelDBPhoto {
 	{
 		
 		Long[] test_length = new Long[]{1024L, 4096L, 128 * 1024L, 1 * 1024 * 1024L, 10 * 1024 * 1024L, 30 * 1024 * 1024L};
-		
-		DB db = LevelDB.ins().getDB("temp");
 		
 		byte[] chunk = new byte[1024];
 		for (int i = 0 ; i<chunk.length; i++)
@@ -87,38 +112,18 @@ public class TestLevelDBPhoto {
 			
 			LevelDBFile.Builder builder = 
 					new LevelDBFile.Builder(db, 
-							ImageKey.newBuilder().setUrl(tmp_file.getName()));
+							ImageKey.newBuilder().setUrl(tmp_file.getName()).build());
 
 			LevelDBFile photo;
-			if (l < 16 * 1024L)
+			builder.writeFrom(new FileInputStream(tmp_file));
+			photo = builder.build();
+			
+			if (l < LevelDBFile.Builder.BYTES_PIECE_SIZE)
 			{
-				builder.writeFrom(new FileInputStream(tmp_file));
-				photo = builder.build();
-				Assert.assertFalse(photo.getKey().getIsSplit());
+				Assert.assertFalse(photo.isSplit());
 			}else
 			{
-				try(FileInputStream fis = new FileInputStream(tmp_file))
-				{
-					byte[] o_datas = new byte[16*1024];
-					while(true)
-					{
-						int len = fis.read(o_datas);
-						if (len == -1)
-						{
-							break;
-						}
-						try(OutputStream out = builder.openStream())
-						{
-							out.write(o_datas, 0, len);
-						}
-						if (len < o_datas.length)
-						{
-							break;
-						}
-					}
-					photo = builder.build();
-					Assert.assertTrue(photo.getKey().getIsSplit());
-				}
+				Assert.assertTrue(photo.isSplit());
 			}
 			Assert.assertEquals(getMd5(new FileInputStream(tmp_file)),
 					getMd5(photo.openStream()));

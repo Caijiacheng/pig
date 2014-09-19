@@ -1,14 +1,17 @@
 package com.mm.photo.data;
 
-import org.junit.Test;
-import org.iq80.leveldb.*;
+import static org.fusesource.leveldbjni.JniDBFactory.asString;
+import static org.fusesource.leveldbjni.JniDBFactory.bytes;
+import static org.fusesource.leveldbjni.JniDBFactory.factory;
 
-import com.mm.photo.proto.Storage.ImageKey;
-
-import static org.fusesource.leveldbjni.JniDBFactory.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 import junit.framework.Assert;
+
+import org.iq80.leveldb.DB;
+import org.iq80.leveldb.Options;
+import org.junit.Test;
 
 public class TestLevelDB {
 	
@@ -27,29 +30,29 @@ public class TestLevelDB {
 		} 
 	}
 	
-	@Test
-	public void testParseStream() throws IOException
-	{
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		
-		out.write(ImageKey.newBuilder().setIsSplit(true).setUrl("aaa").build().toByteArray());
-		System.err.println("size:" + out.size());
-		out.write(ImageKey.newBuilder().setIsSplit(false).setUrl("bbb").build().toByteArray());
-		System.err.println("size:" + out.size());
-		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-		System.err.println("size:" + out.toByteArray().length);
-		ImageKey key1 = ImageKey.parseFrom(in);
-		System.err.println(key1.toString());
-//		Assert.assertTrue(key1.getIsSplit());
-		
-		ImageKey key2 = ImageKey.parseFrom(in);
-		System.err.println(key2.toString());
-//		Assert.assertFalse(key2.getIsSplit());
-		
-		ImageKey key3 = ImageKey.parseFrom(in);
-		
-//		Assert.assertTrue(false);
-
-	}
-	
+//	@Test
+//	public void testParseStream() throws IOException
+//	{
+//		ByteArrayOutputStream out = new ByteArrayOutputStream();
+//		
+//		out.write(ImageKey.newBuilder().setIsSplit(true).setUrl("aaa").build().toByteArray());
+//		System.err.println("size:" + out.size());
+//		out.write(ImageKey.newBuilder().setIsSplit(false).setUrl("bbb").build().toByteArray());
+//		System.err.println("size:" + out.size());
+//		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+//		System.err.println("size:" + out.toByteArray().length);
+//		ImageKey key1 = ImageKey.parseFrom(in);
+//		System.err.println(key1.toString());
+////		Assert.assertTrue(key1.getIsSplit());
+//		
+//		ImageKey key2 = ImageKey.parseFrom(in);
+//		System.err.println(key2.toString());
+////		Assert.assertFalse(key2.getIsSplit());
+//		
+//		ImageKey key3 = ImageKey.parseFrom(in);
+//		
+////		Assert.assertTrue(false);
+//
+//	}
+//	
 }
