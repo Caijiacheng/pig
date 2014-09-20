@@ -6,6 +6,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 public class HttpPhotoServerInitializer extends ChannelInitializer<SocketChannel> {
@@ -22,13 +24,13 @@ public class HttpPhotoServerInitializer extends ChannelInitializer<SocketChannel
         pipeline.addLast("decoder", new HttpRequestDecoder());
         pipeline.addLast("encoder", new HttpResponseEncoder());
         
+        pipeline.addLast("chunkedWriter", new ChunkedWriteHandler());
         // Remove the following line if you don't want automatic content
         // compression.
         pipeline.addLast("deflater", new HttpContentCompressor());        
         
-        pipeline.addLast("chunkedWriter", new ChunkedWriteHandler());
-
-
+//		pipeline.addLast("logger", 
+//		new LoggingHandler(LogLevel.DEBUG));
         
         pipeline.addLast("handler", new HttpPhotoServerHandler()); // Specify false if SSL.
     }

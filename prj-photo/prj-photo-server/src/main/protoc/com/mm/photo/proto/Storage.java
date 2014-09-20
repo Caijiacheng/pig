@@ -534,6 +534,16 @@ public final class Storage {
      * <code>optional bytes data = 3;</code>
      */
     com.google.protobuf.ByteString getData();
+
+    // required int64 length = 4;
+    /**
+     * <code>required int64 length = 4;</code>
+     */
+    boolean hasLength();
+    /**
+     * <code>required int64 length = 4;</code>
+     */
+    long getLength();
   }
   /**
    * Protobuf type {@code com.mm.photo.proto.ImageFragInfo}
@@ -602,6 +612,11 @@ public final class Storage {
             case 26: {
               bitField0_ |= 0x00000002;
               data_ = input.readBytes();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000004;
+              length_ = input.readInt64();
               break;
             }
           }
@@ -715,10 +730,27 @@ public final class Storage {
       return data_;
     }
 
+    // required int64 length = 4;
+    public static final int LENGTH_FIELD_NUMBER = 4;
+    private long length_;
+    /**
+     * <code>required int64 length = 4;</code>
+     */
+    public boolean hasLength() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int64 length = 4;</code>
+     */
+    public long getLength() {
+      return length_;
+    }
+
     private void initFields() {
       isSplit_ = false;
       frageKeys_ = java.util.Collections.emptyList();
       data_ = com.google.protobuf.ByteString.EMPTY;
+      length_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -726,6 +758,10 @@ public final class Storage {
       if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasIsSplit()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasLength()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -751,6 +787,9 @@ public final class Storage {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(3, data_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt64(4, length_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -771,6 +810,10 @@ public final class Storage {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, data_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, length_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -899,6 +942,8 @@ public final class Storage {
         }
         data_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000004);
+        length_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -944,6 +989,10 @@ public final class Storage {
           to_bitField0_ |= 0x00000002;
         }
         result.data_ = data_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.length_ = length_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -992,12 +1041,19 @@ public final class Storage {
         if (other.hasData()) {
           setData(other.getData());
         }
+        if (other.hasLength()) {
+          setLength(other.getLength());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
         if (!hasIsSplit()) {
+          
+          return false;
+        }
+        if (!hasLength()) {
           
           return false;
         }
@@ -1338,6 +1394,39 @@ public final class Storage {
         return this;
       }
 
+      // required int64 length = 4;
+      private long length_ ;
+      /**
+       * <code>required int64 length = 4;</code>
+       */
+      public boolean hasLength() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>required int64 length = 4;</code>
+       */
+      public long getLength() {
+        return length_;
+      }
+      /**
+       * <code>required int64 length = 4;</code>
+       */
+      public Builder setLength(long value) {
+        bitField0_ |= 0x00000008;
+        length_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 length = 4;</code>
+       */
+      public Builder clearLength() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        length_ = 0L;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:com.mm.photo.proto.ImageFragInfo)
     }
 
@@ -1369,10 +1458,10 @@ public final class Storage {
   static {
     java.lang.String[] descriptorData = {
       "\n\rstorage.proto\022\022com.mm.photo.proto\"\027\n\010I" +
-      "mageKey\022\013\n\003url\030\001 \002(\t\"f\n\rImageFragInfo\022\026\n" +
+      "mageKey\022\013\n\003url\030\001 \002(\t\"v\n\rImageFragInfo\022\026\n" +
       "\007isSplit\030\001 \002(\010:\005false\022/\n\tfrageKeys\030\002 \003(\013" +
       "2\034.com.mm.photo.proto.ImageKey\022\014\n\004data\030\003" +
-      " \001(\014"
+      " \001(\014\022\016\n\006length\030\004 \002(\003"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1390,7 +1479,7 @@ public final class Storage {
           internal_static_com_mm_photo_proto_ImageFragInfo_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_photo_proto_ImageFragInfo_descriptor,
-              new java.lang.String[] { "IsSplit", "FrageKeys", "Data", });
+              new java.lang.String[] { "IsSplit", "FrageKeys", "Data", "Length", });
           return null;
         }
       };

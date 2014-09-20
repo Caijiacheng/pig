@@ -55,13 +55,28 @@ public class LevelDBFile extends ByteSource {
 		return true;
 	}
 	
+	public long length()
+	{
+		try {
+			return getFragInfo().getLength();
+		} catch (FileNotFoundException e) {
+			return 0;
+		}
+	}
+	
 	public ImageFragInfo getFragInfo() throws FileNotFoundException{
 		if (data == null) {
 			try {
-				data = ImageFragInfo.parseFrom(db.get(getKey().toByteArray()));
+				byte[] value = db.get(getKey().toByteArray());
+				if (value == null)
+				{
+					throw new FileNotFoundException("db has not ImageKey:"
+							+ getKey().toString());
+				}
+				
+				data = ImageFragInfo.parseFrom(value);
 			} catch (InvalidProtocolBufferException | DBException e) {
-				throw new FileNotFoundException("db has not ImageKey:"
-						+ getKey().toString());
+				throw new RuntimeException(e);
 			}
 		}
 		return data;
@@ -94,7 +109,7 @@ public class LevelDBFile extends ByteSource {
 		return new Builder(db, key);
 	}
 
-	static class Builder extends ByteSink {
+	public static class Builder extends ByteSink {
 
 		DB db;
 		ImageKey key;
@@ -118,6 +133,7 @@ public class LevelDBFile extends ByteSource {
 
 		static class BuilderOutputStream extends OutputStream {
 
+			int counting = 0;
 			ImageKey key;
 			DB db;
 			ImageFragInfo.Builder fragInfoBuilder;
@@ -162,6 +178,7 @@ public class LevelDBFile extends ByteSource {
 					fragInfoBuilder.addFrageKeys(k);
 				}
 				cur_piece++;
+				counting = counting + len;
 			}
 
 			@Override
@@ -174,6 +191,7 @@ public class LevelDBFile extends ByteSource {
 					} else {
 						fragInfoBuilder.setIsSplit(true);
 					}
+					fragInfoBuilder.setLength(counting);
 					db.put(key.toByteArray(), fragInfoBuilder.build().toByteArray());
 				}
 				super.close();

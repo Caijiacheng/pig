@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import org.fusesource.leveldbjni.JniDBFactory;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
@@ -18,13 +21,21 @@ public class LevelDB {
 		return handle;
 	}
 	
-	
+	static Logger LOG = LoggerFactory.getLogger(LevelDB.class);
 	static Options defaultOptions = new Options();
 	static
 	{
+		Properties prop = new Properties();
+		try {
+			prop.load(ClassLoader.getSystemResourceAsStream("release.propertis"));
+		} catch (IOException e) {
+			LOG.error("Config Load Failed!");
+		}
 		defaultOptions.createIfMissing(true)
-		.blockSize(4 * 1024 * 1024).
-		cacheSize(128 * 1024 * 1024);
+		.blockSize(Integer.parseInt(
+				prop.getProperty("leveldb.block.size", String.valueOf(16384)))).
+		cacheSize(Integer.parseInt(
+				prop.getProperty("leveldb.cache.size", String.valueOf(128 * 1024 * 1024))));
 	}
 	
 

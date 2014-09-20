@@ -10,4 +10,5 @@ message ImageFragInfo
 	required bool isSplit = 1 [default = false];
 	repeated ImageKey frageKeys = 2;
 	optional bytes data = 3;
+	required int64 length = 4;
 }

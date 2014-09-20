@@ -3,7 +3,8 @@ target
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
+photo.storage/
+temp/
 # Package Files #
 *.jar
 *.war

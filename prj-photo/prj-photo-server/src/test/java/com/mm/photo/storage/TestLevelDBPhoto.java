@@ -130,7 +130,9 @@ public class TestLevelDBPhoto {
 			
 			LevelDBFile dupOpen = 
 					new LevelDBFile(db, photo.getKey());
-			
+			Assert.assertTrue(dupOpen.isExist());
+			Assert.assertEquals(dupOpen.length(), l.longValue());
+
 			Assert.assertEquals(getMd5(dupOpen.openStream()),
 					getMd5(photo.openStream()));
 		}
@@ -139,7 +141,7 @@ public class TestLevelDBPhoto {
 	@Test
 	public void testOpenNotExist()
 	{
-		
+		Assert.assertFalse(new LevelDBFile(db, ImageKey.newBuilder().setUrl("hello").build()).isExist());
 	}
 	
 }
