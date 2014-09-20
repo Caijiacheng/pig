@@ -1,13 +1,10 @@
 package com.mm.photo.netty;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -15,35 +12,67 @@ import java.nio.file.Files;
 import java.nio.file.attribute.FileAttribute;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import junit.framework.Assert;
 
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.FileEntity;
-import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import org.iq80.leveldb.DB;
+import org.iq80.leveldb.DBIterator;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 import com.google.common.io.ByteStreams;
+import com.mm.photo.storage.LevelDB;
 
+
+@RunWith(Parameterized.class)
 public class TestPhotoServer {
 
+	@Parameters
+	public static List<Object[]> data() {
+		return Arrays.asList(new Object[][]{
+				{100L, 1}, 
+				{2*1024L, 1}, 
+				{16*1024L, 1}, 
+				{64*1024L, 1}, 
+				{1*1024*1024L, 1}, 
+				{50*1024*1024L, 1},
+				{100*1024*1024L, 1}
+				});
+	}
+	
+	private long flen;
+	private int nThread;
+	
+	public TestPhotoServer(long len, int nthread)
+	{
+		flen = len;
+		nThread = nthread;
+	}
+	
 	
 	static Logger LOG = LoggerFactory.getLogger(TestPhotoServer.class);
 	
-	HttpPhotoServer server;
+	static HttpPhotoServer server;
 	
 	
 	  public static String bytesToString(byte[] data) {
@@ -70,16 +99,31 @@ public class TestPhotoServer {
            return bytesToString(md.digest());
 	}
 	
+	
+	@BeforeClass
+	static public void init()
+	{
+		DB db = LevelDB.ins().getDB();
+		LevelDB.ins().cleanDB(db);
+		server = new HttpPhotoServer(SRV_PORT).run();
+	}
+	
+	@AfterClass
+	static public void uninit()
+	{
+		server.shutdown();
+	}
+	
 	@Before
 	public void setup() 
 	{
-		server = new HttpPhotoServer(SRV_PORT).run();
+		
+		
 	}
 	
 	@After
 	public void teardown()
 	{
-		server.shutdown();
 	}
 	
 	
@@ -109,6 +153,8 @@ public class TestPhotoServer {
 		@Override
 		public void run()  {
 			  CloseableHttpClient httpclient = HttpClients.createDefault();
+			  
+			  
 		        try {
 		            HttpPost httppost = new HttpPost(this.uri);
 
@@ -188,8 +234,10 @@ public class TestPhotoServer {
 				if (conn.getResponseCode() == 200) {
 					download_file = 
 							Files.createTempFile("http_tmp", null, new FileAttribute<?>[]{}).toFile();
-					
-					ByteStreams.copy(conn.getInputStream(), new FileOutputStream(download_file));
+					try(FileOutputStream out = new FileOutputStream(download_file))
+					{
+						ByteStreams.copy(conn.getInputStream(), out);
+					}
 				}
 				rescode = conn.getResponseCode();
 				LOG.info("get the Response from: {}, ResCode:{}, RetMsg:{}",
@@ -212,7 +260,7 @@ public class TestPhotoServer {
 	@Test
 	public void testOneUploadAndDownload() throws IOException, NoSuchAlgorithmException
 	{
-		File tmp = getTmpFile(100L);
+		File tmp = getTmpFile(flen);
 		
 		String url = HTTP_LOCALHOST + "/test/" + tmp.getName();
 		
@@ -221,18 +269,26 @@ public class TestPhotoServer {
 		post_ok.run();
 		Assert.assertEquals(post_ok.getResCode(), HttpStatus.SC_OK);
 
+		//#issue : http://stackoverflow.com/questions/9161591/apache-httpclient-4-x-behaving-strange-when-uploading-larger-files
 		
-		HttpClientPostFile post_failed = new HttpClientPostFile(url, tmp);
-		
-		post_failed.run();
-		
-		Assert.assertEquals(post_failed.getResCode(), HttpStatus.SC_NOT_ACCEPTABLE);
+		if (flen < 16 * 1024)
+		{
+			LOG.error("begin to dup post to check NO_ACCEPTABLE");
+			HttpClientPostFile post_failed = new HttpClientPostFile(url, tmp);
+			
+			post_failed.run();
+			Assert.assertEquals(post_failed.getResCode(), HttpStatus.SC_NOT_ACCEPTABLE);
+		}
 		
 		HttpClientGetFile downGet = new HttpClientGetFile(url);
 		
 		downGet.run();
 		Assert.assertEquals(downGet.getResponseCode(), HttpStatus.SC_OK);
-		Assert.assertEquals(getMd5(new FileInputStream(tmp)), getMd5(new FileInputStream(downGet.getDownloadFile())));
+		
+		LOG.info("tmp_file:{}, download_file:{}", tmp, downGet.getDownloadFile());
+		
+		Assert.assertEquals(getMd5(new FileInputStream(tmp)), 
+				getMd5(new FileInputStream(downGet.getDownloadFile())));
 		
 		HttpClientGetFile downGet_failed = new HttpClientGetFile(url + "212323");
 		downGet_failed.run();
@@ -262,6 +318,8 @@ public class TestPhotoServer {
 			begin = begin + bytes;
 		}
 		file.close();
+		
+		Assert.assertEquals(tmp_file.length(), size);
 		return tmp_file;
 	}
 	

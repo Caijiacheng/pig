@@ -4,6 +4,7 @@ target
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 photo.storage/
+test.photo.storage/
 temp/
 # Package Files #
 *.jar

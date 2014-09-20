@@ -1,4 +1,5 @@
 leveldb.block.size=16384
 leveldb.cache.size=134217728
+leveldb.default.db.name=photo.storage
 photo.http.server.port=8081
 photo.http.worker.thread.num=10

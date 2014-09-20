@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import org.fusesource.leveldbjni.JniDBFactory;
 import org.iq80.leveldb.DB;
+import org.iq80.leveldb.DBIterator;
 import org.iq80.leveldb.Options;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ public class LevelDB {
 	
 	static Logger LOG = LoggerFactory.getLogger(LevelDB.class);
 	static Options defaultOptions = new Options();
+	static String defaultDbName = "temp";
 	static
 	{
 		Properties prop = new Properties();
@@ -36,12 +38,19 @@ public class LevelDB {
 				prop.getProperty("leveldb.block.size", String.valueOf(16384)))).
 		cacheSize(Integer.parseInt(
 				prop.getProperty("leveldb.cache.size", String.valueOf(128 * 1024 * 1024))));
+		defaultDbName = prop.getProperty("leveldb.default.db.name", defaultDbName);
 	}
 	
 
 	Map<String, DB> nameDBMap = Maps.newTreeMap();
 	
 	private LevelDB(){};
+	
+	
+	synchronized public DB getDB()
+	{
+		return getDB(defaultDbName, defaultOptions);
+	}
 	
 	synchronized public DB getDB(String name)
 	{
@@ -88,6 +97,17 @@ public class LevelDB {
 				db.close();
 			} catch (IOException e) {
 			}
+		}
+	}
+	
+	public void cleanDB(DB db)
+	{
+		DBIterator iter = db.iterator();
+		iter.seekToFirst();
+		while(iter.hasNext())
+		{
+			Map.Entry<byte[], byte[]> entry = iter.next();
+			db.delete(entry.getKey());
 		}
 	}
 	

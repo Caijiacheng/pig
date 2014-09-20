@@ -1,5 +1,6 @@
 package com.mm.photo.netty;
 
+import static io.netty.handler.codec.http.HttpHeaders.is100ContinueExpected;
 import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CACHE_CONTROL;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
@@ -7,6 +8,7 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.DATE;
 import static io.netty.handler.codec.http.HttpHeaders.Names.EXPIRES;
 import static io.netty.handler.codec.http.HttpHeaders.Names.IF_MODIFIED_SINCE;
 import static io.netty.handler.codec.http.HttpHeaders.Names.LAST_MODIFIED;
+import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
 import static io.netty.handler.codec.http.HttpResponseStatus.INTERNAL_SERVER_ERROR;
 import static io.netty.handler.codec.http.HttpResponseStatus.NOT_MODIFIED;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
@@ -16,8 +18,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelProgressiveFuture;
-import io.netty.channel.ChannelProgressiveFutureListener;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpResponse;
@@ -30,7 +30,6 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
-import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.stream.ChunkedStream;
 import io.netty.util.CharsetUtil;
 
@@ -39,10 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TimeZone;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -68,26 +64,6 @@ public class HttpPhotoServerHandler extends
 			.getLogger(HttpPhotoServerHandler.class);
 
 	private HttpRequest request;
-
-	// private boolean readingChunks;
-
-	private final StringBuilder responseContent = new StringBuilder();
-
-	// private static final HttpDataFactory factory = new
-	// DefaultHttpDataFactory(
-	// DefaultHttpDataFactory.MINSIZE); // Disk
-	// // if
-	// private HttpPostRequestDecoder decoder;
-	// static {
-	// DiskFileUpload.deleteOnExitTemporaryFile = true; // should delete file
-	// // on exit (in
-	// // normal
-	// // exit)
-	// DiskFileUpload.baseDirectory = null; // system temp directory
-	// DiskAttribute.deleteOnExitTemporaryFile = true; // should delete file on
-	// // exit (in normal exit)
-	// DiskAttribute.baseDirectory = null; // system temp directory
-	// }
 
 	public static final String HTTP_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
 	public static final String HTTP_DATE_GMT_TIMEZONE = "GMT";
@@ -149,59 +125,20 @@ public class HttpPhotoServerHandler extends
 	protected void messageReceived(ChannelHandlerContext ctx, HttpObject msg)
 			throws Exception {
 
+		
+		LOG.info("messageReceived: msg:{}, ctx:{}", msg, ctx.channel().remoteAddress());
+		
 		if (msg instanceof HttpRequest) {
+			
 			request = (HttpRequest) msg;
-//			responseContent.setLength(0);
-//			responseContent.append("WELCOME TO THE WILD WILD WEB SERVER\r\n");
-//			responseContent.append("===================================\r\n");
-//
-//			responseContent.append("VERSION: "
-//					+ request.getProtocolVersion().text() + "\r\n");
-//
-//			responseContent.append("REQUEST_URI: " + request.getUri()
-//					+ "\r\n\r\n");
-//			responseContent.append("\r\n\r\n");
-//
-//			// new getMethod
-//			for (Entry<String, String> entry : request.headers()) {
-//				responseContent.append("HEADER: " + entry.getKey() + '='
-//						+ entry.getValue() + "\r\n");
-//			}
-//			responseContent.append("\r\n\r\n");
-
-			// new getMethod
-//			Set<Cookie> cookies;
-//			String value = request.headers().get(COOKIE);
-//			if (value == null) {
-//				cookies = Collections.emptySet();
-//			} else {
-//				cookies = CookieDecoder.decode(value);
-//			}
-//			for (Cookie cookie : cookies) {
-//				responseContent.append("COOKIE: " + cookie.toString() + "\r\n");
-//			}
-//			responseContent.append("\r\n\r\n");
-
-			QueryStringDecoder decoderQuery = new QueryStringDecoder(
-					request.getUri());
-			Map<String, List<String>> uriAttributes = decoderQuery.parameters();
-			for (Entry<String, List<String>> attr : uriAttributes.entrySet()) {
-				for (String attrVal : attr.getValue()) {
-					responseContent.append("URI: " + attr.getKey() + '='
-							+ attrVal + "\r\n");
-				}
-			}
-			responseContent.append("\r\n\r\n");
 
 			IUrl url = new DefaultUrl(request.getUri());
 
 			if (request.getMethod().equals(HttpMethod.GET)) {
-				// So stop here
-				responseContent.append("\r\n\r\nEND OF GET CONTENT\r\n");
 
 				final IPhoto photo = photo_service.get(url);
 				if (!photo.isExist()) {
-					HttpResponse response = new DefaultHttpResponse(
+					HttpResponse response = new DefaultFullHttpResponse(
 							HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND);
 					ctx.channel().writeAndFlush(response)
 							.addListener(ChannelFutureListener.CLOSE);
@@ -225,26 +162,12 @@ public class HttpPhotoServerHandler extends
 						photo.data(), 16 * 1024));
 
 				sendFileFuture
-						.addListener(new ChannelProgressiveFutureListener() {
+						.addListener(new ChannelFutureListener() {
 							@Override
-							public void operationProgressed(
-									ChannelProgressiveFuture future,
-									long progress, long total) {
-								if (total < 0) { // total unknown
-									LOG.info("[{}]Transfer progress: {}",
-											photo.uniqname(), progress);
-								} else {
-									LOG.info("[{}]Transfer progress: {}/{}",
-											photo.uniqname(), progress, total);
-								}
-							}
-
-							@Override
-							public void operationComplete(
-									ChannelProgressiveFuture future)
+							public void operationComplete(ChannelFuture future)
 									throws Exception {
 								LOG.info("[{}]Transfer complete.",
-										photo.uniqname());
+										photo.uniqname());								
 							}
 						});
 
@@ -255,21 +178,26 @@ public class HttpPhotoServerHandler extends
 				return;
 			} else if (request.getMethod().equals(HttpMethod.POST)) {
 				if (photo_service.isExist(url)) {
-					HttpResponse response = new DefaultHttpResponse(
+					HttpResponse response = new DefaultFullHttpResponse(
 							HttpVersion.HTTP_1_1,
 							HttpResponseStatus.NOT_ACCEPTABLE);
 					ctx.channel().writeAndFlush(response)
 							.addListener(ChannelFutureListener.CLOSE);
+					
+					LOG.info("HttpResponseStatue Back:{}", response);
 					return;
 				}
+				
+	            if (is100ContinueExpected(request)) {
+	                send100Continue(ctx);
+	            }
 
 				os_photo = photo_service.getPhotoOutput(url);
 				return;
-				
 
 			} else {
 				// writeResponse(ctx.channel());
-				HttpResponse response = new DefaultHttpResponse(
+				HttpResponse response = new DefaultFullHttpResponse(
 						HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST);
 				ctx.channel().writeAndFlush(response)
 						.addListener(ChannelFutureListener.CLOSE);
@@ -278,7 +206,8 @@ public class HttpPhotoServerHandler extends
 
 		}
 
-		if (msg instanceof HttpContent && request.getMethod().equals(HttpMethod.POST))
+		if (os_photo != null && msg instanceof HttpContent && 
+				request.getMethod().equals(HttpMethod.POST)  )
 		{
 			HttpContent chunk = (HttpContent)msg;
 			
@@ -287,129 +216,19 @@ public class HttpPhotoServerHandler extends
 			if (chunk instanceof LastHttpContent)
 			{
 				os_photo.close();
-				ctx.channel().writeAndFlush(new DefaultHttpResponse(HTTP_1_1, OK)).
+				ctx.channel().writeAndFlush(new DefaultFullHttpResponse(HTTP_1_1, OK)).
 				addListener(ChannelFutureListener.CLOSE);
 			}
 			return;
 		}
-		
-		if (msg instanceof HttpContent && request.getMethod().equals(HttpMethod.GET))
-		{
-			ctx.channel().close();
-			return;
-		}
-		
-		// check if the decoder was constructed before
-		// if not it handles the form get
-		// if (decoder != null) {
-		// if (msg instanceof HttpContent) {
-		// // New chunk is received
-		// HttpContent chunk = (HttpContent) msg;
-		// try {
-		// decoder.offer(chunk);
-		// } catch (ErrorDataDecoderException e1) {
-		// e1.printStackTrace();
-		// responseContent.append(e1.getMessage());
-		// writeResponse(ctx.channel());
-		// ctx.channel().close();
-		// return;
-		// }
-		// responseContent.append('o');
-		// // example of reading chunk by chunk (minimize memory usage due
-		// // to
-		// // Factory)
-		// readHttpDataChunkByChunk();
-		// // example of reading only if at the end
-		// if (chunk instanceof LastHttpContent) {
-		// writeResponse(ctx.channel());
-		// readingChunks = false;
-		//
-		// reset();
-		// }
-		// }
-		// }
 	}
 
-	// private void readHttpDataChunkByChunk() {
-	// try {
-	// while (decoder.hasNext()) {
-	// InterfaceHttpData data = decoder.next();
-	// if (data != null) {
-	// try {
-	// // new value
-	// writeHttpData(data);
-	// } finally {
-	// data.release();
-	// }
-	// }
-	// }
-	// } catch (EndOfDataDecoderException e1) {
-	// // end
-	// responseContent
-	// .append("\r\n\r\nEND OF CONTENT CHUNK BY CHUNK\r\n\r\n");
-	// }
-	// }
 
-	// private void writeHttpData(InterfaceHttpData data) {
-	// if (data.getHttpDataType() == HttpDataType.Attribute) {
-	// Attribute attribute = (Attribute) data;
-	// String value;
-	// try {
-	// value = attribute.getValue();
-	// } catch (IOException e1) {
-	// // Error while reading data from File, only print name and error
-	// e1.printStackTrace();
-	// responseContent.append("\r\nBODY Attribute: "
-	// + attribute.getHttpDataType().name() + ": "
-	// + attribute.getName() + " Error while reading value: "
-	// + e1.getMessage() + "\r\n");
-	// return;
-	// }
-	// if (value.length() > 100) {
-	// responseContent.append("\r\nBODY Attribute: "
-	// + attribute.getHttpDataType().name() + ": "
-	// + attribute.getName() + " data too long\r\n");
-	// } else {
-	// responseContent.append("\r\nBODY Attribute: "
-	// + attribute.getHttpDataType().name() + ": "
-	// + attribute.toString() + "\r\n");
-	// }
-	// } else {
-	// responseContent.append("\r\nBODY FileUpload: "
-	// + data.getHttpDataType().name() + ": " + data.toString()
-	// + "\r\n");
-	// if (data.getHttpDataType() == HttpDataType.FileUpload) {
-	// FileUpload fileUpload = (FileUpload) data;
-	// if (fileUpload.isCompleted()) {
-	// if (fileUpload.length() < 10000) {
-	// responseContent.append("\tContent of file\r\n");
-	// try {
-	// responseContent.append(fileUpload
-	// .getString(fileUpload.getCharset()));
-	// } catch (IOException e1) {
-	// // do nothing for the example
-	// e1.printStackTrace();
-	// }
-	// responseContent.append("\r\n");
-	// } else {
-	// responseContent
-	// .append("\tFile too long to be printed out:"
-	// + fileUpload.length() + "\r\n");
-	// }
-	// // fileUpload.isInMemory();// tells if the file is in Memory
-	// // or on File
-	// // fileUpload.renameTo(dest); // enable to move into another
-	// // File dest
-	// // decoder.removeFileUploadFromClean(fileUpload); //remove
-	// // the File of to delete file
-	// } else {
-	// responseContent
-	// .append("\tFile to be continued but should not!\r\n");
-	// }
-	// }
-	// }
-	// }
-
+    private static void send100Continue(ChannelHandlerContext ctx) {
+        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, CONTINUE);
+        ctx.writeAndFlush(response);
+    }
+	
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
@@ -430,50 +249,5 @@ public class HttpPhotoServerHandler extends
 		ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
 	}
 
-//	private void writeResponse(Channel channel) {
-//		// Convert the response content to a ChannelBuffer.
-//		ByteBuf buf = copiedBuffer(responseContent.toString(),
-//				CharsetUtil.UTF_8);
-//		responseContent.setLength(0);
-//
-//		// Decide whether to close the connection or not.
-//		boolean close = request.headers().contains(CONNECTION,
-//				HttpHeaders.Values.CLOSE, true)
-//				|| request.getProtocolVersion().equals(HttpVersion.HTTP_1_0)
-//				&& !request.headers().contains(CONNECTION,
-//						HttpHeaders.Values.KEEP_ALIVE, true);
-//
-//		// Build the response object.
-//		FullHttpResponse response = new DefaultFullHttpResponse(
-//				HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
-//		response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
-//
-//		if (!close) {
-//			// There's no need to add 'Content-Length' header
-//			// if this is the last response.
-//			response.headers().set(CONTENT_LENGTH, buf.readableBytes());
-//		}
-//
-//		Set<Cookie> cookies;
-//		String value = request.headers().get(COOKIE);
-//		if (value == null) {
-//			cookies = Collections.emptySet();
-//		} else {
-//			cookies = CookieDecoder.decode(value);
-//		}
-//		if (!cookies.isEmpty()) {
-//			// Reset the cookies if necessary.
-//			for (Cookie cookie : cookies) {
-//				response.headers().add(SET_COOKIE,
-//						ServerCookieEncoder.encode(cookie));
-//			}
-//		}
-//		// Write the response.
-//		ChannelFuture future = channel.writeAndFlush(response);
-//		// Close the connection after the write operation is done if necessary.
-//		if (close) {
-//			future.addListener(ChannelFutureListener.CLOSE);
-//		}
-//	}
 
 }

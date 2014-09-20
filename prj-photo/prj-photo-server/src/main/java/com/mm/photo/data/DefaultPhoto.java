@@ -15,7 +15,7 @@ public class DefaultPhoto implements IPhoto{
 	static DB db;
 	static
 	{
-		db = LevelDB.ins().getDB("photo.storage");
+		db = LevelDB.ins().getDB();
 	}
 	
 	String uniqname;

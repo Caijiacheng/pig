@@ -17,18 +17,17 @@ public class HttpPhotoServer {
 	static final int DEFAULT_PORT = 8081;
 	static final int DEFAULT_WORK_THREAD_NUM = 10;
 	static final int DEFAULT_BOSS_THREAD_NUM = 0;
+	static final String DEFAULT_CONFIG_FILE = "release.propertis";
 	static Properties s_prop = new Properties();
 	static
 	{
 		try {
 			s_prop.load(ClassLoader
-					.getSystemResourceAsStream("release.propertis"));
+					.getSystemResourceAsStream(DEFAULT_CONFIG_FILE));
 		} catch (IOException e) {
 			LOG.error("Config Load Failed!");
 		}
 	}
-	
-	
 	
 	private final int port;
 
@@ -39,7 +38,7 @@ public class HttpPhotoServer {
 
 	public HttpPhotoServer()
 	{
-		this(Integer.parseInt(s_prop.getProperty("leveldb.block.size",
+		this(Integer.parseInt(s_prop.getProperty("photo.http.server.port",
 				String.valueOf(DEFAULT_PORT))));
 	}
 	
