@@ -9,9 +9,11 @@ abstract class PojoAccount implements IAccount, ILoad {
 	 String _phoneid;
 	 String _weiboid;
 	 String _qqid;
+	 String _weixinid;
 	 String _pwd;
 	 Integer _infover;  
 	 boolean _validate;
+	 String _request_token;
 	
 	@Override
 	public long id() {
@@ -32,7 +34,7 @@ abstract class PojoAccount implements IAccount, ILoad {
 	public Optional<String> name() {
 		return Optional.fromNullable(_name);
 	}
-
+	
 	@Override
 	public Optional<String> phoneid() {
 		return Optional.fromNullable(_phoneid);
@@ -48,10 +50,21 @@ abstract class PojoAccount implements IAccount, ILoad {
 		return Optional.fromNullable(_qqid);
 	}
 
+	public Optional<String> weixinid()
+	{
+		return Optional.fromNullable(_weixinid);
+	}
+	
+	
+	@Override
+	public String requesttoken()
+	{
+		return _request_token;
+	}
 
 	@Override
-	public String passwd() {
-		return _pwd;
+	public Optional<String> passwd() {
+		return Optional.fromNullable(_pwd);
 	}
 	
 }

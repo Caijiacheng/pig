@@ -6,6 +6,7 @@ enum Gender
 	FEMALE = 0;
 }
 
+
 message UserData
 {
 	required int32 version = 1 [default = 0];

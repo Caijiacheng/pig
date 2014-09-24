@@ -10,22 +10,19 @@ import org.slf4j.LoggerFactory;
 import com.mm.account.control.LoginController;
 
 /**
- * Hello world!
  *
  */
+@Deprecated
 public class App 
 {
 	static Logger LOG = LoggerFactory.getLogger(App.class);
     public static void main( String[] args ) throws IOException
     {
-        System.out.println( "Hello World!" );
+//        System.out.println( "Hello World!" );
 		Properties prop = new Properties();
 		prop.load(App.class.getClassLoader().getResourceAsStream("release.propertis"));
 		
-//		for (Entry<Object, Object> obj : prop.entrySet())
-//		{
-//			LOG.debug("key:{}, value:{}", obj.getKey(), obj.getValue());
-//		}
+//		LOG.error("prop:{}", prop);
 		
 		RestExpress srv;
 		srv = new RestExpress()

@@ -42,6 +42,8 @@ import com.mm.account.token.DefaultToken;
 import com.mm.account.token.IToken;
 import com.mm.account.token.ITokenService;
 
+
+@Deprecated
 public class LoginController {
 
 	final static String TYPE_EMS_GET_PWD = "1";

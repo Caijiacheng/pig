@@ -1,4 +1,4 @@
-package com.mm.account.token;
+package com.mm.auth.token;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,22 +12,21 @@ import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Response;
 
 import com.google.common.base.Optional;
-import com.mm.account.db.RedisDB;
+import com.google.common.io.BaseEncoding;
 
 
-@Deprecated
 public class DefaultToken extends PojoToken {
 	
-	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
-	public static String bytesToHex(byte[] bytes) {
-	    char[] hexChars = new char[bytes.length * 2];
-	    for ( int j = 0; j < bytes.length; j++ ) {
-	        int v = bytes[j] & 0xFF;
-	        hexChars[j * 2] = hexArray[v >>> 4];
-	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-	    }
-	    return new String(hexChars);
-	}
+//	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+//	public static String bytesToHex(byte[] bytes) {
+//	    char[] hexChars = new char[bytes.length * 2];
+//	    for ( int j = 0; j < bytes.length; j++ ) {
+//	        int v = bytes[j] & 0xFF;
+//	        hexChars[j * 2] = hexArray[v >>> 4];
+//	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+//	    }
+//	    return new String(hexChars);
+//	}
 	
 	String getTokenKey()
 	{
@@ -39,15 +38,16 @@ public class DefaultToken extends PojoToken {
 
 		static int TOKEN_VAILD_PERIOD = 7 * 24 * 60 * 60;
 		
-		String getTokenIDKey(long userid)
+		String getTokenIDKey(String userid)
 		{
-			return "TOKEN:" + "USERID:" + Long.toString(userid); 
+			return "TOKEN:" + "USERID:" + userid; 
 		}
 		
 		@Override
-		public IToken newToken(long id) {
+		public IToken newToken(String id) {
 			
-			String st = Long.toString(id) + Long.toString(System.currentTimeMillis());
+			String st = id + "_" + Long.toString(System.currentTimeMillis());
+			
 			
 			MessageDigest md;
 			try {
@@ -58,18 +58,18 @@ public class DefaultToken extends PojoToken {
 				throw new RuntimeException(e);
 			}
 
-			String md5 = bytesToHex(md.digest());
+			String md5 = BaseEncoding.base32Hex().encode(md.digest());
 			DefaultToken token = new DefaultToken();
 			
 			token._id = id;
 			token._token = md5;
 			token._duration = TOKEN_VAILD_PERIOD;
 			
-			RedisDB db = new RedisDB();
+			TokenDB db = new TokenDB();
 			try(Jedis jh = db.getConn())
 			{
 				Pipeline pipe =  jh.pipelined();
-				pipe.set(token.getTokenKey(), Long.toString(token.id()));
+				pipe.set(token.getTokenKey(), token.id());
 				pipe.expire(token.getTokenKey(), token.duration());
 				pipe.set(getTokenIDKey(token.id()), token.token());
 				pipe.expire(getTokenIDKey(token.id()), token.duration());
@@ -82,7 +82,7 @@ public class DefaultToken extends PojoToken {
 		@Override
 		public boolean checkValid(IToken token) {
 			DefaultToken t = (DefaultToken)token;
-			RedisDB db = new RedisDB();
+			TokenDB db = new TokenDB();
 			try(Jedis jh = db.getConn())
 			{
 				Pipeline pipe = jh.pipelined();
@@ -90,7 +90,7 @@ public class DefaultToken extends PojoToken {
 				Response<String> t2 = pipe.get(getTokenIDKey(t.id()));
 				pipe.sync();
 				
-				return Objects.equals(t1.get(), Long.toString(t.id())) && Objects.equals(t2.get(), t.token());
+				return Objects.equals(t1.get(), t.id()) && Objects.equals(t2.get(), t.token());
 			}
 		}
 
@@ -101,7 +101,7 @@ public class DefaultToken extends PojoToken {
 			DefaultToken t = new DefaultToken();
 			t._token = token;
 			
-			RedisDB db = new RedisDB();
+			TokenDB db = new TokenDB();
 			try(Jedis jh = db.getConn())
 			{
 				String id = jh.get(t.getTokenKey());
@@ -110,7 +110,7 @@ public class DefaultToken extends PojoToken {
 					return Optional.absent();
 				}
 				//comfirm
-				t._id = Long.parseLong(id);
+				t._id = id;
 				String tt = jh.get(getTokenIDKey(t.id()));
 				if (!Objects.equals(tt, token))
 				{
@@ -125,13 +125,12 @@ public class DefaultToken extends PojoToken {
 		}
 		
 		
-		
 		@Override
 		public void expireToken(IToken token) {
 			
 			DefaultToken t = (DefaultToken)token;
 			
-			RedisDB db = new RedisDB();
+			TokenDB db = new TokenDB();
 			try(Jedis jh = db.getConn())
 			{
 				Pipeline pipe = jh.pipelined();
@@ -141,9 +140,8 @@ public class DefaultToken extends PojoToken {
 			}
 		}
 
-		@Override
 		public boolean ping() {
-			RedisDB db = new RedisDB();
+			TokenDB db = new TokenDB();
 			
 			try(Jedis jh = db.getConn())
 			{

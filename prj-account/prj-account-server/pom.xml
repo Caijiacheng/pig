@@ -16,13 +16,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<redis.master.server>127.0.0.1:6370</redis.master.server>
-		<redis.password>qwe123!</redis.password>
-		<redis.dbnum>0</redis.dbnum>
-		<mysql.master.server>127.0.0.1:3660</mysql.master.server>
-		<mysql.user>root</mysql.user>
-		<mysql.password>qwe123!</mysql.password>
-		<restful.bind.port>8081</restful.bind.port>
+
 	</properties>
 
 	<dependencies>
@@ -32,10 +26,17 @@
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.mm.sde</groupId>
+			<groupId>com.mm.sde</groupId>
 			<artifactId>lib-util</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.mm.sde</groupId>
+			<artifactId>lib-token</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -62,11 +63,14 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
-			<resource>
+		</resources>
+
+		<testResources>
+			<testResource>
 				<directory>src/test/resources</directory>
 				<filtering>true</filtering>
-			</resource>
-		</resources>
+			</testResource>
+		</testResources>
 
 		<plugins>
 			<plugin>

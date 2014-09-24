@@ -10,7 +10,7 @@ public class RedisHandle extends AbsDBHandle<Jedis> {
 		public String host;
 		public int port = 3306;
 		public int dbnum = 0;
-		public String passwd;
+		public String passwd = null;
 		
 	}
 	
@@ -26,9 +26,17 @@ public class RedisHandle extends AbsDBHandle<Jedis> {
 	}
 	
 	
+	private Conf conf;
+	
+	public RedisHandle(Conf conf)
+	{
+		this.conf = conf;
+		Preconditions.checkNotNull(this.conf);
+		Preconditions.checkNotNull(this.conf.host);
+	}
+	
 	public RedisHandle() {
-		Preconditions.checkNotNull(default_config);
-		Preconditions.checkNotNull(default_config.host);
+		this(default_config);
 	}
 	
 	@Override
@@ -37,15 +45,15 @@ public class RedisHandle extends AbsDBHandle<Jedis> {
 		Jedis handle = null;
 		if (!s_conn_share_mode.get())
 		{
-			handle = new Jedis(getDefaultConfig().host, getDefaultConfig().port);
+			handle = new Jedis(this.conf.host, this.conf.port);
 		}else
 		{
-			handle = new WrapperJedis(getDefaultConfig().host, getDefaultConfig().port);
+			handle = new WrapperJedis(this.conf.host, this.conf.port);
 		}
 		
-		if (getDefaultConfig().passwd != null)
-			handle.auth(getDefaultConfig().passwd);
-		handle.select(getDefaultConfig().dbnum);
+		if (this.conf.passwd != null)
+			handle.auth(this.conf.passwd);
+		handle.select(this.conf.dbnum);
 		return handle;
 	}
 

@@ -1,4 +1,4 @@
-package com.mm.account.token;
+package com.mm.auth.token;
 
 import junit.framework.Assert;
 
@@ -6,11 +6,11 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Deprecated
-@Ignore
+
 public class TestDefaultToken {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -20,6 +20,9 @@ public class TestDefaultToken {
 	public static void tearDownAfterClass() throws Exception {
 	}
 
+	
+	static Logger LOG = LoggerFactory.getLogger(TestDefaultToken.class);
+	
 	@Before
 	public void setUp() throws Exception {
 	}
@@ -34,7 +37,7 @@ public class TestDefaultToken {
 	{
 		ITokenService service = new DefaultToken.Service();
 		
-		IToken token = service.newToken(1);
+		IToken token = service.newToken("1");
 		
 		Assert.assertTrue(service.checkValid(token));
 		
@@ -48,7 +51,7 @@ public class TestDefaultToken {
 	{
 		ITokenService service = new DefaultToken.Service();
 		
-		IToken token = service.newToken(134343);
+		IToken token = service.newToken("134343");
 		
 		IToken token_0 = service.getToken(token.token()).get();
 		
@@ -66,7 +69,7 @@ public class TestDefaultToken {
 		
 		ITokenService service = new DefaultToken.Service();
 		
-		IToken token = service.newToken(2);
+		IToken token = service.newToken("2");
 		Assert.assertTrue(service.checkValid(token));
 		
 		Thread.sleep((DefaultToken.Service.TOKEN_VAILD_PERIOD + 1)  * 1000);
@@ -77,7 +80,7 @@ public class TestDefaultToken {
 	@Test
 	public void testTokenExpiredSameID() throws InterruptedException
 	{
-		long userid = 12345;
+		String userid = "12345";
 		
 		ITokenService service = new DefaultToken.Service();
 		IToken token = service.newToken(userid);

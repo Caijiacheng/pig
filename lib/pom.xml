@@ -28,5 +28,7 @@
 <!-- 		<module>jutil</module>
  -->		<module>lib-restlite</module>
 		<module>lib-util</module>
+		<module>lib-auth</module>
+		<module>lib-token</module>
 	</modules>
 </project>

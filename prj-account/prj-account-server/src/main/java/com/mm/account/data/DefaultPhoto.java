@@ -26,7 +26,7 @@ import com.mm.account.error.UnknowAccException;
  * @author apple
  *
  */
-
+@Deprecated
 public class DefaultPhoto implements IPhoto {
 	
 	ByteSource in;

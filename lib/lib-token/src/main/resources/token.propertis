@@ -1,0 +1,3 @@
+token.redis.server=${redis.master.server}
+token.redis.password=${redis.password}
+token.redis.dbnum=${redis.dbnum}

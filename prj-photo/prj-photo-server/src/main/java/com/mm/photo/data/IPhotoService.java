@@ -6,10 +6,6 @@ import java.io.OutputStream;
 
 public interface IPhotoService {
 
-//	IUrl upload(IPhoto photo);
-//	
-//	IPhoto download(IUrl url);
-	
 	boolean isExist(IUrl url);
 	
 	public IPhoto get(IUrl url);

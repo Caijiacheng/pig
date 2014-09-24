@@ -15,6 +15,23 @@
 		<tools.path>${top.dir}/tools</tools.path>
 		<release.dir>release</release.dir>
 		<netty.version>5.0.0.Alpha1</netty.version>
+		
+		<!-- distribute -->
+		<redis.master.server>127.0.0.1:6379</redis.master.server>
+		<redis.password>qwe123!</redis.password>
+		<redis.dbnum>15</redis.dbnum>
+		
+		<mysql.master.server>127.0.0.1:3660</mysql.master.server>
+		<mysql.user>root</mysql.user>
+		<mysql.password>qwe123!</mysql.password>
+		<restful.bind.port>8081</restful.bind.port>
+		
+		<!-- test -->
+		<test.redis.master.server>127.0.0.1:6379</test.redis.master.server>
+		<test.redis.password>qwe123!</test.redis.password>
+		<test.redis.dbnum>0</test.redis.dbnum>
+		
+		
 	</properties>
 	<!-- all open source version -->
 	<dependencyManagement>

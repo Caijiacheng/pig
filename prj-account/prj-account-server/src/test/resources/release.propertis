@@ -1,6 +1,6 @@
-redis.server=127.0.0.1:6379
-redis.password=qwe123!
-redis.dbnum=0
+redis.server=${test.redis.master.server}
+redis.password=${test.redis.password}
+redis.dbnum=${test.redis.dbnum}
 
 mysql.server=127.0.0.1:3306
 mysql.user=root

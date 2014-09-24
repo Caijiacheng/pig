@@ -1,11 +1,10 @@
-package com.mm.account.token;
+package com.mm.auth.token;
 
 import com.google.common.base.Optional;
-import com.mm.account.server.IService;
 
-public interface ITokenService extends IService{
+public interface ITokenService {
 
-	IToken newToken(long id);
+	IToken newToken(String uniqid);
 	
 	Optional<IToken> getToken(String token);
 	

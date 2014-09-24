@@ -16,6 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import junit.framework.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restexpress.Request;
 import org.restexpress.Response;
@@ -44,6 +45,9 @@ import com.mm.account.control.LoginController.UserInfo;
 import com.mm.account.control.LoginController.UserUpdatePwd;
 import com.mm.account.control.LoginController.UsetInfoRet;
 
+
+@Deprecated
+@Ignore
 public class TestLoginController {
 
 	static Logger LOG = LoggerFactory.getLogger(TestLoginController.class);
