@@ -1,7 +1,9 @@
 package com.mm.auth.token;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
-import java.util.UUID;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,8 @@ public class DefaultToken extends PojoToken {
 
 		static int TOKEN_VAILD_PERIOD = 7 * 24 * 60 * 60;
 		
+		Random rd = new Random(System.currentTimeMillis());
+		
 		String getTokenIDKey(String userid)
 		{
 			return "TOKEN:" + "USERID:" + userid; 
@@ -45,19 +49,26 @@ public class DefaultToken extends PojoToken {
 		@Override
 		public IToken newToken(String id) {
 			
-//			String st = id + "_" + Long.toString(System.currentTimeMillis());
-//			MessageDigest md;
-//			try {
-//				md = MessageDigest.getInstance("md5");
-//				md.update(st.getBytes());
-//				
-//			} catch (NoSuchAlgorithmException e) {
-//				throw new RuntimeException(e);
-//			}
-//
-//			String md5 = BaseEncoding.base32Hex().encode(md.digest());
-			String md5 = 
-					BaseEncoding.base64().encode(UUID.randomUUID().toString().getBytes());
+			String md5;
+			do
+			{
+				String st = String.format("%d_%s_%s", 
+						rd.nextLong(), 
+						id , 
+						Long.toString(System.currentTimeMillis()));
+				MessageDigest md;
+				try {
+					md = MessageDigest.getInstance("md5");
+					md.update(st.getBytes());
+					
+				} catch (NoSuchAlgorithmException e) {
+					throw new RuntimeException(e);
+				}
+				md5 = BaseEncoding.base32Hex().encode(md.digest());
+			}while(!getToken(md5).isPresent());
+			
+//			String md5 = 
+//					BaseEncoding.base64().encode(UUID.randomUUID().toString().getBytes());
 			
 			DefaultToken token = new DefaultToken();
 			
