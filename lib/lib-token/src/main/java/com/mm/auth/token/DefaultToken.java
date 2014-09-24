@@ -1,8 +1,7 @@
 package com.mm.auth.token;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,19 +45,20 @@ public class DefaultToken extends PojoToken {
 		@Override
 		public IToken newToken(String id) {
 			
-			String st = id + "_" + Long.toString(System.currentTimeMillis());
+//			String st = id + "_" + Long.toString(System.currentTimeMillis());
+//			MessageDigest md;
+//			try {
+//				md = MessageDigest.getInstance("md5");
+//				md.update(st.getBytes());
+//				
+//			} catch (NoSuchAlgorithmException e) {
+//				throw new RuntimeException(e);
+//			}
+//
+//			String md5 = BaseEncoding.base32Hex().encode(md.digest());
+			String md5 = 
+					BaseEncoding.base64().encode(UUID.randomUUID().toString().getBytes());
 			
-			
-			MessageDigest md;
-			try {
-				md = MessageDigest.getInstance("md5");
-				md.update(st.getBytes());
-				
-			} catch (NoSuchAlgorithmException e) {
-				throw new RuntimeException(e);
-			}
-
-			String md5 = BaseEncoding.base32Hex().encode(md.digest());
 			DefaultToken token = new DefaultToken();
 			
 			token._id = id;

@@ -23,7 +23,6 @@ public class App
 		prop.load(App.class.getClassLoader().getResourceAsStream("release.propertis"));
 		
 //		LOG.error("prop:{}", prop);
-		
 		RestExpress srv;
 		srv = new RestExpress()
 		.setName("account-server")

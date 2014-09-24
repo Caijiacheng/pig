@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,19 +104,20 @@ public class DefaultAccount extends PojoAccount {
 
 		String newLoginToken(long userid) {
 
-			String st = String.format("login_token_%s_%s", userid,
-					System.currentTimeMillis());
-
-			MessageDigest md;
-			try {
-				md = MessageDigest.getInstance("md5");
-				md.update(st.getBytes());
-
-			} catch (NoSuchAlgorithmException e) {
-				throw new RuntimeException(e);
-			}
-
-			return BaseEncoding.base32Hex().encode(md.digest());
+//			String st = String.format("login_token_%s_%s", userid,
+//					System.currentTimeMillis());
+//
+//			MessageDigest md;
+//			try {
+//				md = MessageDigest.getInstance("md5");
+//				md.update(st.getBytes());
+//
+//			} catch (NoSuchAlgorithmException e) {
+//				throw new RuntimeException(e);
+//			}
+//
+//			return BaseEncoding.base32Hex().encode(md.digest());
+			return BaseEncoding.base64().encode(UUID.randomUUID().toString().getBytes());
 		}
 
 		@Override
