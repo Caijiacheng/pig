@@ -15,6 +15,13 @@ import com.google.common.base.Optional;
 import com.mm.account.db.RedisDB;
 
 
+/**
+ *  use lib-token
+ * @author apple
+ *
+ */
+
+
 @Deprecated
 public class DefaultToken extends PojoToken {
 	
