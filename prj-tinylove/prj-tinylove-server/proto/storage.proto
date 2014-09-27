@@ -1,0 +1,57 @@
+package com.mm.tinylove.proto;
+
+
+message Location
+{
+	required float x = 1;
+	required float y = 2;
+}
+
+message Prise
+{
+	required int64 userid = 1;
+}
+
+message Msg
+{
+	required int64 userid = 1;
+	optional Location location = 2;
+	optional int64 storyid = 3;
+	optional int64 pairid = 4;
+	repeated int64 commentid = 5 [packed=true]; 
+	required string content = 6;
+	optional string photouri = 7;
+	optional string videouri = 8;
+}
+
+message Comment
+{
+	required int64 msgid = 1;
+	required int64 userid = 2;
+	optional Prise prise = 3;
+}
+
+message Pair
+{
+	required string name = 1;
+	repeated int64 users = 2;
+	required int64 creator = 3;
+}
+
+message Story
+{
+	required int64 userid = 1;
+	repeated int64 msgids = 2;
+}
+
+message UserInfo
+{
+	optional string name = 1;
+	repeated int64 storys = 2;
+	repeated int64 comments = 3;
+	repeated int64 pairs = 4;
+	
+}
+
+
+
