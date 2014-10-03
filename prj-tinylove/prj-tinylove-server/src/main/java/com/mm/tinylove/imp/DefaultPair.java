@@ -13,16 +13,26 @@ public class DefaultPair extends ProtoStorage<Pair.Builder> implements IPair{
 	public DefaultPair(long id) {
 		super(id, Pair.newBuilder());
 	}
-
+	
+	static DefaultPair create()
+	{
+		return new DefaultPair(INVAID_KEY);
+	}
+	
 	@Override
 	public String name() {
 		return getProto().getName();
 	}
-
+	
+	List<Long> getUserListIds()
+	{
+		return new ListStorage0(getKey()+":users");
+	}
+	
 	@Override
 	public List<IUser> user() {
 		
-		return Lists.transform(getProto().getUsersList(), new Function<Long, IUser>() {
+		return Lists.transform(getUserListIds(), new Function<Long, IUser>() {
 			public IUser apply(Long id)
 			{
 				return Ins.getIUser(id);

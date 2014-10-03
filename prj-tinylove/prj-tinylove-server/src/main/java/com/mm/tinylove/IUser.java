@@ -1,17 +1,16 @@
 package com.mm.tinylove;
 
-import java.util.List;
 
 public interface IUser extends IObject{
 
 	String name();
 	
-	List<IStory> userStorys();
-	List<IComment> userComment();
-	List<IPair> userPairs();
+	IRangeList<IStory> userStorys();
+	IRangeList<IComment> userComment();
+	IRangeList<IPair> userPairs();
 	
-	IMessage publishMsg(IPair pair, String content, String imgurl, String videourl);
-	IComment publishComment(IMessage msg);
+	IMessage publishMsg(IPair pair, String content, ILocation location, String imgurl, String videourl);
+	IComment publishComment(IMessage msg, String content);
 	IPrise publishPrise(IMessage msg);
 	IPrise publishPriseOfComment(IComment comment);
 	

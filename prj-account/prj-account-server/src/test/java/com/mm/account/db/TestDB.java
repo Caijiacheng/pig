@@ -217,8 +217,13 @@ public class TestDB {
 		service.awaitTermination(3, TimeUnit.SECONDS);
 		
 		Assert.assertTrue(!thread_share_conn.isConnected());
-
-
 	}
+	
+//	@Test
+//	public void testRedisTransction()
+//	{
+//		Jedis conn = new RedisDB().getSharedConn();
+//		Transaction t = conn.multi();
+//	}
 
 }

@@ -1,18 +1,14 @@
 package com.mm.tinylove.imp;
 
-import com.google.common.base.Charsets;
 
-abstract public class KVStorage implements IStorage {
+abstract public class KVStorage implements IKVStorage {
 
+	public static long INVAID_KEY = -1;
+	
 	protected long id;
 
 	public KVStorage(long id) {
 		this.id = id;
-	}
-
-	public KVStorage() {
-		this.id = -1;
-
 	}
 
 	String uniqKey() {
@@ -20,9 +16,9 @@ abstract public class KVStorage implements IStorage {
 	}
 
 	public long id() {
-		if (id == -1) {
+		if (id == INVAID_KEY) {
 			id = Ins.getUniqService()
-					.nextID(uniqKey().getBytes(Charsets.UTF_8));
+					.nextID(uniqKey());
 		}
 		return id;
 	}
@@ -32,13 +28,13 @@ abstract public class KVStorage implements IStorage {
 	}
 
 	@Override
-	public byte[] marshalKey() {
-		return getKey().getBytes(Charsets.UTF_8);
+	public String marshalKey() {
+		return getKey();
 	}
 
 	@Override
 	@Deprecated
-	public void unmarshalKey(byte[] data) {
+	public void unmarshalKey(String k) {
 
 	}
 

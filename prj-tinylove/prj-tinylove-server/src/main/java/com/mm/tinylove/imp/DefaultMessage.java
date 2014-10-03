@@ -19,11 +19,20 @@ import com.mm.tinylove.proto.Storage.Msg;
 public class DefaultMessage extends ProtoStorage<Msg.Builder> implements
 		IMessage {
 
-	
 	static Logger LOG = LoggerFactory.getLogger(DefaultMessage.class);
 	
 	public DefaultMessage(long id) {
 		super(id, Msg.newBuilder());
+	}
+
+	static DefaultMessage create()
+	{
+		return new DefaultMessage(KVStorage.INVAID_KEY);
+	}
+
+	List<Long> getCommentListIDs()
+	{
+		return new ListStorage0(getKey() + ":comment");
 	}
 
 	@Override
@@ -38,8 +47,7 @@ public class DefaultMessage extends ProtoStorage<Msg.Builder> implements
 
 	@Override
 	public List<IComment> comment() {
-		
-		return Lists.transform(getProto().getCommentidList(),
+		return Lists.transform(getCommentListIDs(),
 				new Function<Long, IComment>() {
 					public IComment apply(Long input) {
 						return Ins.getIComment(input);

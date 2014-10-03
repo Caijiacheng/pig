@@ -16,12 +16,13 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.mm.tinylove.db.StorageDB;
 
-public class ListStorage implements List<Long> {
+@Deprecated
+public class ListStorage0 implements List<Long> {
 
 	StorageDB dbhandle = new StorageDB();
 	String key;
 
-	public ListStorage(String key) {
+	public ListStorage0(String key) {
 		this.key = key;
 	}
 
@@ -277,7 +278,7 @@ public class ListStorage implements List<Long> {
 			if (lastRet < 0)
 				throw new IllegalStateException();
 
-			ListStorage.this.remove(lastRet);
+			ListStorage0.this.remove(lastRet);
 			if (lastRet < cursor)
 				cursor--;
 			lastRet = -1;
@@ -318,7 +319,7 @@ public class ListStorage implements List<Long> {
 				throw new IllegalStateException();
 
 			try {
-				ListStorage.this.set(lastRet, e);
+				ListStorage0.this.set(lastRet, e);
 			} catch (IndexOutOfBoundsException ex) {
 				throw new ConcurrentModificationException();
 			}
@@ -328,7 +329,7 @@ public class ListStorage implements List<Long> {
 
 			try {
 				int i = cursor;
-				ListStorage.this.add(i, e);
+				ListStorage0.this.add(i, e);
 				lastRet = -1;
 				cursor = i + 1;
 			} catch (IndexOutOfBoundsException ex) {

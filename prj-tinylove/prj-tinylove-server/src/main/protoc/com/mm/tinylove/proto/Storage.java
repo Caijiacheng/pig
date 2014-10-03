@@ -952,31 +952,29 @@ public final class Storage {
      */
     long getPairid();
 
-    // repeated int64 commentid = 5 [packed = true];
-    /**
-     * <code>repeated int64 commentid = 5 [packed = true];</code>
-     */
-    java.util.List<java.lang.Long> getCommentidList();
-    /**
-     * <code>repeated int64 commentid = 5 [packed = true];</code>
-     */
-    int getCommentidCount();
-    /**
-     * <code>repeated int64 commentid = 5 [packed = true];</code>
-     */
-    long getCommentid(int index);
-
     // required string content = 6;
     /**
      * <code>required string content = 6;</code>
+     *
+     * <pre>
+     *repeated int64 commentid = 5 [packed=true]; 
+     * </pre>
      */
     boolean hasContent();
     /**
      * <code>required string content = 6;</code>
+     *
+     * <pre>
+     *repeated int64 commentid = 5 [packed=true]; 
+     * </pre>
      */
     java.lang.String getContent();
     /**
      * <code>required string content = 6;</code>
+     *
+     * <pre>
+     *repeated int64 commentid = 5 [packed=true]; 
+     * </pre>
      */
     com.google.protobuf.ByteString
         getContentBytes();
@@ -1090,27 +1088,6 @@ public final class Storage {
               pairid_ = input.readInt64();
               break;
             }
-            case 40: {
-              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-                commentid_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000010;
-              }
-              commentid_.add(input.readInt64());
-              break;
-            }
-            case 42: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010) && input.getBytesUntilLimit() > 0) {
-                commentid_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000010;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                commentid_.add(input.readInt64());
-              }
-              input.popLimit(limit);
-              break;
-            }
             case 50: {
               bitField0_ |= 0x00000010;
               content_ = input.readBytes();
@@ -1134,9 +1111,6 @@ public final class Storage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-          commentid_ = java.util.Collections.unmodifiableList(commentid_);
-        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -1239,41 +1213,25 @@ public final class Storage {
       return pairid_;
     }
 
-    // repeated int64 commentid = 5 [packed = true];
-    public static final int COMMENTID_FIELD_NUMBER = 5;
-    private java.util.List<java.lang.Long> commentid_;
-    /**
-     * <code>repeated int64 commentid = 5 [packed = true];</code>
-     */
-    public java.util.List<java.lang.Long>
-        getCommentidList() {
-      return commentid_;
-    }
-    /**
-     * <code>repeated int64 commentid = 5 [packed = true];</code>
-     */
-    public int getCommentidCount() {
-      return commentid_.size();
-    }
-    /**
-     * <code>repeated int64 commentid = 5 [packed = true];</code>
-     */
-    public long getCommentid(int index) {
-      return commentid_.get(index);
-    }
-    private int commentidMemoizedSerializedSize = -1;
-
     // required string content = 6;
     public static final int CONTENT_FIELD_NUMBER = 6;
     private java.lang.Object content_;
     /**
      * <code>required string content = 6;</code>
+     *
+     * <pre>
+     *repeated int64 commentid = 5 [packed=true]; 
+     * </pre>
      */
     public boolean hasContent() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
      * <code>required string content = 6;</code>
+     *
+     * <pre>
+     *repeated int64 commentid = 5 [packed=true]; 
+     * </pre>
      */
     public java.lang.String getContent() {
       java.lang.Object ref = content_;
@@ -1291,6 +1249,10 @@ public final class Storage {
     }
     /**
      * <code>required string content = 6;</code>
+     *
+     * <pre>
+     *repeated int64 commentid = 5 [packed=true]; 
+     * </pre>
      */
     public com.google.protobuf.ByteString
         getContentBytes() {
@@ -1397,7 +1359,6 @@ public final class Storage {
       location_ = com.mm.tinylove.proto.Storage.Location.getDefaultInstance();
       storyid_ = 0L;
       pairid_ = 0L;
-      commentid_ = java.util.Collections.emptyList();
       content_ = "";
       photouri_ = "";
       videouri_ = "";
@@ -1440,13 +1401,6 @@ public final class Storage {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeInt64(4, pairid_);
       }
-      if (getCommentidList().size() > 0) {
-        output.writeRawVarint32(42);
-        output.writeRawVarint32(commentidMemoizedSerializedSize);
-      }
-      for (int i = 0; i < commentid_.size(); i++) {
-        output.writeInt64NoTag(commentid_.get(i));
-      }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBytes(6, getContentBytes());
       }
@@ -1480,20 +1434,6 @@ public final class Storage {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(4, pairid_);
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < commentid_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(commentid_.get(i));
-        }
-        size += dataSize;
-        if (!getCommentidList().isEmpty()) {
-          size += 1;
-          size += com.google.protobuf.CodedOutputStream
-              .computeInt32SizeNoTag(dataSize);
-        }
-        commentidMemoizedSerializedSize = dataSize;
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1636,14 +1576,12 @@ public final class Storage {
         bitField0_ = (bitField0_ & ~0x00000004);
         pairid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
-        commentid_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000010);
         content_ = "";
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000010);
         photouri_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000020);
         videouri_ = "";
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -1692,20 +1630,15 @@ public final class Storage {
           to_bitField0_ |= 0x00000008;
         }
         result.pairid_ = pairid_;
-        if (((bitField0_ & 0x00000010) == 0x00000010)) {
-          commentid_ = java.util.Collections.unmodifiableList(commentid_);
-          bitField0_ = (bitField0_ & ~0x00000010);
-        }
-        result.commentid_ = commentid_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
         result.content_ = content_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
         result.photouri_ = photouri_;
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000040;
         }
         result.videouri_ = videouri_;
@@ -1737,28 +1670,18 @@ public final class Storage {
         if (other.hasPairid()) {
           setPairid(other.getPairid());
         }
-        if (!other.commentid_.isEmpty()) {
-          if (commentid_.isEmpty()) {
-            commentid_ = other.commentid_;
-            bitField0_ = (bitField0_ & ~0x00000010);
-          } else {
-            ensureCommentidIsMutable();
-            commentid_.addAll(other.commentid_);
-          }
-          onChanged();
-        }
         if (other.hasContent()) {
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000010;
           content_ = other.content_;
           onChanged();
         }
         if (other.hasPhotouri()) {
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000020;
           photouri_ = other.photouri_;
           onChanged();
         }
         if (other.hasVideouri()) {
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000040;
           videouri_ = other.videouri_;
           onChanged();
         }
@@ -2019,82 +1942,24 @@ public final class Storage {
         return this;
       }
 
-      // repeated int64 commentid = 5 [packed = true];
-      private java.util.List<java.lang.Long> commentid_ = java.util.Collections.emptyList();
-      private void ensureCommentidIsMutable() {
-        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
-          commentid_ = new java.util.ArrayList<java.lang.Long>(commentid_);
-          bitField0_ |= 0x00000010;
-         }
-      }
-      /**
-       * <code>repeated int64 commentid = 5 [packed = true];</code>
-       */
-      public java.util.List<java.lang.Long>
-          getCommentidList() {
-        return java.util.Collections.unmodifiableList(commentid_);
-      }
-      /**
-       * <code>repeated int64 commentid = 5 [packed = true];</code>
-       */
-      public int getCommentidCount() {
-        return commentid_.size();
-      }
-      /**
-       * <code>repeated int64 commentid = 5 [packed = true];</code>
-       */
-      public long getCommentid(int index) {
-        return commentid_.get(index);
-      }
-      /**
-       * <code>repeated int64 commentid = 5 [packed = true];</code>
-       */
-      public Builder setCommentid(
-          int index, long value) {
-        ensureCommentidIsMutable();
-        commentid_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 commentid = 5 [packed = true];</code>
-       */
-      public Builder addCommentid(long value) {
-        ensureCommentidIsMutable();
-        commentid_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 commentid = 5 [packed = true];</code>
-       */
-      public Builder addAllCommentid(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensureCommentidIsMutable();
-        super.addAll(values, commentid_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 commentid = 5 [packed = true];</code>
-       */
-      public Builder clearCommentid() {
-        commentid_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000010);
-        onChanged();
-        return this;
-      }
-
       // required string content = 6;
       private java.lang.Object content_ = "";
       /**
        * <code>required string content = 6;</code>
+       *
+       * <pre>
+       *repeated int64 commentid = 5 [packed=true]; 
+       * </pre>
        */
       public boolean hasContent() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
        * <code>required string content = 6;</code>
+       *
+       * <pre>
+       *repeated int64 commentid = 5 [packed=true]; 
+       * </pre>
        */
       public java.lang.String getContent() {
         java.lang.Object ref = content_;
@@ -2109,6 +1974,10 @@ public final class Storage {
       }
       /**
        * <code>required string content = 6;</code>
+       *
+       * <pre>
+       *repeated int64 commentid = 5 [packed=true]; 
+       * </pre>
        */
       public com.google.protobuf.ByteString
           getContentBytes() {
@@ -2125,35 +1994,47 @@ public final class Storage {
       }
       /**
        * <code>required string content = 6;</code>
+       *
+       * <pre>
+       *repeated int64 commentid = 5 [packed=true]; 
+       * </pre>
        */
       public Builder setContent(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000010;
         content_ = value;
         onChanged();
         return this;
       }
       /**
        * <code>required string content = 6;</code>
+       *
+       * <pre>
+       *repeated int64 commentid = 5 [packed=true]; 
+       * </pre>
        */
       public Builder clearContent() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000010);
         content_ = getDefaultInstance().getContent();
         onChanged();
         return this;
       }
       /**
        * <code>required string content = 6;</code>
+       *
+       * <pre>
+       *repeated int64 commentid = 5 [packed=true]; 
+       * </pre>
        */
       public Builder setContentBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000010;
         content_ = value;
         onChanged();
         return this;
@@ -2165,7 +2046,7 @@ public final class Storage {
        * <code>optional string photouri = 7;</code>
        */
       public boolean hasPhotouri() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
        * <code>optional string photouri = 7;</code>
@@ -2205,7 +2086,7 @@ public final class Storage {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000020;
         photouri_ = value;
         onChanged();
         return this;
@@ -2214,7 +2095,7 @@ public final class Storage {
        * <code>optional string photouri = 7;</code>
        */
       public Builder clearPhotouri() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000020);
         photouri_ = getDefaultInstance().getPhotouri();
         onChanged();
         return this;
@@ -2227,7 +2108,7 @@ public final class Storage {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  bitField0_ |= 0x00000020;
         photouri_ = value;
         onChanged();
         return this;
@@ -2239,7 +2120,7 @@ public final class Storage {
        * <code>optional string videouri = 8;</code>
        */
       public boolean hasVideouri() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
        * <code>optional string videouri = 8;</code>
@@ -2279,7 +2160,7 @@ public final class Storage {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000040;
         videouri_ = value;
         onChanged();
         return this;
@@ -2288,7 +2169,7 @@ public final class Storage {
        * <code>optional string videouri = 8;</code>
        */
       public Builder clearVideouri() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000040);
         videouri_ = getDefaultInstance().getVideouri();
         onChanged();
         return this;
@@ -2301,7 +2182,7 @@ public final class Storage {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  bitField0_ |= 0x00000040;
         videouri_ = value;
         onChanged();
         return this;
@@ -3033,27 +2914,21 @@ public final class Storage {
     com.google.protobuf.ByteString
         getNameBytes();
 
-    // repeated int64 users = 2;
-    /**
-     * <code>repeated int64 users = 2;</code>
-     */
-    java.util.List<java.lang.Long> getUsersList();
-    /**
-     * <code>repeated int64 users = 2;</code>
-     */
-    int getUsersCount();
-    /**
-     * <code>repeated int64 users = 2;</code>
-     */
-    long getUsers(int index);
-
     // required int64 creator = 3;
     /**
      * <code>required int64 creator = 3;</code>
+     *
+     * <pre>
+     *repeated int64 users = 2;
+     * </pre>
      */
     boolean hasCreator();
     /**
      * <code>required int64 creator = 3;</code>
+     *
+     * <pre>
+     *repeated int64 users = 2;
+     * </pre>
      */
     long getCreator();
   }
@@ -3113,27 +2988,6 @@ public final class Storage {
               name_ = input.readBytes();
               break;
             }
-            case 16: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                users_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              users_.add(input.readInt64());
-              break;
-            }
-            case 18: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
-                users_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                users_.add(input.readInt64());
-              }
-              input.popLimit(limit);
-              break;
-            }
             case 24: {
               bitField0_ |= 0x00000002;
               creator_ = input.readInt64();
@@ -3147,9 +3001,6 @@ public final class Storage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          users_ = java.util.Collections.unmodifiableList(users_);
-        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -3225,40 +3076,25 @@ public final class Storage {
       }
     }
 
-    // repeated int64 users = 2;
-    public static final int USERS_FIELD_NUMBER = 2;
-    private java.util.List<java.lang.Long> users_;
-    /**
-     * <code>repeated int64 users = 2;</code>
-     */
-    public java.util.List<java.lang.Long>
-        getUsersList() {
-      return users_;
-    }
-    /**
-     * <code>repeated int64 users = 2;</code>
-     */
-    public int getUsersCount() {
-      return users_.size();
-    }
-    /**
-     * <code>repeated int64 users = 2;</code>
-     */
-    public long getUsers(int index) {
-      return users_.get(index);
-    }
-
     // required int64 creator = 3;
     public static final int CREATOR_FIELD_NUMBER = 3;
     private long creator_;
     /**
      * <code>required int64 creator = 3;</code>
+     *
+     * <pre>
+     *repeated int64 users = 2;
+     * </pre>
      */
     public boolean hasCreator() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
      * <code>required int64 creator = 3;</code>
+     *
+     * <pre>
+     *repeated int64 users = 2;
+     * </pre>
      */
     public long getCreator() {
       return creator_;
@@ -3266,7 +3102,6 @@ public final class Storage {
 
     private void initFields() {
       name_ = "";
-      users_ = java.util.Collections.emptyList();
       creator_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
@@ -3292,9 +3127,6 @@ public final class Storage {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, getNameBytes());
       }
-      for (int i = 0; i < users_.size(); i++) {
-        output.writeInt64(2, users_.get(i));
-      }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt64(3, creator_);
       }
@@ -3310,15 +3142,6 @@ public final class Storage {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(1, getNameBytes());
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < users_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(users_.get(i));
-        }
-        size += dataSize;
-        size += 1 * getUsersList().size();
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -3442,10 +3265,8 @@ public final class Storage {
         super.clear();
         name_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        users_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
         creator_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -3478,12 +3299,7 @@ public final class Storage {
           to_bitField0_ |= 0x00000001;
         }
         result.name_ = name_;
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          users_ = java.util.Collections.unmodifiableList(users_);
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.users_ = users_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
         result.creator_ = creator_;
@@ -3506,16 +3322,6 @@ public final class Storage {
         if (other.hasName()) {
           bitField0_ |= 0x00000001;
           name_ = other.name_;
-          onChanged();
-        }
-        if (!other.users_.isEmpty()) {
-          if (users_.isEmpty()) {
-            users_ = other.users_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureUsersIsMutable();
-            users_.addAll(other.users_);
-          }
           onChanged();
         }
         if (other.hasCreator()) {
@@ -3630,100 +3436,50 @@ public final class Storage {
         return this;
       }
 
-      // repeated int64 users = 2;
-      private java.util.List<java.lang.Long> users_ = java.util.Collections.emptyList();
-      private void ensureUsersIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          users_ = new java.util.ArrayList<java.lang.Long>(users_);
-          bitField0_ |= 0x00000002;
-         }
-      }
-      /**
-       * <code>repeated int64 users = 2;</code>
-       */
-      public java.util.List<java.lang.Long>
-          getUsersList() {
-        return java.util.Collections.unmodifiableList(users_);
-      }
-      /**
-       * <code>repeated int64 users = 2;</code>
-       */
-      public int getUsersCount() {
-        return users_.size();
-      }
-      /**
-       * <code>repeated int64 users = 2;</code>
-       */
-      public long getUsers(int index) {
-        return users_.get(index);
-      }
-      /**
-       * <code>repeated int64 users = 2;</code>
-       */
-      public Builder setUsers(
-          int index, long value) {
-        ensureUsersIsMutable();
-        users_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 users = 2;</code>
-       */
-      public Builder addUsers(long value) {
-        ensureUsersIsMutable();
-        users_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 users = 2;</code>
-       */
-      public Builder addAllUsers(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensureUsersIsMutable();
-        super.addAll(values, users_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 users = 2;</code>
-       */
-      public Builder clearUsers() {
-        users_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-        return this;
-      }
-
       // required int64 creator = 3;
       private long creator_ ;
       /**
        * <code>required int64 creator = 3;</code>
+       *
+       * <pre>
+       *repeated int64 users = 2;
+       * </pre>
        */
       public boolean hasCreator() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>required int64 creator = 3;</code>
+       *
+       * <pre>
+       *repeated int64 users = 2;
+       * </pre>
        */
       public long getCreator() {
         return creator_;
       }
       /**
        * <code>required int64 creator = 3;</code>
+       *
+       * <pre>
+       *repeated int64 users = 2;
+       * </pre>
        */
       public Builder setCreator(long value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000002;
         creator_ = value;
         onChanged();
         return this;
       }
       /**
        * <code>required int64 creator = 3;</code>
+       *
+       * <pre>
+       *repeated int64 users = 2;
+       * </pre>
        */
       public Builder clearCreator() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000002);
         creator_ = 0L;
         onChanged();
         return this;
@@ -3753,19 +3509,15 @@ public final class Storage {
      */
     long getUserid();
 
-    // repeated int64 msgids = 2;
+    // required int64 pairid = 2;
     /**
-     * <code>repeated int64 msgids = 2;</code>
+     * <code>required int64 pairid = 2;</code>
      */
-    java.util.List<java.lang.Long> getMsgidsList();
+    boolean hasPairid();
     /**
-     * <code>repeated int64 msgids = 2;</code>
+     * <code>required int64 pairid = 2;</code>
      */
-    int getMsgidsCount();
-    /**
-     * <code>repeated int64 msgids = 2;</code>
-     */
-    long getMsgids(int index);
+    long getPairid();
   }
   /**
    * Protobuf type {@code com.mm.tinylove.proto.Story}
@@ -3824,24 +3576,8 @@ public final class Storage {
               break;
             }
             case 16: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                msgids_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              msgids_.add(input.readInt64());
-              break;
-            }
-            case 18: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
-                msgids_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                msgids_.add(input.readInt64());
-              }
-              input.popLimit(limit);
+              bitField0_ |= 0x00000002;
+              pairid_ = input.readInt64();
               break;
             }
           }
@@ -3852,9 +3588,6 @@ public final class Storage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          msgids_ = java.util.Collections.unmodifiableList(msgids_);
-        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -3903,32 +3636,25 @@ public final class Storage {
       return userid_;
     }
 
-    // repeated int64 msgids = 2;
-    public static final int MSGIDS_FIELD_NUMBER = 2;
-    private java.util.List<java.lang.Long> msgids_;
+    // required int64 pairid = 2;
+    public static final int PAIRID_FIELD_NUMBER = 2;
+    private long pairid_;
     /**
-     * <code>repeated int64 msgids = 2;</code>
+     * <code>required int64 pairid = 2;</code>
      */
-    public java.util.List<java.lang.Long>
-        getMsgidsList() {
-      return msgids_;
+    public boolean hasPairid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>repeated int64 msgids = 2;</code>
+     * <code>required int64 pairid = 2;</code>
      */
-    public int getMsgidsCount() {
-      return msgids_.size();
-    }
-    /**
-     * <code>repeated int64 msgids = 2;</code>
-     */
-    public long getMsgids(int index) {
-      return msgids_.get(index);
+    public long getPairid() {
+      return pairid_;
     }
 
     private void initFields() {
       userid_ = 0L;
-      msgids_ = java.util.Collections.emptyList();
+      pairid_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -3936,6 +3662,10 @@ public final class Storage {
       if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasUserid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasPairid()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -3949,8 +3679,8 @@ public final class Storage {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeInt64(1, userid_);
       }
-      for (int i = 0; i < msgids_.size(); i++) {
-        output.writeInt64(2, msgids_.get(i));
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt64(2, pairid_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -3965,14 +3695,9 @@ public final class Storage {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(1, userid_);
       }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < msgids_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(msgids_.get(i));
-        }
-        size += dataSize;
-        size += 1 * getMsgidsList().size();
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, pairid_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -4092,7 +3817,7 @@ public final class Storage {
         super.clear();
         userid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
-        msgids_ = java.util.Collections.emptyList();
+        pairid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -4126,11 +3851,10 @@ public final class Storage {
           to_bitField0_ |= 0x00000001;
         }
         result.userid_ = userid_;
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          msgids_ = java.util.Collections.unmodifiableList(msgids_);
-          bitField0_ = (bitField0_ & ~0x00000002);
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
         }
-        result.msgids_ = msgids_;
+        result.pairid_ = pairid_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -4150,15 +3874,8 @@ public final class Storage {
         if (other.hasUserid()) {
           setUserid(other.getUserid());
         }
-        if (!other.msgids_.isEmpty()) {
-          if (msgids_.isEmpty()) {
-            msgids_ = other.msgids_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureMsgidsIsMutable();
-            msgids_.addAll(other.msgids_);
-          }
-          onChanged();
+        if (other.hasPairid()) {
+          setPairid(other.getPairid());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -4166,6 +3883,10 @@ public final class Storage {
 
       public final boolean isInitialized() {
         if (!hasUserid()) {
+          
+          return false;
+        }
+        if (!hasPairid()) {
           
           return false;
         }
@@ -4224,68 +3945,35 @@ public final class Storage {
         return this;
       }
 
-      // repeated int64 msgids = 2;
-      private java.util.List<java.lang.Long> msgids_ = java.util.Collections.emptyList();
-      private void ensureMsgidsIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          msgids_ = new java.util.ArrayList<java.lang.Long>(msgids_);
-          bitField0_ |= 0x00000002;
-         }
+      // required int64 pairid = 2;
+      private long pairid_ ;
+      /**
+       * <code>required int64 pairid = 2;</code>
+       */
+      public boolean hasPairid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>repeated int64 msgids = 2;</code>
+       * <code>required int64 pairid = 2;</code>
        */
-      public java.util.List<java.lang.Long>
-          getMsgidsList() {
-        return java.util.Collections.unmodifiableList(msgids_);
+      public long getPairid() {
+        return pairid_;
       }
       /**
-       * <code>repeated int64 msgids = 2;</code>
+       * <code>required int64 pairid = 2;</code>
        */
-      public int getMsgidsCount() {
-        return msgids_.size();
-      }
-      /**
-       * <code>repeated int64 msgids = 2;</code>
-       */
-      public long getMsgids(int index) {
-        return msgids_.get(index);
-      }
-      /**
-       * <code>repeated int64 msgids = 2;</code>
-       */
-      public Builder setMsgids(
-          int index, long value) {
-        ensureMsgidsIsMutable();
-        msgids_.set(index, value);
+      public Builder setPairid(long value) {
+        bitField0_ |= 0x00000002;
+        pairid_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int64 msgids = 2;</code>
+       * <code>required int64 pairid = 2;</code>
        */
-      public Builder addMsgids(long value) {
-        ensureMsgidsIsMutable();
-        msgids_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 msgids = 2;</code>
-       */
-      public Builder addAllMsgids(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensureMsgidsIsMutable();
-        super.addAll(values, msgids_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 msgids = 2;</code>
-       */
-      public Builder clearMsgids() {
-        msgids_ = java.util.Collections.emptyList();
+      public Builder clearPairid() {
         bitField0_ = (bitField0_ & ~0x00000002);
+        pairid_ = 0L;
         onChanged();
         return this;
       }
@@ -4307,59 +3995,35 @@ public final class Storage {
     // optional string name = 1;
     /**
      * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *repeated int64 storys = 2;
+     *repeated int64 comments = 3;
+     *repeated int64 pairs = 4;
+     * </pre>
      */
     boolean hasName();
     /**
      * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *repeated int64 storys = 2;
+     *repeated int64 comments = 3;
+     *repeated int64 pairs = 4;
+     * </pre>
      */
     java.lang.String getName();
     /**
      * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *repeated int64 storys = 2;
+     *repeated int64 comments = 3;
+     *repeated int64 pairs = 4;
+     * </pre>
      */
     com.google.protobuf.ByteString
         getNameBytes();
-
-    // repeated int64 storys = 2;
-    /**
-     * <code>repeated int64 storys = 2;</code>
-     */
-    java.util.List<java.lang.Long> getStorysList();
-    /**
-     * <code>repeated int64 storys = 2;</code>
-     */
-    int getStorysCount();
-    /**
-     * <code>repeated int64 storys = 2;</code>
-     */
-    long getStorys(int index);
-
-    // repeated int64 comments = 3;
-    /**
-     * <code>repeated int64 comments = 3;</code>
-     */
-    java.util.List<java.lang.Long> getCommentsList();
-    /**
-     * <code>repeated int64 comments = 3;</code>
-     */
-    int getCommentsCount();
-    /**
-     * <code>repeated int64 comments = 3;</code>
-     */
-    long getComments(int index);
-
-    // repeated int64 pairs = 4;
-    /**
-     * <code>repeated int64 pairs = 4;</code>
-     */
-    java.util.List<java.lang.Long> getPairsList();
-    /**
-     * <code>repeated int64 pairs = 4;</code>
-     */
-    int getPairsCount();
-    /**
-     * <code>repeated int64 pairs = 4;</code>
-     */
-    long getPairs(int index);
   }
   /**
    * Protobuf type {@code com.mm.tinylove.proto.UserInfo}
@@ -4417,69 +4081,6 @@ public final class Storage {
               name_ = input.readBytes();
               break;
             }
-            case 16: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                storys_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              storys_.add(input.readInt64());
-              break;
-            }
-            case 18: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
-                storys_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                storys_.add(input.readInt64());
-              }
-              input.popLimit(limit);
-              break;
-            }
-            case 24: {
-              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-                comments_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000004;
-              }
-              comments_.add(input.readInt64());
-              break;
-            }
-            case 26: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004) && input.getBytesUntilLimit() > 0) {
-                comments_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000004;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                comments_.add(input.readInt64());
-              }
-              input.popLimit(limit);
-              break;
-            }
-            case 32: {
-              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                pairs_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000008;
-              }
-              pairs_.add(input.readInt64());
-              break;
-            }
-            case 34: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008) && input.getBytesUntilLimit() > 0) {
-                pairs_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000008;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                pairs_.add(input.readInt64());
-              }
-              input.popLimit(limit);
-              break;
-            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -4488,15 +4089,6 @@ public final class Storage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          storys_ = java.util.Collections.unmodifiableList(storys_);
-        }
-        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-          comments_ = java.util.Collections.unmodifiableList(comments_);
-        }
-        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-          pairs_ = java.util.Collections.unmodifiableList(pairs_);
-        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -4534,12 +4126,24 @@ public final class Storage {
     private java.lang.Object name_;
     /**
      * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *repeated int64 storys = 2;
+     *repeated int64 comments = 3;
+     *repeated int64 pairs = 4;
+     * </pre>
      */
     public boolean hasName() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
      * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *repeated int64 storys = 2;
+     *repeated int64 comments = 3;
+     *repeated int64 pairs = 4;
+     * </pre>
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -4557,6 +4161,12 @@ public final class Storage {
     }
     /**
      * <code>optional string name = 1;</code>
+     *
+     * <pre>
+     *repeated int64 storys = 2;
+     *repeated int64 comments = 3;
+     *repeated int64 pairs = 4;
+     * </pre>
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -4572,80 +4182,8 @@ public final class Storage {
       }
     }
 
-    // repeated int64 storys = 2;
-    public static final int STORYS_FIELD_NUMBER = 2;
-    private java.util.List<java.lang.Long> storys_;
-    /**
-     * <code>repeated int64 storys = 2;</code>
-     */
-    public java.util.List<java.lang.Long>
-        getStorysList() {
-      return storys_;
-    }
-    /**
-     * <code>repeated int64 storys = 2;</code>
-     */
-    public int getStorysCount() {
-      return storys_.size();
-    }
-    /**
-     * <code>repeated int64 storys = 2;</code>
-     */
-    public long getStorys(int index) {
-      return storys_.get(index);
-    }
-
-    // repeated int64 comments = 3;
-    public static final int COMMENTS_FIELD_NUMBER = 3;
-    private java.util.List<java.lang.Long> comments_;
-    /**
-     * <code>repeated int64 comments = 3;</code>
-     */
-    public java.util.List<java.lang.Long>
-        getCommentsList() {
-      return comments_;
-    }
-    /**
-     * <code>repeated int64 comments = 3;</code>
-     */
-    public int getCommentsCount() {
-      return comments_.size();
-    }
-    /**
-     * <code>repeated int64 comments = 3;</code>
-     */
-    public long getComments(int index) {
-      return comments_.get(index);
-    }
-
-    // repeated int64 pairs = 4;
-    public static final int PAIRS_FIELD_NUMBER = 4;
-    private java.util.List<java.lang.Long> pairs_;
-    /**
-     * <code>repeated int64 pairs = 4;</code>
-     */
-    public java.util.List<java.lang.Long>
-        getPairsList() {
-      return pairs_;
-    }
-    /**
-     * <code>repeated int64 pairs = 4;</code>
-     */
-    public int getPairsCount() {
-      return pairs_.size();
-    }
-    /**
-     * <code>repeated int64 pairs = 4;</code>
-     */
-    public long getPairs(int index) {
-      return pairs_.get(index);
-    }
-
     private void initFields() {
       name_ = "";
-      storys_ = java.util.Collections.emptyList();
-      comments_ = java.util.Collections.emptyList();
-      pairs_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -4662,15 +4200,6 @@ public final class Storage {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, getNameBytes());
       }
-      for (int i = 0; i < storys_.size(); i++) {
-        output.writeInt64(2, storys_.get(i));
-      }
-      for (int i = 0; i < comments_.size(); i++) {
-        output.writeInt64(3, comments_.get(i));
-      }
-      for (int i = 0; i < pairs_.size(); i++) {
-        output.writeInt64(4, pairs_.get(i));
-      }
       getUnknownFields().writeTo(output);
     }
 
@@ -4683,33 +4212,6 @@ public final class Storage {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(1, getNameBytes());
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < storys_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(storys_.get(i));
-        }
-        size += dataSize;
-        size += 1 * getStorysList().size();
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < comments_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(comments_.get(i));
-        }
-        size += dataSize;
-        size += 1 * getCommentsList().size();
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < pairs_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt64SizeNoTag(pairs_.get(i));
-        }
-        size += dataSize;
-        size += 1 * getPairsList().size();
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -4829,12 +4331,6 @@ public final class Storage {
         super.clear();
         name_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        storys_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-        comments_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-        pairs_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -4867,21 +4363,6 @@ public final class Storage {
           to_bitField0_ |= 0x00000001;
         }
         result.name_ = name_;
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          storys_ = java.util.Collections.unmodifiableList(storys_);
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.storys_ = storys_;
-        if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          comments_ = java.util.Collections.unmodifiableList(comments_);
-          bitField0_ = (bitField0_ & ~0x00000004);
-        }
-        result.comments_ = comments_;
-        if (((bitField0_ & 0x00000008) == 0x00000008)) {
-          pairs_ = java.util.Collections.unmodifiableList(pairs_);
-          bitField0_ = (bitField0_ & ~0x00000008);
-        }
-        result.pairs_ = pairs_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -4901,36 +4382,6 @@ public final class Storage {
         if (other.hasName()) {
           bitField0_ |= 0x00000001;
           name_ = other.name_;
-          onChanged();
-        }
-        if (!other.storys_.isEmpty()) {
-          if (storys_.isEmpty()) {
-            storys_ = other.storys_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureStorysIsMutable();
-            storys_.addAll(other.storys_);
-          }
-          onChanged();
-        }
-        if (!other.comments_.isEmpty()) {
-          if (comments_.isEmpty()) {
-            comments_ = other.comments_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-          } else {
-            ensureCommentsIsMutable();
-            comments_.addAll(other.comments_);
-          }
-          onChanged();
-        }
-        if (!other.pairs_.isEmpty()) {
-          if (pairs_.isEmpty()) {
-            pairs_ = other.pairs_;
-            bitField0_ = (bitField0_ & ~0x00000008);
-          } else {
-            ensurePairsIsMutable();
-            pairs_.addAll(other.pairs_);
-          }
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -4964,12 +4415,24 @@ public final class Storage {
       private java.lang.Object name_ = "";
       /**
        * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *repeated int64 storys = 2;
+       *repeated int64 comments = 3;
+       *repeated int64 pairs = 4;
+       * </pre>
        */
       public boolean hasName() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
        * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *repeated int64 storys = 2;
+       *repeated int64 comments = 3;
+       *repeated int64 pairs = 4;
+       * </pre>
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -4984,6 +4447,12 @@ public final class Storage {
       }
       /**
        * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *repeated int64 storys = 2;
+       *repeated int64 comments = 3;
+       *repeated int64 pairs = 4;
+       * </pre>
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -5000,6 +4469,12 @@ public final class Storage {
       }
       /**
        * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *repeated int64 storys = 2;
+       *repeated int64 comments = 3;
+       *repeated int64 pairs = 4;
+       * </pre>
        */
       public Builder setName(
           java.lang.String value) {
@@ -5013,6 +4488,12 @@ public final class Storage {
       }
       /**
        * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *repeated int64 storys = 2;
+       *repeated int64 comments = 3;
+       *repeated int64 pairs = 4;
+       * </pre>
        */
       public Builder clearName() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -5022,6 +4503,12 @@ public final class Storage {
       }
       /**
        * <code>optional string name = 1;</code>
+       *
+       * <pre>
+       *repeated int64 storys = 2;
+       *repeated int64 comments = 3;
+       *repeated int64 pairs = 4;
+       * </pre>
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -5030,204 +4517,6 @@ public final class Storage {
   }
   bitField0_ |= 0x00000001;
         name_ = value;
-        onChanged();
-        return this;
-      }
-
-      // repeated int64 storys = 2;
-      private java.util.List<java.lang.Long> storys_ = java.util.Collections.emptyList();
-      private void ensureStorysIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          storys_ = new java.util.ArrayList<java.lang.Long>(storys_);
-          bitField0_ |= 0x00000002;
-         }
-      }
-      /**
-       * <code>repeated int64 storys = 2;</code>
-       */
-      public java.util.List<java.lang.Long>
-          getStorysList() {
-        return java.util.Collections.unmodifiableList(storys_);
-      }
-      /**
-       * <code>repeated int64 storys = 2;</code>
-       */
-      public int getStorysCount() {
-        return storys_.size();
-      }
-      /**
-       * <code>repeated int64 storys = 2;</code>
-       */
-      public long getStorys(int index) {
-        return storys_.get(index);
-      }
-      /**
-       * <code>repeated int64 storys = 2;</code>
-       */
-      public Builder setStorys(
-          int index, long value) {
-        ensureStorysIsMutable();
-        storys_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 storys = 2;</code>
-       */
-      public Builder addStorys(long value) {
-        ensureStorysIsMutable();
-        storys_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 storys = 2;</code>
-       */
-      public Builder addAllStorys(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensureStorysIsMutable();
-        super.addAll(values, storys_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 storys = 2;</code>
-       */
-      public Builder clearStorys() {
-        storys_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
-        onChanged();
-        return this;
-      }
-
-      // repeated int64 comments = 3;
-      private java.util.List<java.lang.Long> comments_ = java.util.Collections.emptyList();
-      private void ensureCommentsIsMutable() {
-        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
-          comments_ = new java.util.ArrayList<java.lang.Long>(comments_);
-          bitField0_ |= 0x00000004;
-         }
-      }
-      /**
-       * <code>repeated int64 comments = 3;</code>
-       */
-      public java.util.List<java.lang.Long>
-          getCommentsList() {
-        return java.util.Collections.unmodifiableList(comments_);
-      }
-      /**
-       * <code>repeated int64 comments = 3;</code>
-       */
-      public int getCommentsCount() {
-        return comments_.size();
-      }
-      /**
-       * <code>repeated int64 comments = 3;</code>
-       */
-      public long getComments(int index) {
-        return comments_.get(index);
-      }
-      /**
-       * <code>repeated int64 comments = 3;</code>
-       */
-      public Builder setComments(
-          int index, long value) {
-        ensureCommentsIsMutable();
-        comments_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 comments = 3;</code>
-       */
-      public Builder addComments(long value) {
-        ensureCommentsIsMutable();
-        comments_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 comments = 3;</code>
-       */
-      public Builder addAllComments(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensureCommentsIsMutable();
-        super.addAll(values, comments_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 comments = 3;</code>
-       */
-      public Builder clearComments() {
-        comments_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
-        onChanged();
-        return this;
-      }
-
-      // repeated int64 pairs = 4;
-      private java.util.List<java.lang.Long> pairs_ = java.util.Collections.emptyList();
-      private void ensurePairsIsMutable() {
-        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-          pairs_ = new java.util.ArrayList<java.lang.Long>(pairs_);
-          bitField0_ |= 0x00000008;
-         }
-      }
-      /**
-       * <code>repeated int64 pairs = 4;</code>
-       */
-      public java.util.List<java.lang.Long>
-          getPairsList() {
-        return java.util.Collections.unmodifiableList(pairs_);
-      }
-      /**
-       * <code>repeated int64 pairs = 4;</code>
-       */
-      public int getPairsCount() {
-        return pairs_.size();
-      }
-      /**
-       * <code>repeated int64 pairs = 4;</code>
-       */
-      public long getPairs(int index) {
-        return pairs_.get(index);
-      }
-      /**
-       * <code>repeated int64 pairs = 4;</code>
-       */
-      public Builder setPairs(
-          int index, long value) {
-        ensurePairsIsMutable();
-        pairs_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 pairs = 4;</code>
-       */
-      public Builder addPairs(long value) {
-        ensurePairsIsMutable();
-        pairs_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 pairs = 4;</code>
-       */
-      public Builder addAllPairs(
-          java.lang.Iterable<? extends java.lang.Long> values) {
-        ensurePairsIsMutable();
-        super.addAll(values, pairs_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int64 pairs = 4;</code>
-       */
-      public Builder clearPairs() {
-        pairs_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
         return this;
       }
@@ -5289,18 +4578,16 @@ public final class Storage {
     java.lang.String[] descriptorData = {
       "\n\rstorage.proto\022\025com.mm.tinylove.proto\" " +
       "\n\010Location\022\t\n\001x\030\001 \002(\002\022\t\n\001y\030\002 \002(\002\"\027\n\005Pris" +
-      "e\022\016\n\006userid\030\001 \002(\003\"\265\001\n\003Msg\022\016\n\006userid\030\001 \002(" +
+      "e\022\016\n\006userid\030\001 \002(\003\"\236\001\n\003Msg\022\016\n\006userid\030\001 \002(" +
       "\003\0221\n\010location\030\002 \001(\0132\037.com.mm.tinylove.pr" +
       "oto.Location\022\017\n\007storyid\030\003 \001(\003\022\016\n\006pairid\030" +
-      "\004 \001(\003\022\025\n\tcommentid\030\005 \003(\003B\002\020\001\022\017\n\007content\030" +
-      "\006 \002(\t\022\020\n\010photouri\030\007 \001(\t\022\020\n\010videouri\030\010 \001(" +
-      "\t\"U\n\007Comment\022\r\n\005msgid\030\001 \002(\003\022\016\n\006userid\030\002 " +
-      "\002(\003\022+\n\005prise\030\003 \001(\0132\034.com.mm.tinylove.pro" +
-      "to.Prise\"4\n\004Pair\022\014\n\004name\030\001 \002(\t\022\r\n\005users\030",
-      "\002 \003(\003\022\017\n\007creator\030\003 \002(\003\"\'\n\005Story\022\016\n\006useri" +
-      "d\030\001 \002(\003\022\016\n\006msgids\030\002 \003(\003\"I\n\010UserInfo\022\014\n\004n" +
-      "ame\030\001 \001(\t\022\016\n\006storys\030\002 \003(\003\022\020\n\010comments\030\003 " +
-      "\003(\003\022\r\n\005pairs\030\004 \003(\003"
+      "\004 \001(\003\022\017\n\007content\030\006 \002(\t\022\020\n\010photouri\030\007 \001(\t" +
+      "\022\020\n\010videouri\030\010 \001(\t\"U\n\007Comment\022\r\n\005msgid\030\001" +
+      " \002(\003\022\016\n\006userid\030\002 \002(\003\022+\n\005prise\030\003 \001(\0132\034.co" +
+      "m.mm.tinylove.proto.Prise\"%\n\004Pair\022\014\n\004nam" +
+      "e\030\001 \002(\t\022\017\n\007creator\030\003 \002(\003\"\'\n\005Story\022\016\n\006use",
+      "rid\030\001 \002(\003\022\016\n\006pairid\030\002 \002(\003\"\030\n\010UserInfo\022\014\n" +
+      "\004name\030\001 \001(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -5324,7 +4611,7 @@ public final class Storage {
           internal_static_com_mm_tinylove_proto_Msg_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_tinylove_proto_Msg_descriptor,
-              new java.lang.String[] { "Userid", "Location", "Storyid", "Pairid", "Commentid", "Content", "Photouri", "Videouri", });
+              new java.lang.String[] { "Userid", "Location", "Storyid", "Pairid", "Content", "Photouri", "Videouri", });
           internal_static_com_mm_tinylove_proto_Comment_descriptor =
             getDescriptor().getMessageTypes().get(3);
           internal_static_com_mm_tinylove_proto_Comment_fieldAccessorTable = new
@@ -5336,19 +4623,19 @@ public final class Storage {
           internal_static_com_mm_tinylove_proto_Pair_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_tinylove_proto_Pair_descriptor,
-              new java.lang.String[] { "Name", "Users", "Creator", });
+              new java.lang.String[] { "Name", "Creator", });
           internal_static_com_mm_tinylove_proto_Story_descriptor =
             getDescriptor().getMessageTypes().get(5);
           internal_static_com_mm_tinylove_proto_Story_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_tinylove_proto_Story_descriptor,
-              new java.lang.String[] { "Userid", "Msgids", });
+              new java.lang.String[] { "Userid", "Pairid", });
           internal_static_com_mm_tinylove_proto_UserInfo_descriptor =
             getDescriptor().getMessageTypes().get(6);
           internal_static_com_mm_tinylove_proto_UserInfo_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_tinylove_proto_UserInfo_descriptor,
-              new java.lang.String[] { "Name", "Storys", "Comments", "Pairs", });
+              new java.lang.String[] { "Name", });
           return null;
         }
       };

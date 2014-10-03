@@ -6,6 +6,11 @@ import com.mm.tinylove.IPair;
 import com.mm.tinylove.IStory;
 import com.mm.tinylove.IUser;
 
+
+//TODO:
+/*  优化方法:
+ * 		1. 延后加载.可以通过代理的方式,让调用各个IStorage接口的时候,延后load数据.这样会更平滑
+*/
 public class Ins {
 
 	static DefaultStorageService s_storage_service = new DefaultStorageService();
@@ -15,6 +20,11 @@ public class Ins {
 	}
 	
 	static IUniqService getUniqService()
+	{
+		return s_storage_service;
+	}
+	
+	static IRangeService<Long> getLongRangeService()
 	{
 		return s_storage_service;
 	}

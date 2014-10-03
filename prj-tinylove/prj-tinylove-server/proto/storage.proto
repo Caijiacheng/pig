@@ -18,7 +18,7 @@ message Msg
 	optional Location location = 2;
 	optional int64 storyid = 3;
 	optional int64 pairid = 4;
-	repeated int64 commentid = 5 [packed=true]; 
+	//repeated int64 commentid = 5 [packed=true]; 
 	required string content = 6;
 	optional string photouri = 7;
 	optional string videouri = 8;
@@ -34,22 +34,22 @@ message Comment
 message Pair
 {
 	required string name = 1;
-	repeated int64 users = 2;
+	//repeated int64 users = 2;
 	required int64 creator = 3;
 }
 
 message Story
 {
 	required int64 userid = 1;
-	repeated int64 msgids = 2;
+	required int64 pairid = 2;
 }
 
 message UserInfo
 {
 	optional string name = 1;
-	repeated int64 storys = 2;
-	repeated int64 comments = 3;
-	repeated int64 pairs = 4;
+	//repeated int64 storys = 2;
+	//repeated int64 comments = 3;
+	//repeated int64 pairs = 4;
 	
 }
 

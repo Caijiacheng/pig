@@ -11,6 +11,12 @@ public class DefaultComment extends ProtoStorage<Comment.Builder> implements ICo
 		super(id, Comment.newBuilder());
 	}
 
+	
+	static DefaultComment create()
+	{
+		return new DefaultComment(KVStorage.INVAID_KEY);
+	}
+	
 	@Override
 	public IMessage parent() {
 		return Ins.getIMessage(getProto().getMsgid());
