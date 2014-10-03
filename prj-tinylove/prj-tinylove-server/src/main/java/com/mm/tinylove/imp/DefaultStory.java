@@ -1,11 +1,8 @@
 package com.mm.tinylove.imp;
 
-import java.util.List;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.mm.tinylove.IMessage;
 import com.mm.tinylove.IPair;
+import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IStory;
 import com.mm.tinylove.proto.Storage.Story;
 
@@ -21,19 +18,25 @@ public class DefaultStory extends ProtoStorage<Story.Builder> implements IStory 
 	}
 	
 	
-	List<Long> getMsgListIDs()
+	static String MSG_TAG = ":messages";
+	
+	
+	IRangeList<Long> getStorysMessagesIDs()
 	{
-		return new ListStorage0(getKey()+":msgids");
+		return new LongRangeList(getKey() + MSG_TAG);
 	}
+	
+	
 	@Override
-	public List<IMessage> message() {
+	public IRangeList<IMessage> message() {
 
-		return Lists.transform(getMsgListIDs(),
-				new Function<Long, IMessage>() {
-					public IMessage apply(Long id) {
-						return Ins.getIMessage(id);
-					}
-				});
+		return new ImmutableObjectRangeList<IMessage>(getStorysMessagesIDs()) 
+				{
+				public IMessage apply(Long id)
+				{
+					return Ins.getIMessage(id);
+				}
+		};
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.base.Verify;
 import com.google.common.collect.Lists;
+import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.db.StorageDB;
 
 /*
@@ -59,6 +60,7 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends IStorage> void saveInTransaction(List<IStorage> inslist) {
 
@@ -69,7 +71,13 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 				{
 					IKVStorage kv_ins = (IKVStorage) ins;
 					t.set(kv_ins.marshalKey(), kv_ins.marshalValue());
+				}else if (ins instanceof IRangeList)
+				{
+					lpush(ins.marshalKey(), ((IRangeList<Long>) ins).lpushCollection());
 				}
+					
+				
+				
 			}
 			t.exec();
 		}

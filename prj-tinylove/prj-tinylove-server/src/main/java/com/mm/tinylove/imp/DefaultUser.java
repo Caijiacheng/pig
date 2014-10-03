@@ -2,22 +2,17 @@ package com.mm.tinylove.imp;
 
 import java.util.List;
 
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
 import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mm.tinylove.IComment;
 import com.mm.tinylove.ILocation;
 import com.mm.tinylove.IMessage;
 import com.mm.tinylove.IPair;
-import com.mm.tinylove.IPrise;
 import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IStory;
 import com.mm.tinylove.IUser;
 import com.mm.tinylove.error.NotExistException;
-import com.mm.tinylove.proto.Storage.Location;
 import com.mm.tinylove.proto.Storage.UserInfo;
 
 public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
@@ -33,69 +28,122 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 	}
 
 	
+	static final String STORYS_TAG = ":storys";
+	static final String COMMENT_TAG = ":comments";
+	static final String PAIRS_TAG = ":pairs";
+	static final String MSG_PRISE_TAG = ":msg:prise";
+	static final String COMMENT_PRISE_TAG = ":comment:prise";
+
+	
 	IRangeList<Long> getUserStorysIDs()
 	{
-		return new LongRangeList(getKey()+":storys");
+		return new LongRangeList(getKey()+STORYS_TAG);
 	}
 	
 	IRangeList<Long> getUserCommentIDs()
 	{
-		return new LongRangeList(getKey()+":comments");
+		return new LongRangeList(getKey()+COMMENT_TAG);
 	}
 	
 	IRangeList<Long> getUserPairsIDs()
 	{
-		return new LongRangeList(getKey()+":pairs");
+		return new LongRangeList(getKey()+PAIRS_TAG);
+	}
+	
+	IRangeList<Long> getUserMsgPriseIDs()
+	{
+		return new LongRangeList(getKey()+MSG_PRISE_TAG);
+	}
+	
+	IRangeList<Long> getUserCommentPriseIDs()
+	{
+		return new LongRangeList(getKey()+COMMENT_PRISE_TAG);
 	}
 	
 	@Override
 	public IRangeList<IStory> userStorys() {
 
-		return Lists.transform(getUserStorysIDs(),
-				new Function<Long, IStory>() {
-					public IStory apply(Long id) {
-						return Ins.getIStory(id);
-					}
-				});
+		return new ImmutableObjectRangeList<IStory>(getUserStorysIDs()) 
+				{
+				public IStory apply(Long id)
+				{
+					return Ins.getIStory(id);
+				}
+		};
 	}
 
 	@Override
-	public List<IComment> userComment() {
-		return Lists.transform(getUserCommentIDs(),
-				new Function<Long, IComment>() {
-					public IComment apply(Long id) {
-						return Ins.getIComment(id);
-					}
-				});
+	public IRangeList<IComment> userComments() {
+		return new ImmutableObjectRangeList<IComment>(getUserCommentIDs()) 
+				{
+				public IComment apply(Long id)
+				{
+					return Ins.getIComment(id);
+				}
+		};
 	}
 
 	@Override
-	public List<IPair> userPairs() {
-		return Lists.transform(getUserPairsIDs(),
-				new Function<Long, IPair>() {
-					public IPair apply(Long id) {
-						return Ins.getIPair(id);
-					}
-				});
+	public IRangeList<IPair> userPairs() {
+		return new ImmutableObjectRangeList<IPair>(getUserPairsIDs()) 
+				{
+				public IPair apply(Long id)
+				{
+					return Ins.getIPair(id);
+				}
+		};
 	}
-
 	
-	//这里一定要小心save顺序的问题.不同的顺序,在硬件故障的时候,可能会引起关联表的混乱
+	@Override
+	public IRangeList<IMessage> msgPrise() {
+		return new ImmutableObjectRangeList<IMessage>(getUserMsgPriseIDs()) {
+			public IMessage apply(Long id) {
+				return Ins.getIMessage(id);
+			}
+		};
+	}
+	
+	@Override
+	public IRangeList<IComment> commentPrise() {
+		return new ImmutableObjectRangeList<IComment>(getUserCommentPriseIDs()) {
+			public IComment apply(Long id) {
+				return Ins.getIComment(id);
+			}
+		};
+	}
+
+//	@Override
+//	public IRangeList<IPrise> userPrises() {
+//		return new ImmutableObjectRangeList<IPrise>(getUserPairsIDs()) 
+//				{
+//				public IPrise apply(Long id)
+//				{
+//					return Ins.getIPrise(id);
+//				}
+//		};
+//	}
+	
+	/**
+	 * 这里需要处理各个存储的id关联关系.比较复杂.最终所有的存储数据用事务一起存到数据库中
+	 */
 	@Override
 	public
 	IMessage publishMsg(final IPair pair, String content, ILocation location, String imgurl,
 			String videourl) {
 		
+		List<IStorage> ins_to_save = Lists.newArrayList();
+		
 		DefaultMessage message = DefaultMessage.create();
+		ins_to_save.add(message);
 		message.value.setPairid(pair.id());
 		message.value.setContent(content);
 		message.value.setPhotouri(imgurl == null ? "" : imgurl);
 		message.value.setVideouri(videourl == null ? "" : videourl);
 		//check ipair in the pairs
-		if (!Iterables.any(userPairs(), new Predicate<IPair>() {
-			public boolean apply(IPair p)
+		if (!Iterables.any(getUserPairsIDs().all(), new Predicate<Long>() {
+			public boolean apply(Long p)
 			{
-				if (p.equals(pair))
+				if (p.equals(pair.id()))
 				{
 					return true;
 				}
@@ -107,53 +155,134 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 			throw new NotExistException("Not exist IPair: " + pair);
 		}
 		
-		IStory relate = null;
-		for (IStory story : userStorys())
+		DefaultStory relate = null;
+		
+		
+//		all() will load all story. so, not need
+		//for (IStory story : userStorys().all())
+//		{
+//			if (story.pair().id() == pair.id())
+//			{
+//				relate = (DefaultStory) story;
+//				break;
+//			}
+//		}
+		
+		for (Long id : getUserStorysIDs().all())
 		{
-			if (story.pair().equals(pair))
+			IStory is = new DefaultStory(id);
+			if (is.pair().id() == pair.id())
 			{
-				relate = story;
+				relate = (DefaultStory)is;
 				break;
 			}
 		}
+		
+
 		if (relate == null)//new
 		{
 			relate = DefaultStory.create();
+			ins_to_save.add(relate);
 		}
 		message.value.setStoryid(relate.id());
 		message.value.setLocation(
 				new DefaultLocation(location).toLocation());
-				
-		Ins.getStorageService().save(message);
 		
-		//relate.message().add(message);
-		//relate.save()
-		//add to MessageStorage
-		//messageStorage.save()
-		//if relate is new:
-		//	add to user story
-		//add to user
+		//add message to story
+		LongRangeList msgids = (LongRangeList) relate.getStorysMessagesIDs();
+		msgids.lpush(message.id());	
+		ins_to_save.add(msgids);
 		
+		MessageStorage msgstorage = new MessageStorage();
+		ins_to_save.add(msgstorage);
+		
+
+		DefaultPair d_pair = (DefaultPair)pair;
+		if (d_pair.creator().id() != this.id())
+		{
+			//use common pair. so, maybe we need to add to the list
+			LongRangeList userids = (LongRangeList) d_pair.getPairsUserIDs();
+			
+			if (! Iterables.any(userids.all(), new Predicate<Long>() {
+				public boolean apply(Long id)
+				{
+					return id.longValue() == DefaultUser.this.id();
+				}
+			}))
+			{
+				userids.lpush(this.id());
+				ins_to_save.add(userids);
+			}
+		}
+
+		Ins.getStorageService().saveInTransaction(ins_to_save);
 		return message;
 	}
 
 	@Override
 	public IComment publishComment(IMessage msg, String content) {
+		DefaultMessage d_msg = (DefaultMessage)msg;
+
+		IRangeList<Long> commentids = d_msg.getMsgCommentsIds();
 		
+		DefaultComment comment = DefaultComment.create();
+		comment.getProto().setMsgid(msg.id());
+		comment.getProto().setUserid(this.id());
+		
+		commentids.lpush(comment.id());
+		
+		List<IStorage> ins_to_save = Lists.newArrayList();
+		ins_to_save.add((LongRangeList)commentids);
+		ins_to_save.add(comment);
+		Ins.getStorageService().saveInTransaction(ins_to_save);
 		
 		return null;
 	}
 
 	@Override
-	public IPrise publishPrise(IMessage msg) {
-		// TODO Auto-generated method stub
-		return null;
+	public void publishPrise(IMessage msg) {
+		//check: 我是否已经赞过这个msg
+		for (Long msgid : getUserMsgPriseIDs().all())
+		{
+			if (msgid.longValue() == msg.id())
+			{
+				return;
+			}
+		}
+		DefaultMessage d_msg = (DefaultMessage)msg;
+		LongRangeList prise_ids = (LongRangeList) d_msg.getMsgPriserIds();
+		prise_ids.lpush(this.id());
+		LongRangeList user_msg_prise = (LongRangeList) this.getUserMsgPriseIDs();
+		user_msg_prise.lpush(msg.id());
+		List<IStorage> ins_to_save = Lists.newArrayList();
+		ins_to_save.add(prise_ids);
+		ins_to_save.add(user_msg_prise);
+		Ins.getStorageService().saveInTransaction(ins_to_save);
 	}
 
 	@Override
-	public IPrise publishPriseOfComment(IComment comment) {
-		// TODO Auto-generated method stub
-		return null;
+	public void publishPriseOfComment(IComment comment) {
+		for (Long commentid : getUserCommentPriseIDs().all())
+		{
+			if (commentid.longValue() == comment.id())
+			{
+				return;
+			}
+		}
+		DefaultComment d_comment = (DefaultComment)comment;
+		LongRangeList prise_ids = (LongRangeList) d_comment.getCommentPriserIds();
+		prise_ids.lpush(this.id());
+		LongRangeList user_comment_prise = (LongRangeList) this.getUserCommentPriseIDs();
+		user_comment_prise.lpush(d_comment.id());
+		List<IStorage> ins_to_save = Lists.newArrayList();
+		ins_to_save.add(prise_ids);
+		ins_to_save.add(user_comment_prise);
+		Ins.getStorageService().saveInTransaction(ins_to_save);
+		
 	}
+
+
+
+
 
 }

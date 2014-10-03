@@ -513,6 +513,16 @@ public final class Storage {
      * <code>required int64 userid = 1;</code>
      */
     long getUserid();
+
+    // required int64 msgid = 2;
+    /**
+     * <code>required int64 msgid = 2;</code>
+     */
+    boolean hasMsgid();
+    /**
+     * <code>required int64 msgid = 2;</code>
+     */
+    long getMsgid();
   }
   /**
    * Protobuf type {@code com.mm.tinylove.proto.Prise}
@@ -568,6 +578,11 @@ public final class Storage {
             case 8: {
               bitField0_ |= 0x00000001;
               userid_ = input.readInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              msgid_ = input.readInt64();
               break;
             }
           }
@@ -626,8 +641,25 @@ public final class Storage {
       return userid_;
     }
 
+    // required int64 msgid = 2;
+    public static final int MSGID_FIELD_NUMBER = 2;
+    private long msgid_;
+    /**
+     * <code>required int64 msgid = 2;</code>
+     */
+    public boolean hasMsgid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int64 msgid = 2;</code>
+     */
+    public long getMsgid() {
+      return msgid_;
+    }
+
     private void initFields() {
       userid_ = 0L;
+      msgid_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -635,6 +667,10 @@ public final class Storage {
       if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasUserid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasMsgid()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -648,6 +684,9 @@ public final class Storage {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeInt64(1, userid_);
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt64(2, msgid_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -660,6 +699,10 @@ public final class Storage {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(1, userid_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, msgid_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -779,6 +822,8 @@ public final class Storage {
         super.clear();
         userid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
+        msgid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -811,6 +856,10 @@ public final class Storage {
           to_bitField0_ |= 0x00000001;
         }
         result.userid_ = userid_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.msgid_ = msgid_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -830,12 +879,19 @@ public final class Storage {
         if (other.hasUserid()) {
           setUserid(other.getUserid());
         }
+        if (other.hasMsgid()) {
+          setMsgid(other.getMsgid());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
         if (!hasUserid()) {
+          
+          return false;
+        }
+        if (!hasMsgid()) {
           
           return false;
         }
@@ -890,6 +946,39 @@ public final class Storage {
       public Builder clearUserid() {
         bitField0_ = (bitField0_ & ~0x00000001);
         userid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // required int64 msgid = 2;
+      private long msgid_ ;
+      /**
+       * <code>required int64 msgid = 2;</code>
+       */
+      public boolean hasMsgid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int64 msgid = 2;</code>
+       */
+      public long getMsgid() {
+        return msgid_;
+      }
+      /**
+       * <code>required int64 msgid = 2;</code>
+       */
+      public Builder setMsgid(long value) {
+        bitField0_ |= 0x00000002;
+        msgid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 msgid = 2;</code>
+       */
+      public Builder clearMsgid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        msgid_ = 0L;
         onChanged();
         return this;
       }
@@ -955,26 +1044,14 @@ public final class Storage {
     // required string content = 6;
     /**
      * <code>required string content = 6;</code>
-     *
-     * <pre>
-     *repeated int64 commentid = 5 [packed=true]; 
-     * </pre>
      */
     boolean hasContent();
     /**
      * <code>required string content = 6;</code>
-     *
-     * <pre>
-     *repeated int64 commentid = 5 [packed=true]; 
-     * </pre>
      */
     java.lang.String getContent();
     /**
      * <code>required string content = 6;</code>
-     *
-     * <pre>
-     *repeated int64 commentid = 5 [packed=true]; 
-     * </pre>
      */
     com.google.protobuf.ByteString
         getContentBytes();
@@ -1218,20 +1295,12 @@ public final class Storage {
     private java.lang.Object content_;
     /**
      * <code>required string content = 6;</code>
-     *
-     * <pre>
-     *repeated int64 commentid = 5 [packed=true]; 
-     * </pre>
      */
     public boolean hasContent() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
      * <code>required string content = 6;</code>
-     *
-     * <pre>
-     *repeated int64 commentid = 5 [packed=true]; 
-     * </pre>
      */
     public java.lang.String getContent() {
       java.lang.Object ref = content_;
@@ -1249,10 +1318,6 @@ public final class Storage {
     }
     /**
      * <code>required string content = 6;</code>
-     *
-     * <pre>
-     *repeated int64 commentid = 5 [packed=true]; 
-     * </pre>
      */
     public com.google.protobuf.ByteString
         getContentBytes() {
@@ -1946,20 +2011,12 @@ public final class Storage {
       private java.lang.Object content_ = "";
       /**
        * <code>required string content = 6;</code>
-       *
-       * <pre>
-       *repeated int64 commentid = 5 [packed=true]; 
-       * </pre>
        */
       public boolean hasContent() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
        * <code>required string content = 6;</code>
-       *
-       * <pre>
-       *repeated int64 commentid = 5 [packed=true]; 
-       * </pre>
        */
       public java.lang.String getContent() {
         java.lang.Object ref = content_;
@@ -1974,10 +2031,6 @@ public final class Storage {
       }
       /**
        * <code>required string content = 6;</code>
-       *
-       * <pre>
-       *repeated int64 commentid = 5 [packed=true]; 
-       * </pre>
        */
       public com.google.protobuf.ByteString
           getContentBytes() {
@@ -1994,10 +2047,6 @@ public final class Storage {
       }
       /**
        * <code>required string content = 6;</code>
-       *
-       * <pre>
-       *repeated int64 commentid = 5 [packed=true]; 
-       * </pre>
        */
       public Builder setContent(
           java.lang.String value) {
@@ -2011,10 +2060,6 @@ public final class Storage {
       }
       /**
        * <code>required string content = 6;</code>
-       *
-       * <pre>
-       *repeated int64 commentid = 5 [packed=true]; 
-       * </pre>
        */
       public Builder clearContent() {
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -2024,10 +2069,6 @@ public final class Storage {
       }
       /**
        * <code>required string content = 6;</code>
-       *
-       * <pre>
-       *repeated int64 commentid = 5 [packed=true]; 
-       * </pre>
        */
       public Builder setContentBytes(
           com.google.protobuf.ByteString value) {
@@ -2221,20 +2262,6 @@ public final class Storage {
      * <code>required int64 userid = 2;</code>
      */
     long getUserid();
-
-    // optional .com.mm.tinylove.proto.Prise prise = 3;
-    /**
-     * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-     */
-    boolean hasPrise();
-    /**
-     * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-     */
-    com.mm.tinylove.proto.Storage.Prise getPrise();
-    /**
-     * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-     */
-    com.mm.tinylove.proto.Storage.PriseOrBuilder getPriseOrBuilder();
   }
   /**
    * Protobuf type {@code com.mm.tinylove.proto.Comment}
@@ -2295,19 +2322,6 @@ public final class Storage {
             case 16: {
               bitField0_ |= 0x00000002;
               userid_ = input.readInt64();
-              break;
-            }
-            case 26: {
-              com.mm.tinylove.proto.Storage.Prise.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                subBuilder = prise_.toBuilder();
-              }
-              prise_ = input.readMessage(com.mm.tinylove.proto.Storage.Prise.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(prise_);
-                prise_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000004;
               break;
             }
           }
@@ -2382,32 +2396,9 @@ public final class Storage {
       return userid_;
     }
 
-    // optional .com.mm.tinylove.proto.Prise prise = 3;
-    public static final int PRISE_FIELD_NUMBER = 3;
-    private com.mm.tinylove.proto.Storage.Prise prise_;
-    /**
-     * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-     */
-    public boolean hasPrise() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-     */
-    public com.mm.tinylove.proto.Storage.Prise getPrise() {
-      return prise_;
-    }
-    /**
-     * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-     */
-    public com.mm.tinylove.proto.Storage.PriseOrBuilder getPriseOrBuilder() {
-      return prise_;
-    }
-
     private void initFields() {
       msgid_ = 0L;
       userid_ = 0L;
-      prise_ = com.mm.tinylove.proto.Storage.Prise.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2422,12 +2413,6 @@ public final class Storage {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (hasPrise()) {
-        if (!getPrise().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -2440,9 +2425,6 @@ public final class Storage {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt64(2, userid_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeMessage(3, prise_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -2460,10 +2442,6 @@ public final class Storage {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(2, userid_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, prise_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2573,7 +2551,6 @@ public final class Storage {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getPriseFieldBuilder();
         }
       }
       private static Builder create() {
@@ -2586,12 +2563,6 @@ public final class Storage {
         bitField0_ = (bitField0_ & ~0x00000001);
         userid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
-        if (priseBuilder_ == null) {
-          prise_ = com.mm.tinylove.proto.Storage.Prise.getDefaultInstance();
-        } else {
-          priseBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -2628,14 +2599,6 @@ public final class Storage {
           to_bitField0_ |= 0x00000002;
         }
         result.userid_ = userid_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        if (priseBuilder_ == null) {
-          result.prise_ = prise_;
-        } else {
-          result.prise_ = priseBuilder_.build();
-        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2658,9 +2621,6 @@ public final class Storage {
         if (other.hasUserid()) {
           setUserid(other.getUserid());
         }
-        if (other.hasPrise()) {
-          mergePrise(other.getPrise());
-        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -2673,12 +2633,6 @@ public final class Storage {
         if (!hasUserid()) {
           
           return false;
-        }
-        if (hasPrise()) {
-          if (!getPrise().isInitialized()) {
-            
-            return false;
-          }
         }
         return true;
       }
@@ -2768,123 +2722,6 @@ public final class Storage {
         return this;
       }
 
-      // optional .com.mm.tinylove.proto.Prise prise = 3;
-      private com.mm.tinylove.proto.Storage.Prise prise_ = com.mm.tinylove.proto.Storage.Prise.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mm.tinylove.proto.Storage.Prise, com.mm.tinylove.proto.Storage.Prise.Builder, com.mm.tinylove.proto.Storage.PriseOrBuilder> priseBuilder_;
-      /**
-       * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-       */
-      public boolean hasPrise() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-       */
-      public com.mm.tinylove.proto.Storage.Prise getPrise() {
-        if (priseBuilder_ == null) {
-          return prise_;
-        } else {
-          return priseBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-       */
-      public Builder setPrise(com.mm.tinylove.proto.Storage.Prise value) {
-        if (priseBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          prise_ = value;
-          onChanged();
-        } else {
-          priseBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-       */
-      public Builder setPrise(
-          com.mm.tinylove.proto.Storage.Prise.Builder builderForValue) {
-        if (priseBuilder_ == null) {
-          prise_ = builderForValue.build();
-          onChanged();
-        } else {
-          priseBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-       */
-      public Builder mergePrise(com.mm.tinylove.proto.Storage.Prise value) {
-        if (priseBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004) &&
-              prise_ != com.mm.tinylove.proto.Storage.Prise.getDefaultInstance()) {
-            prise_ =
-              com.mm.tinylove.proto.Storage.Prise.newBuilder(prise_).mergeFrom(value).buildPartial();
-          } else {
-            prise_ = value;
-          }
-          onChanged();
-        } else {
-          priseBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-       */
-      public Builder clearPrise() {
-        if (priseBuilder_ == null) {
-          prise_ = com.mm.tinylove.proto.Storage.Prise.getDefaultInstance();
-          onChanged();
-        } else {
-          priseBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-      /**
-       * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-       */
-      public com.mm.tinylove.proto.Storage.Prise.Builder getPriseBuilder() {
-        bitField0_ |= 0x00000004;
-        onChanged();
-        return getPriseFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-       */
-      public com.mm.tinylove.proto.Storage.PriseOrBuilder getPriseOrBuilder() {
-        if (priseBuilder_ != null) {
-          return priseBuilder_.getMessageOrBuilder();
-        } else {
-          return prise_;
-        }
-      }
-      /**
-       * <code>optional .com.mm.tinylove.proto.Prise prise = 3;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.mm.tinylove.proto.Storage.Prise, com.mm.tinylove.proto.Storage.Prise.Builder, com.mm.tinylove.proto.Storage.PriseOrBuilder> 
-          getPriseFieldBuilder() {
-        if (priseBuilder_ == null) {
-          priseBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.mm.tinylove.proto.Storage.Prise, com.mm.tinylove.proto.Storage.Prise.Builder, com.mm.tinylove.proto.Storage.PriseOrBuilder>(
-                  prise_,
-                  getParentForChildren(),
-                  isClean());
-          prise_ = null;
-        }
-        return priseBuilder_;
-      }
-
       // @@protoc_insertion_point(builder_scope:com.mm.tinylove.proto.Comment)
     }
 
@@ -2917,18 +2754,10 @@ public final class Storage {
     // required int64 creator = 3;
     /**
      * <code>required int64 creator = 3;</code>
-     *
-     * <pre>
-     *repeated int64 users = 2;
-     * </pre>
      */
     boolean hasCreator();
     /**
      * <code>required int64 creator = 3;</code>
-     *
-     * <pre>
-     *repeated int64 users = 2;
-     * </pre>
      */
     long getCreator();
   }
@@ -3081,20 +2910,12 @@ public final class Storage {
     private long creator_;
     /**
      * <code>required int64 creator = 3;</code>
-     *
-     * <pre>
-     *repeated int64 users = 2;
-     * </pre>
      */
     public boolean hasCreator() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
      * <code>required int64 creator = 3;</code>
-     *
-     * <pre>
-     *repeated int64 users = 2;
-     * </pre>
      */
     public long getCreator() {
       return creator_;
@@ -3440,30 +3261,18 @@ public final class Storage {
       private long creator_ ;
       /**
        * <code>required int64 creator = 3;</code>
-       *
-       * <pre>
-       *repeated int64 users = 2;
-       * </pre>
        */
       public boolean hasCreator() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>required int64 creator = 3;</code>
-       *
-       * <pre>
-       *repeated int64 users = 2;
-       * </pre>
        */
       public long getCreator() {
         return creator_;
       }
       /**
        * <code>required int64 creator = 3;</code>
-       *
-       * <pre>
-       *repeated int64 users = 2;
-       * </pre>
        */
       public Builder setCreator(long value) {
         bitField0_ |= 0x00000002;
@@ -3473,10 +3282,6 @@ public final class Storage {
       }
       /**
        * <code>required int64 creator = 3;</code>
-       *
-       * <pre>
-       *repeated int64 users = 2;
-       * </pre>
        */
       public Builder clearCreator() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -3995,32 +3800,14 @@ public final class Storage {
     // optional string name = 1;
     /**
      * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *repeated int64 storys = 2;
-     *repeated int64 comments = 3;
-     *repeated int64 pairs = 4;
-     * </pre>
      */
     boolean hasName();
     /**
      * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *repeated int64 storys = 2;
-     *repeated int64 comments = 3;
-     *repeated int64 pairs = 4;
-     * </pre>
      */
     java.lang.String getName();
     /**
      * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *repeated int64 storys = 2;
-     *repeated int64 comments = 3;
-     *repeated int64 pairs = 4;
-     * </pre>
      */
     com.google.protobuf.ByteString
         getNameBytes();
@@ -4126,24 +3913,12 @@ public final class Storage {
     private java.lang.Object name_;
     /**
      * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *repeated int64 storys = 2;
-     *repeated int64 comments = 3;
-     *repeated int64 pairs = 4;
-     * </pre>
      */
     public boolean hasName() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
      * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *repeated int64 storys = 2;
-     *repeated int64 comments = 3;
-     *repeated int64 pairs = 4;
-     * </pre>
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -4161,12 +3936,6 @@ public final class Storage {
     }
     /**
      * <code>optional string name = 1;</code>
-     *
-     * <pre>
-     *repeated int64 storys = 2;
-     *repeated int64 comments = 3;
-     *repeated int64 pairs = 4;
-     * </pre>
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -4415,24 +4184,12 @@ public final class Storage {
       private java.lang.Object name_ = "";
       /**
        * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *repeated int64 storys = 2;
-       *repeated int64 comments = 3;
-       *repeated int64 pairs = 4;
-       * </pre>
        */
       public boolean hasName() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
        * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *repeated int64 storys = 2;
-       *repeated int64 comments = 3;
-       *repeated int64 pairs = 4;
-       * </pre>
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -4447,12 +4204,6 @@ public final class Storage {
       }
       /**
        * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *repeated int64 storys = 2;
-       *repeated int64 comments = 3;
-       *repeated int64 pairs = 4;
-       * </pre>
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -4469,12 +4220,6 @@ public final class Storage {
       }
       /**
        * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *repeated int64 storys = 2;
-       *repeated int64 comments = 3;
-       *repeated int64 pairs = 4;
-       * </pre>
        */
       public Builder setName(
           java.lang.String value) {
@@ -4488,12 +4233,6 @@ public final class Storage {
       }
       /**
        * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *repeated int64 storys = 2;
-       *repeated int64 comments = 3;
-       *repeated int64 pairs = 4;
-       * </pre>
        */
       public Builder clearName() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -4503,12 +4242,6 @@ public final class Storage {
       }
       /**
        * <code>optional string name = 1;</code>
-       *
-       * <pre>
-       *repeated int64 storys = 2;
-       *repeated int64 comments = 3;
-       *repeated int64 pairs = 4;
-       * </pre>
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -4577,17 +4310,16 @@ public final class Storage {
   static {
     java.lang.String[] descriptorData = {
       "\n\rstorage.proto\022\025com.mm.tinylove.proto\" " +
-      "\n\010Location\022\t\n\001x\030\001 \002(\002\022\t\n\001y\030\002 \002(\002\"\027\n\005Pris" +
-      "e\022\016\n\006userid\030\001 \002(\003\"\236\001\n\003Msg\022\016\n\006userid\030\001 \002(" +
-      "\003\0221\n\010location\030\002 \001(\0132\037.com.mm.tinylove.pr" +
-      "oto.Location\022\017\n\007storyid\030\003 \001(\003\022\016\n\006pairid\030" +
-      "\004 \001(\003\022\017\n\007content\030\006 \002(\t\022\020\n\010photouri\030\007 \001(\t" +
-      "\022\020\n\010videouri\030\010 \001(\t\"U\n\007Comment\022\r\n\005msgid\030\001" +
-      " \002(\003\022\016\n\006userid\030\002 \002(\003\022+\n\005prise\030\003 \001(\0132\034.co" +
-      "m.mm.tinylove.proto.Prise\"%\n\004Pair\022\014\n\004nam" +
-      "e\030\001 \002(\t\022\017\n\007creator\030\003 \002(\003\"\'\n\005Story\022\016\n\006use",
-      "rid\030\001 \002(\003\022\016\n\006pairid\030\002 \002(\003\"\030\n\010UserInfo\022\014\n" +
-      "\004name\030\001 \001(\t"
+      "\n\010Location\022\t\n\001x\030\001 \002(\002\022\t\n\001y\030\002 \002(\002\"&\n\005Pris" +
+      "e\022\016\n\006userid\030\001 \002(\003\022\r\n\005msgid\030\002 \002(\003\"\236\001\n\003Msg" +
+      "\022\016\n\006userid\030\001 \002(\003\0221\n\010location\030\002 \001(\0132\037.com" +
+      ".mm.tinylove.proto.Location\022\017\n\007storyid\030\003" +
+      " \001(\003\022\016\n\006pairid\030\004 \001(\003\022\017\n\007content\030\006 \002(\t\022\020\n" +
+      "\010photouri\030\007 \001(\t\022\020\n\010videouri\030\010 \001(\t\"(\n\007Com" +
+      "ment\022\r\n\005msgid\030\001 \002(\003\022\016\n\006userid\030\002 \002(\003\"%\n\004P" +
+      "air\022\014\n\004name\030\001 \002(\t\022\017\n\007creator\030\003 \002(\003\"\'\n\005St" +
+      "ory\022\016\n\006userid\030\001 \002(\003\022\016\n\006pairid\030\002 \002(\003\"\030\n\010U",
+      "serInfo\022\014\n\004name\030\001 \001(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -4605,7 +4337,7 @@ public final class Storage {
           internal_static_com_mm_tinylove_proto_Prise_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_tinylove_proto_Prise_descriptor,
-              new java.lang.String[] { "Userid", });
+              new java.lang.String[] { "Userid", "Msgid", });
           internal_static_com_mm_tinylove_proto_Msg_descriptor =
             getDescriptor().getMessageTypes().get(2);
           internal_static_com_mm_tinylove_proto_Msg_fieldAccessorTable = new
@@ -4617,7 +4349,7 @@ public final class Storage {
           internal_static_com_mm_tinylove_proto_Comment_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_tinylove_proto_Comment_descriptor,
-              new java.lang.String[] { "Msgid", "Userid", "Prise", });
+              new java.lang.String[] { "Msgid", "Userid", });
           internal_static_com_mm_tinylove_proto_Pair_descriptor =
             getDescriptor().getMessageTypes().get(4);
           internal_static_com_mm_tinylove_proto_Pair_fieldAccessorTable = new

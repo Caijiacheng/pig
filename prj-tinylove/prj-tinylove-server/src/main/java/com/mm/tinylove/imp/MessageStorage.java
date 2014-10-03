@@ -1,8 +1,10 @@
 package com.mm.tinylove.imp;
 
-@SuppressWarnings("deprecation")
-public class MessageStorage extends ListStorage0{
+public class MessageStorage extends LongRangeList{
+	
+	static String MSG_STORAGE_TAG = "MsgRangeList";
+	
 	public MessageStorage() {
-		super(MessageStorage.class.getName());
+		super(MSG_STORAGE_TAG);
 	}
 }

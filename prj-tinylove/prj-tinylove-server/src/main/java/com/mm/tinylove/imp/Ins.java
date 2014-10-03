@@ -45,6 +45,7 @@ public class Ins {
 		return Ins.getStorageService().load(new DefaultComment(id));
 	}
 	
+	
 	static IMessage getIMessage(long id)
 	{
 		return Ins.getStorageService().load(new DefaultMessage(id));

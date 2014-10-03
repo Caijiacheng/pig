@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.mm.tinylove.IRangeList;
 
-public class LongRangeList implements IRangeList<Long> {
+public class LongRangeList implements IRangeList<Long>, IStorage{
 
 	String key;
 	List<Long> new_ins = Lists.newArrayList();
@@ -46,7 +46,7 @@ public class LongRangeList implements IRangeList<Long> {
 
 	@Override
 	public long size() {
-		return Ins.getLongRangeService().lsize(key);
+		return Ins.getLongRangeService().lsize(key) + new_ins.size();
 	}
 
 	@Override
@@ -57,6 +57,16 @@ public class LongRangeList implements IRangeList<Long> {
 	@Override
 	public List<Long> lpushCollection() {
 		return Lists.newCopyOnWriteArrayList(new_ins);
+	}
+
+	@Override
+	public String marshalKey() {
+		return key;
+	}
+
+	@Override
+	public List<Long> all() {
+		return range(0, size());
 	}
 	
 	

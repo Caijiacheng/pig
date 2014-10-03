@@ -9,6 +9,8 @@ public interface IRangeList<E> {
 	
 	void lpush(E e);
 	
-	List<Long> lpushCollection();
+	List<E> lpushCollection();
+	
+	List<E> all();
 	
 }

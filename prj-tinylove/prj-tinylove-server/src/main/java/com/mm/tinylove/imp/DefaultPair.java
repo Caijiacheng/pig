@@ -1,10 +1,7 @@
 package com.mm.tinylove.imp;
 
-import java.util.List;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.mm.tinylove.IPair;
+import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IUser;
 import com.mm.tinylove.proto.Storage.Pair;
 
@@ -24,20 +21,22 @@ public class DefaultPair extends ProtoStorage<Pair.Builder> implements IPair{
 		return getProto().getName();
 	}
 	
-	List<Long> getUserListIds()
+	static final String USERS_TAG = ":users";
+	
+	IRangeList<Long> getPairsUserIDs()
 	{
-		return new ListStorage0(getKey()+":users");
+		return new LongRangeList(getKey()+USERS_TAG);
 	}
 	
 	@Override
-	public List<IUser> user() {
-		
-		return Lists.transform(getUserListIds(), new Function<Long, IUser>() {
-			public IUser apply(Long id)
-			{
-				return Ins.getIUser(id);
-			}
-		});
+	public IRangeList<IUser> user() {
+		return new ImmutableObjectRangeList<IUser>(getPairsUserIDs()) 
+				{
+				public IUser apply(Long id)
+				{
+					return Ins.getIUser(id);
+				}
+		};
 	}
 
 	@Override
