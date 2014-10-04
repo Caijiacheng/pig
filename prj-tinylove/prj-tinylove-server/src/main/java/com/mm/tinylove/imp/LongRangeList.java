@@ -1,5 +1,6 @@
 package com.mm.tinylove.imp;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import com.google.common.base.Verify;
@@ -18,11 +19,16 @@ public class LongRangeList implements IRangeList<Long>, IStorage{
 	}
 	
 	
-	//TODO: support -1
+	//TODO: support end = -1
 	@Override
 	public List<Long> range(long begin, long end) {
 		
-		Verify.verify(end > begin, "end must > begin");
+		Verify.verify(end >= begin, "end must > begin");
+		
+		if (begin == end)
+		{
+			return Lists.newArrayList();
+		}
 		
 		long new_begin = begin - new_ins.size();
 		long new_end = end - new_ins.size();
@@ -65,8 +71,8 @@ public class LongRangeList implements IRangeList<Long>, IStorage{
 	}
 
 	@Override
-	public String marshalKey() {
-		return key;
+	public byte[] marshalKey() {
+		return key.getBytes(StandardCharsets.UTF_8);
 	}
 
 	@Override

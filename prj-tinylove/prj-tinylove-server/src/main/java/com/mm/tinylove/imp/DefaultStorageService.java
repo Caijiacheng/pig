@@ -1,5 +1,6 @@
 package com.mm.tinylove.imp;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import redis.clients.jedis.Jedis;
@@ -26,8 +27,8 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 	@Override
 	public <T extends IStorage> T load(T ins) {
 		try (Jedis con = dbhandle.getConn()) {
-			String key = ins.marshalKey();
-			String value = con.get(key);
+			byte[] key = ins.marshalKey();
+			byte[] value = con.get(key);
 
 			if (ins instanceof IKVStorage) {
 				IKVStorage kv_ins = (IKVStorage) ins;
@@ -68,12 +69,11 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 				}else if (ins instanceof IRangeList)
 				{
 					List<Long> data = ((IRangeList<Long>) ins).lpushCollection();
-					String[] sdata = new String[data.size()];
 					for (int i = 0; i < data.size(); i ++)
 					{
-						sdata[i] = String.valueOf(data.get(i));
+						t.lpush(ins.marshalKey(), String.valueOf(data).getBytes(StandardCharsets.UTF_8));
 					}
-					t.lpush(ins.marshalKey(), sdata);
+					
 					((IRangeList<Long>) ins).cleanlpush();
 				}
 					
@@ -146,5 +146,10 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 	public void remove(String key) {
 		throw new UnsupportedOperationException();
 		
+	}
+
+	@Override
+	public void cleanStorage() {
+		throw new UnsupportedOperationException();
 	}
 }

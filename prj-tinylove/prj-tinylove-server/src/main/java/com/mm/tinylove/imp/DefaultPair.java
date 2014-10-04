@@ -11,9 +11,12 @@ public class DefaultPair extends ProtoStorage<Pair.Builder> implements IPair{
 		super(id, Pair.newBuilder());
 	}
 	
-	static DefaultPair create()
+	static DefaultPair create(String name, long creatorid)
 	{
-		return new DefaultPair(INVAID_KEY);
+		DefaultPair pair =  new DefaultPair(INVAID_KEY);
+		pair.getProto().setName(name);
+		pair.getProto().setCreator(creatorid);
+		return pair;
 	}
 	
 	@Override

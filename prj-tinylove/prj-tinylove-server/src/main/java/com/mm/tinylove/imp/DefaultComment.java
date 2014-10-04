@@ -12,9 +12,13 @@ public class DefaultComment extends ProtoStorage<Comment.Builder> implements ICo
 		super(id, Comment.newBuilder());
 	}
 	
-	static DefaultComment create()
+	static DefaultComment create(long msgid, long userid, String comment)
 	{
-		return new DefaultComment(KVStorage.INVAID_KEY);
+		DefaultComment c =  new DefaultComment(KVStorage.INVAID_KEY);
+		c.getProto().setMsgid(msgid);
+		c.getProto().setUserid(userid);
+		c.getProto().setContent(comment);
+		return c;
 	}
 	
 	static final public String TAG_COMMENT_PRISE = ":priser";
@@ -24,7 +28,7 @@ public class DefaultComment extends ProtoStorage<Comment.Builder> implements ICo
 	}
 	
 	@Override
-	public IMessage parent() {
+	public IMessage msg() {
 		return Ins.getIMessage(getProto().getMsgid());
 	}
 
@@ -40,6 +44,11 @@ public class DefaultComment extends ProtoStorage<Comment.Builder> implements ICo
 				return Ins.getIUser(id);
 			}
 		};
+	}
+
+	@Override
+	public String content() {
+		return getProto().getContent();
 	}
 
 }

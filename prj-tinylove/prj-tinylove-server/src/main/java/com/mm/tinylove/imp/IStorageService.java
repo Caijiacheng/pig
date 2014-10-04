@@ -15,4 +15,6 @@ public interface IStorageService {
 	
 	void remove(String key);
 	
+	void cleanStorage();
+	
 }

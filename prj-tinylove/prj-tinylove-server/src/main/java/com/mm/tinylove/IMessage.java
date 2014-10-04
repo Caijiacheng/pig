@@ -10,5 +10,7 @@ public interface IMessage extends IObject{
 //	IRangeList<IPrise> prises();
 	IStory parent();
 	ILocation location();
-	
+	String content();
+	String imgurl();
+	String videourl();
 }

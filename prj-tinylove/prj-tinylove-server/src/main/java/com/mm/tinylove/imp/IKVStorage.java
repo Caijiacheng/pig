@@ -6,7 +6,7 @@ public interface IKVStorage extends IStorage  {
 	@Deprecated
 	void unmarshalKey(String data);
 	
-	String marshalValue();
-	void unmarshalValue(String data);
+	byte[] marshalValue();
+	void unmarshalValue(byte[] data);
 	
 }

@@ -8,8 +8,6 @@ public interface IUser extends IObject{
 	IRangeList<IStory> userStorys();
 	IRangeList<IComment> userComments();
 	IRangeList<IPair> userPairs();
-//	@Deprecated
-//	IRangeList<IPrise> userPrises();
 	
 	IRangeList<IMessage> msgPrise();
 	IRangeList<IComment> commentPrise();
@@ -21,9 +19,6 @@ public interface IUser extends IObject{
 	void publishPrise(IMessage msg);
 	void publishPriseOfComment(IComment comment);
 	
-//	IPrise publishPrise(IMessage msg);
-//	IPrise publishPriseOfComment(IComment comment);
-	
-	
+	IPair createPair(String name);
 	
 }

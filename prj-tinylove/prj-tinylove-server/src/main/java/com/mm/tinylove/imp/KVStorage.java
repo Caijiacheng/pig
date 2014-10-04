@@ -1,5 +1,7 @@
 package com.mm.tinylove.imp;
 
+import java.nio.charset.StandardCharsets;
+
 
 abstract public class KVStorage implements IKVStorage {
 
@@ -28,8 +30,8 @@ abstract public class KVStorage implements IKVStorage {
 	}
 
 	@Override
-	public String marshalKey() {
-		return getKey();
+	public byte[] marshalKey() {
+		return getKey().getBytes(StandardCharsets.UTF_8);
 	}
 
 	@Override

@@ -19,15 +19,17 @@ message Msg
 	optional Location location = 2;
 	optional int64 storyid = 3;
 	optional int64 pairid = 4;
-	required string content = 6;
-	optional string photouri = 7;
-	optional string videouri = 8;
+	required string content = 5;
+	optional string photouri = 6;
+	optional string videouri = 7;
+	required int64 timestamp = 8;
 }
 
 message Comment
 {
 	required int64 msgid = 1;
 	required int64 userid = 2;
+	required string content = 3;
 }
 
 message Pair

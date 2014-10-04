@@ -2,7 +2,9 @@ package com.mm.tinylove;
 
 public interface IComment extends IObject{
 
-	IMessage parent();
+	IMessage msg();
 	IUser user();
 	IRangeList<IUser> prisers();
+	
+	String content();
 }

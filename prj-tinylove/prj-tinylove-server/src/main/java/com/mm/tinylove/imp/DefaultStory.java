@@ -12,11 +12,12 @@ public class DefaultStory extends ProtoStorage<Story.Builder> implements IStory 
 		super(id, Story.newBuilder());
 	}
 
-	static DefaultStory create()
+	static DefaultStory create(long userid, long pairid)
 	{
-		return new DefaultStory(INVAID_KEY);
+		DefaultStory s = new DefaultStory(INVAID_KEY);
+		s.getProto().setUserid(userid).setPairid(pairid);
+		return s;
 	}
-	
 	
 	static String MSG_TAG = ":messages";
 	

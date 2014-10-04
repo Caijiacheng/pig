@@ -10,4 +10,11 @@ public class RemoveStorageService extends DefaultStorageService {
 			con.del(key);
 		}
 	}
+	
+	@Override
+	public void cleanStorage() {
+		try (Jedis con = dbhandle.getConn()) {
+			con.flushDB();
+		}
+	}
 }

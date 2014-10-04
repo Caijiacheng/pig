@@ -13,6 +13,7 @@ import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IStory;
 import com.mm.tinylove.IUser;
 import com.mm.tinylove.error.NotExistException;
+import com.mm.tinylove.proto.Storage.Location;
 import com.mm.tinylove.proto.Storage.UserInfo;
 
 public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
@@ -21,13 +22,17 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 	public DefaultUser(long id) {
 		super(id, UserInfo.newBuilder());
 	}
-
+	
+	static DefaultUser  create()
+	{
+		return new DefaultUser(INVAID_KEY);
+	}
+	
 	@Override
 	public String name() {
 		return getProto().getName();
 	}
 
-	
 	static final String STORYS_TAG = ":storys";
 	static final String COMMENT_TAG = ":comments";
 	static final String PAIRS_TAG = ":pairs";
@@ -125,10 +130,12 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 		
 		DefaultMessage message = DefaultMessage.create();
 		ins_to_save.add(message);
-		message.value.setPairid(pair.id());
-		message.value.setContent(content);
-		message.value.setPhotouri(imgurl == null ? "" : imgurl);
-		message.value.setVideouri(videourl == null ? "" : videourl);
+		message.getProto().setPairid(pair.id());
+		message.getProto().setUserid(this.id());
+		message.getProto().setContent(content);
+		message.getProto().setPhotouri(imgurl == null ? "" : imgurl);
+		message.getProto().setVideouri(videourl == null ? "" : videourl);
+		message.getProto().setTimestamp(System.currentTimeMillis());
 		//check ipair in the pairs
 		if (!Iterables.any(getUserPairsIDs().all(), new Predicate<Long>() {
 			public boolean apply(Long p)
@@ -167,23 +174,24 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 				break;
 			}
 		}
-		
 
 		if (relate == null)//new
 		{
-			relate = DefaultStory.create();
+			relate = DefaultStory.create(this.id(), pair.id());
+			LongRangeList l_storys = (LongRangeList) getUserStorysIDs();
+			l_storys.lpush(relate.id());
 			ins_to_save.add(relate);
+			ins_to_save.add(l_storys);
 		}
 		message.value.setStoryid(relate.id());
-		message.value.setLocation(
-				new DefaultLocation(location).toLocation());
-		
+		message.value.setLocation(Location.newBuilder().setX(location.getX()).setY(location.getY()).build());
 		//add message to story
 		LongRangeList msgids = (LongRangeList) relate.getStorysMessagesIDs();
 		msgids.lpush(message.id());	
 		ins_to_save.add(msgids);
 		
 		MessageStorage msgstorage = new MessageStorage();
+		msgstorage.lpush(message.id());
 		ins_to_save.add(msgstorage);
 		
 
@@ -215,10 +223,7 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 
 		IRangeList<Long> commentids = d_msg.getMsgCommentsIds();
 		
-		DefaultComment comment = DefaultComment.create();
-		comment.getProto().setMsgid(msg.id());
-		comment.getProto().setUserid(this.id());
-		
+		DefaultComment comment = DefaultComment.create(msg.id(), this.id(), content);
 		commentids.lpush(comment.id());
 		
 		List<IStorage> ins_to_save = Lists.newArrayList();
@@ -226,7 +231,7 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 		ins_to_save.add(comment);
 		Ins.getStorageService().saveInTransaction(ins_to_save);
 		
-		return null;
+		return comment;
 	}
 
 	@Override
@@ -270,4 +275,19 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 		Ins.getStorageService().saveInTransaction(ins_to_save);
 		
 	}
+
+	@Override
+	public IPair createPair(String name) {
+		DefaultPair pair = DefaultPair.create(name, this.id());
+		LongRangeList pair_list = (LongRangeList) getUserPairsIDs();
+		pair_list.lpush(pair.id());
+		
+		List<IStorage> ins_to_save = Lists.newArrayList();
+		ins_to_save.add(pair);
+		ins_to_save.add(pair_list);
+		Ins.getStorageService().saveInTransaction(ins_to_save);
+		return pair;
+	}
+	
+	
 }

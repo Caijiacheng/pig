@@ -84,4 +84,19 @@ public class DefaultMessage extends ProtoStorage<Msg.Builder> implements
 		};
 	}
 
+	@Override
+	public String content() {
+		return getProto().getContent();
+	}
+
+	@Override
+	public String imgurl() {
+		return getProto().getPhotouri();
+	}
+
+	@Override
+	public String videourl() {
+		return getProto().getVideouri();
+	}
+
 }

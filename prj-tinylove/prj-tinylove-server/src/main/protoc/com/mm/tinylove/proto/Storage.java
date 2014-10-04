@@ -1041,50 +1041,60 @@ public final class Storage {
      */
     long getPairid();
 
-    // required string content = 6;
+    // required string content = 5;
     /**
-     * <code>required string content = 6;</code>
+     * <code>required string content = 5;</code>
      */
     boolean hasContent();
     /**
-     * <code>required string content = 6;</code>
+     * <code>required string content = 5;</code>
      */
     java.lang.String getContent();
     /**
-     * <code>required string content = 6;</code>
+     * <code>required string content = 5;</code>
      */
     com.google.protobuf.ByteString
         getContentBytes();
 
-    // optional string photouri = 7;
+    // optional string photouri = 6;
     /**
-     * <code>optional string photouri = 7;</code>
+     * <code>optional string photouri = 6;</code>
      */
     boolean hasPhotouri();
     /**
-     * <code>optional string photouri = 7;</code>
+     * <code>optional string photouri = 6;</code>
      */
     java.lang.String getPhotouri();
     /**
-     * <code>optional string photouri = 7;</code>
+     * <code>optional string photouri = 6;</code>
      */
     com.google.protobuf.ByteString
         getPhotouriBytes();
 
-    // optional string videouri = 8;
+    // optional string videouri = 7;
     /**
-     * <code>optional string videouri = 8;</code>
+     * <code>optional string videouri = 7;</code>
      */
     boolean hasVideouri();
     /**
-     * <code>optional string videouri = 8;</code>
+     * <code>optional string videouri = 7;</code>
      */
     java.lang.String getVideouri();
     /**
-     * <code>optional string videouri = 8;</code>
+     * <code>optional string videouri = 7;</code>
      */
     com.google.protobuf.ByteString
         getVideouriBytes();
+
+    // required int64 timestamp = 8;
+    /**
+     * <code>required int64 timestamp = 8;</code>
+     */
+    boolean hasTimestamp();
+    /**
+     * <code>required int64 timestamp = 8;</code>
+     */
+    long getTimestamp();
   }
   /**
    * Protobuf type {@code com.mm.tinylove.proto.Msg}
@@ -1165,19 +1175,24 @@ public final class Storage {
               pairid_ = input.readInt64();
               break;
             }
-            case 50: {
+            case 42: {
               bitField0_ |= 0x00000010;
               content_ = input.readBytes();
               break;
             }
-            case 58: {
+            case 50: {
               bitField0_ |= 0x00000020;
               photouri_ = input.readBytes();
               break;
             }
-            case 66: {
+            case 58: {
               bitField0_ |= 0x00000040;
               videouri_ = input.readBytes();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              timestamp_ = input.readInt64();
               break;
             }
           }
@@ -1290,17 +1305,17 @@ public final class Storage {
       return pairid_;
     }
 
-    // required string content = 6;
-    public static final int CONTENT_FIELD_NUMBER = 6;
+    // required string content = 5;
+    public static final int CONTENT_FIELD_NUMBER = 5;
     private java.lang.Object content_;
     /**
-     * <code>required string content = 6;</code>
+     * <code>required string content = 5;</code>
      */
     public boolean hasContent() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>required string content = 6;</code>
+     * <code>required string content = 5;</code>
      */
     public java.lang.String getContent() {
       java.lang.Object ref = content_;
@@ -1317,7 +1332,7 @@ public final class Storage {
       }
     }
     /**
-     * <code>required string content = 6;</code>
+     * <code>required string content = 5;</code>
      */
     public com.google.protobuf.ByteString
         getContentBytes() {
@@ -1333,17 +1348,17 @@ public final class Storage {
       }
     }
 
-    // optional string photouri = 7;
-    public static final int PHOTOURI_FIELD_NUMBER = 7;
+    // optional string photouri = 6;
+    public static final int PHOTOURI_FIELD_NUMBER = 6;
     private java.lang.Object photouri_;
     /**
-     * <code>optional string photouri = 7;</code>
+     * <code>optional string photouri = 6;</code>
      */
     public boolean hasPhotouri() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional string photouri = 7;</code>
+     * <code>optional string photouri = 6;</code>
      */
     public java.lang.String getPhotouri() {
       java.lang.Object ref = photouri_;
@@ -1360,7 +1375,7 @@ public final class Storage {
       }
     }
     /**
-     * <code>optional string photouri = 7;</code>
+     * <code>optional string photouri = 6;</code>
      */
     public com.google.protobuf.ByteString
         getPhotouriBytes() {
@@ -1376,17 +1391,17 @@ public final class Storage {
       }
     }
 
-    // optional string videouri = 8;
-    public static final int VIDEOURI_FIELD_NUMBER = 8;
+    // optional string videouri = 7;
+    public static final int VIDEOURI_FIELD_NUMBER = 7;
     private java.lang.Object videouri_;
     /**
-     * <code>optional string videouri = 8;</code>
+     * <code>optional string videouri = 7;</code>
      */
     public boolean hasVideouri() {
       return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional string videouri = 8;</code>
+     * <code>optional string videouri = 7;</code>
      */
     public java.lang.String getVideouri() {
       java.lang.Object ref = videouri_;
@@ -1403,7 +1418,7 @@ public final class Storage {
       }
     }
     /**
-     * <code>optional string videouri = 8;</code>
+     * <code>optional string videouri = 7;</code>
      */
     public com.google.protobuf.ByteString
         getVideouriBytes() {
@@ -1419,6 +1434,22 @@ public final class Storage {
       }
     }
 
+    // required int64 timestamp = 8;
+    public static final int TIMESTAMP_FIELD_NUMBER = 8;
+    private long timestamp_;
+    /**
+     * <code>required int64 timestamp = 8;</code>
+     */
+    public boolean hasTimestamp() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>required int64 timestamp = 8;</code>
+     */
+    public long getTimestamp() {
+      return timestamp_;
+    }
+
     private void initFields() {
       userid_ = 0L;
       location_ = com.mm.tinylove.proto.Storage.Location.getDefaultInstance();
@@ -1427,6 +1458,7 @@ public final class Storage {
       content_ = "";
       photouri_ = "";
       videouri_ = "";
+      timestamp_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1438,6 +1470,10 @@ public final class Storage {
         return false;
       }
       if (!hasContent()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasTimestamp()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -1467,13 +1503,16 @@ public final class Storage {
         output.writeInt64(4, pairid_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeBytes(6, getContentBytes());
+        output.writeBytes(5, getContentBytes());
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeBytes(7, getPhotouriBytes());
+        output.writeBytes(6, getPhotouriBytes());
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeBytes(8, getVideouriBytes());
+        output.writeBytes(7, getVideouriBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeInt64(8, timestamp_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1502,15 +1541,19 @@ public final class Storage {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(6, getContentBytes());
+          .computeBytesSize(5, getContentBytes());
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(7, getPhotouriBytes());
+          .computeBytesSize(6, getPhotouriBytes());
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(8, getVideouriBytes());
+          .computeBytesSize(7, getVideouriBytes());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(8, timestamp_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1647,6 +1690,8 @@ public final class Storage {
         bitField0_ = (bitField0_ & ~0x00000020);
         videouri_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
+        timestamp_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -1707,6 +1752,10 @@ public final class Storage {
           to_bitField0_ |= 0x00000040;
         }
         result.videouri_ = videouri_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.timestamp_ = timestamp_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1750,6 +1799,9 @@ public final class Storage {
           videouri_ = other.videouri_;
           onChanged();
         }
+        if (other.hasTimestamp()) {
+          setTimestamp(other.getTimestamp());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -1760,6 +1812,10 @@ public final class Storage {
           return false;
         }
         if (!hasContent()) {
+          
+          return false;
+        }
+        if (!hasTimestamp()) {
           
           return false;
         }
@@ -2007,16 +2063,16 @@ public final class Storage {
         return this;
       }
 
-      // required string content = 6;
+      // required string content = 5;
       private java.lang.Object content_ = "";
       /**
-       * <code>required string content = 6;</code>
+       * <code>required string content = 5;</code>
        */
       public boolean hasContent() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>required string content = 6;</code>
+       * <code>required string content = 5;</code>
        */
       public java.lang.String getContent() {
         java.lang.Object ref = content_;
@@ -2030,7 +2086,7 @@ public final class Storage {
         }
       }
       /**
-       * <code>required string content = 6;</code>
+       * <code>required string content = 5;</code>
        */
       public com.google.protobuf.ByteString
           getContentBytes() {
@@ -2046,7 +2102,7 @@ public final class Storage {
         }
       }
       /**
-       * <code>required string content = 6;</code>
+       * <code>required string content = 5;</code>
        */
       public Builder setContent(
           java.lang.String value) {
@@ -2059,7 +2115,7 @@ public final class Storage {
         return this;
       }
       /**
-       * <code>required string content = 6;</code>
+       * <code>required string content = 5;</code>
        */
       public Builder clearContent() {
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -2068,7 +2124,7 @@ public final class Storage {
         return this;
       }
       /**
-       * <code>required string content = 6;</code>
+       * <code>required string content = 5;</code>
        */
       public Builder setContentBytes(
           com.google.protobuf.ByteString value) {
@@ -2081,16 +2137,16 @@ public final class Storage {
         return this;
       }
 
-      // optional string photouri = 7;
+      // optional string photouri = 6;
       private java.lang.Object photouri_ = "";
       /**
-       * <code>optional string photouri = 7;</code>
+       * <code>optional string photouri = 6;</code>
        */
       public boolean hasPhotouri() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional string photouri = 7;</code>
+       * <code>optional string photouri = 6;</code>
        */
       public java.lang.String getPhotouri() {
         java.lang.Object ref = photouri_;
@@ -2104,7 +2160,7 @@ public final class Storage {
         }
       }
       /**
-       * <code>optional string photouri = 7;</code>
+       * <code>optional string photouri = 6;</code>
        */
       public com.google.protobuf.ByteString
           getPhotouriBytes() {
@@ -2120,7 +2176,7 @@ public final class Storage {
         }
       }
       /**
-       * <code>optional string photouri = 7;</code>
+       * <code>optional string photouri = 6;</code>
        */
       public Builder setPhotouri(
           java.lang.String value) {
@@ -2133,7 +2189,7 @@ public final class Storage {
         return this;
       }
       /**
-       * <code>optional string photouri = 7;</code>
+       * <code>optional string photouri = 6;</code>
        */
       public Builder clearPhotouri() {
         bitField0_ = (bitField0_ & ~0x00000020);
@@ -2142,7 +2198,7 @@ public final class Storage {
         return this;
       }
       /**
-       * <code>optional string photouri = 7;</code>
+       * <code>optional string photouri = 6;</code>
        */
       public Builder setPhotouriBytes(
           com.google.protobuf.ByteString value) {
@@ -2155,16 +2211,16 @@ public final class Storage {
         return this;
       }
 
-      // optional string videouri = 8;
+      // optional string videouri = 7;
       private java.lang.Object videouri_ = "";
       /**
-       * <code>optional string videouri = 8;</code>
+       * <code>optional string videouri = 7;</code>
        */
       public boolean hasVideouri() {
         return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional string videouri = 8;</code>
+       * <code>optional string videouri = 7;</code>
        */
       public java.lang.String getVideouri() {
         java.lang.Object ref = videouri_;
@@ -2178,7 +2234,7 @@ public final class Storage {
         }
       }
       /**
-       * <code>optional string videouri = 8;</code>
+       * <code>optional string videouri = 7;</code>
        */
       public com.google.protobuf.ByteString
           getVideouriBytes() {
@@ -2194,7 +2250,7 @@ public final class Storage {
         }
       }
       /**
-       * <code>optional string videouri = 8;</code>
+       * <code>optional string videouri = 7;</code>
        */
       public Builder setVideouri(
           java.lang.String value) {
@@ -2207,7 +2263,7 @@ public final class Storage {
         return this;
       }
       /**
-       * <code>optional string videouri = 8;</code>
+       * <code>optional string videouri = 7;</code>
        */
       public Builder clearVideouri() {
         bitField0_ = (bitField0_ & ~0x00000040);
@@ -2216,7 +2272,7 @@ public final class Storage {
         return this;
       }
       /**
-       * <code>optional string videouri = 8;</code>
+       * <code>optional string videouri = 7;</code>
        */
       public Builder setVideouriBytes(
           com.google.protobuf.ByteString value) {
@@ -2225,6 +2281,39 @@ public final class Storage {
   }
   bitField0_ |= 0x00000040;
         videouri_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required int64 timestamp = 8;
+      private long timestamp_ ;
+      /**
+       * <code>required int64 timestamp = 8;</code>
+       */
+      public boolean hasTimestamp() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>required int64 timestamp = 8;</code>
+       */
+      public long getTimestamp() {
+        return timestamp_;
+      }
+      /**
+       * <code>required int64 timestamp = 8;</code>
+       */
+      public Builder setTimestamp(long value) {
+        bitField0_ |= 0x00000080;
+        timestamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 timestamp = 8;</code>
+       */
+      public Builder clearTimestamp() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        timestamp_ = 0L;
         onChanged();
         return this;
       }
@@ -2262,6 +2351,21 @@ public final class Storage {
      * <code>required int64 userid = 2;</code>
      */
     long getUserid();
+
+    // required string content = 3;
+    /**
+     * <code>required string content = 3;</code>
+     */
+    boolean hasContent();
+    /**
+     * <code>required string content = 3;</code>
+     */
+    java.lang.String getContent();
+    /**
+     * <code>required string content = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getContentBytes();
   }
   /**
    * Protobuf type {@code com.mm.tinylove.proto.Comment}
@@ -2322,6 +2426,11 @@ public final class Storage {
             case 16: {
               bitField0_ |= 0x00000002;
               userid_ = input.readInt64();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              content_ = input.readBytes();
               break;
             }
           }
@@ -2396,9 +2505,53 @@ public final class Storage {
       return userid_;
     }
 
+    // required string content = 3;
+    public static final int CONTENT_FIELD_NUMBER = 3;
+    private java.lang.Object content_;
+    /**
+     * <code>required string content = 3;</code>
+     */
+    public boolean hasContent() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required string content = 3;</code>
+     */
+    public java.lang.String getContent() {
+      java.lang.Object ref = content_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          content_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string content = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getContentBytes() {
+      java.lang.Object ref = content_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        content_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       msgid_ = 0L;
       userid_ = 0L;
+      content_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2410,6 +2563,10 @@ public final class Storage {
         return false;
       }
       if (!hasUserid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasContent()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -2425,6 +2582,9 @@ public final class Storage {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt64(2, userid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getContentBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -2442,6 +2602,10 @@ public final class Storage {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(2, userid_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getContentBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2563,6 +2727,8 @@ public final class Storage {
         bitField0_ = (bitField0_ & ~0x00000001);
         userid_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
+        content_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -2599,6 +2765,10 @@ public final class Storage {
           to_bitField0_ |= 0x00000002;
         }
         result.userid_ = userid_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.content_ = content_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2621,6 +2791,11 @@ public final class Storage {
         if (other.hasUserid()) {
           setUserid(other.getUserid());
         }
+        if (other.hasContent()) {
+          bitField0_ |= 0x00000004;
+          content_ = other.content_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -2631,6 +2806,10 @@ public final class Storage {
           return false;
         }
         if (!hasUserid()) {
+          
+          return false;
+        }
+        if (!hasContent()) {
           
           return false;
         }
@@ -2718,6 +2897,80 @@ public final class Storage {
       public Builder clearUserid() {
         bitField0_ = (bitField0_ & ~0x00000002);
         userid_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // required string content = 3;
+      private java.lang.Object content_ = "";
+      /**
+       * <code>required string content = 3;</code>
+       */
+      public boolean hasContent() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required string content = 3;</code>
+       */
+      public java.lang.String getContent() {
+        java.lang.Object ref = content_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          content_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string content = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getContentBytes() {
+        java.lang.Object ref = content_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          content_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string content = 3;</code>
+       */
+      public Builder setContent(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        content_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string content = 3;</code>
+       */
+      public Builder clearContent() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        content_ = getDefaultInstance().getContent();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string content = 3;</code>
+       */
+      public Builder setContentBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        content_ = value;
         onChanged();
         return this;
       }
@@ -4311,15 +4564,16 @@ public final class Storage {
     java.lang.String[] descriptorData = {
       "\n\rstorage.proto\022\025com.mm.tinylove.proto\" " +
       "\n\010Location\022\t\n\001x\030\001 \002(\002\022\t\n\001y\030\002 \002(\002\"&\n\005Pris" +
-      "e\022\016\n\006userid\030\001 \002(\003\022\r\n\005msgid\030\002 \002(\003\"\236\001\n\003Msg" +
+      "e\022\016\n\006userid\030\001 \002(\003\022\r\n\005msgid\030\002 \002(\003\"\261\001\n\003Msg" +
       "\022\016\n\006userid\030\001 \002(\003\0221\n\010location\030\002 \001(\0132\037.com" +
       ".mm.tinylove.proto.Location\022\017\n\007storyid\030\003" +
-      " \001(\003\022\016\n\006pairid\030\004 \001(\003\022\017\n\007content\030\006 \002(\t\022\020\n" +
-      "\010photouri\030\007 \001(\t\022\020\n\010videouri\030\010 \001(\t\"(\n\007Com" +
-      "ment\022\r\n\005msgid\030\001 \002(\003\022\016\n\006userid\030\002 \002(\003\"%\n\004P" +
-      "air\022\014\n\004name\030\001 \002(\t\022\017\n\007creator\030\003 \002(\003\"\'\n\005St" +
-      "ory\022\016\n\006userid\030\001 \002(\003\022\016\n\006pairid\030\002 \002(\003\"\030\n\010U",
-      "serInfo\022\014\n\004name\030\001 \001(\t"
+      " \001(\003\022\016\n\006pairid\030\004 \001(\003\022\017\n\007content\030\005 \002(\t\022\020\n" +
+      "\010photouri\030\006 \001(\t\022\020\n\010videouri\030\007 \001(\t\022\021\n\ttim" +
+      "estamp\030\010 \002(\003\"9\n\007Comment\022\r\n\005msgid\030\001 \002(\003\022\016" +
+      "\n\006userid\030\002 \002(\003\022\017\n\007content\030\003 \002(\t\"%\n\004Pair\022" +
+      "\014\n\004name\030\001 \002(\t\022\017\n\007creator\030\003 \002(\003\"\'\n\005Story\022",
+      "\016\n\006userid\030\001 \002(\003\022\016\n\006pairid\030\002 \002(\003\"\030\n\010UserI" +
+      "nfo\022\014\n\004name\030\001 \001(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -4343,13 +4597,13 @@ public final class Storage {
           internal_static_com_mm_tinylove_proto_Msg_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_tinylove_proto_Msg_descriptor,
-              new java.lang.String[] { "Userid", "Location", "Storyid", "Pairid", "Content", "Photouri", "Videouri", });
+              new java.lang.String[] { "Userid", "Location", "Storyid", "Pairid", "Content", "Photouri", "Videouri", "Timestamp", });
           internal_static_com_mm_tinylove_proto_Comment_descriptor =
             getDescriptor().getMessageTypes().get(3);
           internal_static_com_mm_tinylove_proto_Comment_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_tinylove_proto_Comment_descriptor,
-              new java.lang.String[] { "Msgid", "Userid", });
+              new java.lang.String[] { "Msgid", "Userid", "Content", });
           internal_static_com_mm_tinylove_proto_Pair_descriptor =
             getDescriptor().getMessageTypes().get(4);
           internal_static_com_mm_tinylove_proto_Pair_fieldAccessorTable = new
