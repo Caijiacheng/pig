@@ -11,6 +11,8 @@ public interface IRangeList<E> {
 	
 	List<E> lpushCollection();
 	
+	void cleanlpush();
+	
 	List<E> all();
 	
 }

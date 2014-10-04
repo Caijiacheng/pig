@@ -54,5 +54,10 @@ public abstract class ImmutableObjectRangeList<E extends IObject> implements
 	public List<E> lpushCollection() {
 		throw new UnsupportedOperationException();
 	}
+	
+	@Override
+	public void cleanlpush() {
+		throw new UnsupportedOperationException();
+	}
 
 }

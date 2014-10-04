@@ -6,9 +6,6 @@
 	<artifactId>jpig</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<!-- <scm> <connection>scm:svn:https://192.168.1.100:8443/svn/cilent/trunk/code/AndroidCode/ZaiHu/trunk/</connection> 
-		<developerConnection>scm:svn:https://192.168.1.100:8443/svn/cilent/trunk/code/AndroidCode/ZaiHu/trunk/</developerConnection> 
-		</scm> -->
 	<properties>
 		<top.dir>${basedir}</top.dir>
 		<nexus.server>http://192.168.1.100:8081</nexus.server>
@@ -31,11 +28,13 @@
 		<restful.bind.port>8081</restful.bind.port>
 		
 		<!-- test -->
-		<test.redis.master.server>127.0.0.1:6379</test.redis.master.server>
-		<test.redis.password>qwe123!</test.redis.password>
-		<test.redis.dbnum>0</test.redis.dbnum>
+		<test.storage.redis.server>127.0.0.1:6379</test.storage.redis.server>
+		<test.storage.redis.password>qwe123!</test.storage.redis.password>
+		<test.storage.redis.dbnum>0</test.storage.redis.dbnum>
 		
-		
+		<test.memory.redis.server>127.0.0.1:6379</test.memory.redis.server>
+		<test.memory.redis.password>qwe123!</test.memory.redis.password>
+		<test.memory.redis.dbnum>1</test.memory.redis.dbnum>		
 	</properties>
 	<!-- all open source version -->
 	<dependencyManagement>

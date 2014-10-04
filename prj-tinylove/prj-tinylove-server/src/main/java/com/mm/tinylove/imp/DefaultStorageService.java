@@ -53,12 +53,6 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 	byte[] MSG_KEY_INCR = (this.getClass().getCanonicalName() + ":MSG")
 			.getBytes(Charsets.UTF_8);
 
-	@Override
-	public boolean exist(byte[] key) {
-		try (Jedis con = dbhandle.getConn()) {
-			return con.exists(key);
-		}
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -73,7 +67,14 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 					t.set(kv_ins.marshalKey(), kv_ins.marshalValue());
 				}else if (ins instanceof IRangeList)
 				{
-					lpush(ins.marshalKey(), ((IRangeList<Long>) ins).lpushCollection());
+					List<Long> data = ((IRangeList<Long>) ins).lpushCollection();
+					String[] sdata = new String[data.size()];
+					for (int i = 0; i < data.size(); i ++)
+					{
+						sdata[i] = String.valueOf(data.get(i));
+					}
+					t.lpush(ins.marshalKey(), sdata);
+					((IRangeList<Long>) ins).cleanlpush();
 				}
 					
 				
@@ -129,9 +130,21 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 	public Long lpush(String key, List<Long> data) {
 		try(Jedis con = dbhandle.getConn())
 		{
-			long s =  con.lpush(key, data.toArray(new String[data.size()]));
+			String[] sdata = new String[data.size()];
+			for (int i = 0; i < data.size(); i ++)
+			{
+				sdata[i] = String.valueOf(data.get(i));
+			}
+			
+			long s =  con.lpush(key, sdata);
 			Verify.verify(s == data.size());
 			return s;
 		}
+	}
+
+	@Override
+	public void remove(String key) {
+		throw new UnsupportedOperationException();
+		
 	}
 }

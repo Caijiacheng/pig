@@ -1,0 +1,3 @@
+storage.redis.server=${test.storage.redis.server}
+storage.redis.password=${test.storage.redis.password}
+storage.redis.dbnum=${test.storage.redis.dbnum}

@@ -1,9 +1,9 @@
-redis.server=${test.redis.master.server}
-redis.password=${test.redis.password}
-redis.dbnum=${test.redis.dbnum}
+redis.server=${test.storage.redis.server}
+redis.password=${test.storage.redis.passowrd}
+redis.dbnum=${test.storage.redis.dbnum}
 
-mysql.server=127.0.0.1:3306
-mysql.user=root
-mysql.password=qwe123!
+mysql.server=${mysql.master.server}
+mysql.user=${mysql.user}
+mysql.password=${mysql.password}
 
-restful.bind.port=8081
+restful.bind.port=${restful.bind.port}

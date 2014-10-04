@@ -112,16 +112,6 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 		};
 	}
 
-//	@Override
-//	public IRangeList<IPrise> userPrises() {
-//		return new ImmutableObjectRangeList<IPrise>(getUserPairsIDs()) 
-//				{
-//				public IPrise apply(Long id)
-//				{
-//					return Ins.getIPrise(id);
-//				}
-//		};
-//	}
 	
 	/**
 	 * 这里需要处理各个存储的id关联关系.比较复杂.最终所有的存储数据用事务一起存到数据库中
@@ -280,9 +270,4 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 		Ins.getStorageService().saveInTransaction(ins_to_save);
 		
 	}
-
-
-
-
-
 }

@@ -11,7 +11,8 @@ public interface IStorageService {
 	
 	<T extends IStorage> void saveInTransaction(List<IStorage> inslist);
 	
-	@Deprecated
-	boolean exist(byte[] key);
+
+	
+	void remove(String key);
 	
 }

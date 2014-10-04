@@ -1,6 +1,6 @@
-redis.server=${redis.master.server}
-redis.password=${redis.password}
-redis.dbnum=${redis.dbnum}
+redis.server=${storage.redis.server}
+redis.password=${storage.redis.passowrd}
+redis.dbnum=${storage.redis.dbnum}
 
 mysql.server=${mysql.master.server}
 mysql.user=${mysql.user}
