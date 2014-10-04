@@ -13,7 +13,6 @@ import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IStory;
 import com.mm.tinylove.IUser;
 import com.mm.tinylove.error.NotExistException;
-import com.mm.tinylove.proto.Storage.Location;
 import com.mm.tinylove.proto.Storage.UserInfo;
 
 public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
@@ -154,26 +153,24 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 		
 		DefaultStory relate = null;
 		
-		
-//		all() will load all story. so, not need
-		//for (IStory story : userStorys().all())
-//		{
-//			if (story.pair().id() == pair.id())
-//			{
-//				relate = (DefaultStory) story;
-//				break;
-//			}
-//		}
-		
-		for (Long id : getUserStorysIDs().all())
+		for (IStory story : userStorys().all())
 		{
-			IStory is = new DefaultStory(id);
-			if (is.pair().id() == pair.id())
+			if (story.pair().id() == pair.id())
 			{
-				relate = (DefaultStory)is;
+				relate = (DefaultStory) story;
 				break;
 			}
 		}
+		
+//		for (Long id : getUserStorysIDs().all())
+//		{
+//			IStory is = Ins.getIStory(id);
+//			if (is.pair().id() == pair.id())
+//			{
+//				relate = (DefaultStory)is;
+//				break;
+//			}
+//		}
 
 		if (relate == null)//new
 		{
@@ -184,7 +181,7 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 			ins_to_save.add(l_storys);
 		}
 		message.value.setStoryid(relate.id());
-		message.value.setLocation(Location.newBuilder().setX(location.getX()).setY(location.getY()).build());
+		message.value.setLocation(new DefaultLocation(location).toLocation());
 		//add message to story
 		LongRangeList msgids = (LongRangeList) relate.getStorysMessagesIDs();
 		msgids.lpush(message.id());	

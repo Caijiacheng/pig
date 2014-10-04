@@ -1031,13 +1031,13 @@ public final class Storage {
      */
     long getStoryid();
 
-    // optional int64 pairid = 4;
+    // required int64 pairid = 4;
     /**
-     * <code>optional int64 pairid = 4;</code>
+     * <code>required int64 pairid = 4;</code>
      */
     boolean hasPairid();
     /**
-     * <code>optional int64 pairid = 4;</code>
+     * <code>required int64 pairid = 4;</code>
      */
     long getPairid();
 
@@ -1289,17 +1289,17 @@ public final class Storage {
       return storyid_;
     }
 
-    // optional int64 pairid = 4;
+    // required int64 pairid = 4;
     public static final int PAIRID_FIELD_NUMBER = 4;
     private long pairid_;
     /**
-     * <code>optional int64 pairid = 4;</code>
+     * <code>required int64 pairid = 4;</code>
      */
     public boolean hasPairid() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int64 pairid = 4;</code>
+     * <code>required int64 pairid = 4;</code>
      */
     public long getPairid() {
       return pairid_;
@@ -1466,6 +1466,10 @@ public final class Storage {
       if (isInitialized != -1) return isInitialized == 1;
 
       if (!hasUserid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasPairid()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -1811,6 +1815,10 @@ public final class Storage {
           
           return false;
         }
+        if (!hasPairid()) {
+          
+          return false;
+        }
         if (!hasContent()) {
           
           return false;
@@ -2030,22 +2038,22 @@ public final class Storage {
         return this;
       }
 
-      // optional int64 pairid = 4;
+      // required int64 pairid = 4;
       private long pairid_ ;
       /**
-       * <code>optional int64 pairid = 4;</code>
+       * <code>required int64 pairid = 4;</code>
        */
       public boolean hasPairid() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int64 pairid = 4;</code>
+       * <code>required int64 pairid = 4;</code>
        */
       public long getPairid() {
         return pairid_;
       }
       /**
-       * <code>optional int64 pairid = 4;</code>
+       * <code>required int64 pairid = 4;</code>
        */
       public Builder setPairid(long value) {
         bitField0_ |= 0x00000008;
@@ -2054,7 +2062,7 @@ public final class Storage {
         return this;
       }
       /**
-       * <code>optional int64 pairid = 4;</code>
+       * <code>required int64 pairid = 4;</code>
        */
       public Builder clearPairid() {
         bitField0_ = (bitField0_ & ~0x00000008);
@@ -4567,7 +4575,7 @@ public final class Storage {
       "e\022\016\n\006userid\030\001 \002(\003\022\r\n\005msgid\030\002 \002(\003\"\261\001\n\003Msg" +
       "\022\016\n\006userid\030\001 \002(\003\0221\n\010location\030\002 \001(\0132\037.com" +
       ".mm.tinylove.proto.Location\022\017\n\007storyid\030\003" +
-      " \001(\003\022\016\n\006pairid\030\004 \001(\003\022\017\n\007content\030\005 \002(\t\022\020\n" +
+      " \001(\003\022\016\n\006pairid\030\004 \002(\003\022\017\n\007content\030\005 \002(\t\022\020\n" +
       "\010photouri\030\006 \001(\t\022\020\n\010videouri\030\007 \001(\t\022\021\n\ttim" +
       "estamp\030\010 \002(\003\"9\n\007Comment\022\r\n\005msgid\030\001 \002(\003\022\016" +
       "\n\006userid\030\002 \002(\003\022\017\n\007content\030\003 \002(\t\"%\n\004Pair\022" +

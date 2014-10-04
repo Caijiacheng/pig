@@ -18,7 +18,7 @@ message Msg
 	required int64 userid = 1;
 	optional Location location = 2;
 	optional int64 storyid = 3;
-	optional int64 pairid = 4;
+	required int64 pairid = 4;
 	required string content = 5;
 	optional string photouri = 6;
 	optional string videouri = 7;

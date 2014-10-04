@@ -1,5 +1,6 @@
 package com.mm.tinylove.imp;
 
+import com.google.common.base.Verify;
 import com.mm.tinylove.IMessage;
 import com.mm.tinylove.IPair;
 import com.mm.tinylove.IRangeList;
@@ -14,6 +15,8 @@ public class DefaultStory extends ProtoStorage<Story.Builder> implements IStory 
 
 	static DefaultStory create(long userid, long pairid)
 	{
+		Verify.verify(pairid != INVAID_KEY);
+		Verify.verify(userid != INVAID_KEY);
 		DefaultStory s = new DefaultStory(INVAID_KEY);
 		s.getProto().setUserid(userid).setPairid(pairid);
 		return s;

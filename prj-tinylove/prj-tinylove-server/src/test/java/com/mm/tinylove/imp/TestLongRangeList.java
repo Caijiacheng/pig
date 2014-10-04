@@ -99,7 +99,7 @@ public class TestLongRangeList {
 		Assert.assertEquals(range.range(ls.length, ls.length + 2).get(1), new Long(6L));
 		Assert.assertEquals(range.range(ls.length-1, ls.length + 2).get(0), new Long(1L));
 		Assert.assertEquals(range.range(ls.length-1, ls.length + 2).get(1), new Long(7L));
-		Assert.assertEquals(range.range(2*ls.length-1, ls.length).get(0), new Long(1L));
+		Assert.assertEquals(range.range(2*ls.length-1, 2*ls.length).get(0), new Long(1L));
 	}
 	
 }

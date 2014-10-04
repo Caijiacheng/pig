@@ -44,7 +44,7 @@ public class DefaultPair extends ProtoStorage<Pair.Builder> implements IPair{
 
 	@Override
 	public IUser creator() {
-		return Ins.getIUser(id);
+		return Ins.getIUser(getProto().getCreator());
 	}
 
 }

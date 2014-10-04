@@ -8,7 +8,6 @@ import redis.clients.jedis.Transaction;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
-import com.google.common.base.Verify;
 import com.google.common.collect.Lists;
 import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.db.StorageDB;
@@ -54,7 +53,6 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 	byte[] MSG_KEY_INCR = (this.getClass().getCanonicalName() + ":MSG")
 			.getBytes(Charsets.UTF_8);
 
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends IStorage> void saveInTransaction(List<IStorage> inslist) {
@@ -62,90 +60,78 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 		try (Jedis con = dbhandle.getConn()) {
 			Transaction t = con.multi();
 			for (IStorage ins : inslist) {
-				if (ins instanceof IKVStorage)
-				{
+				if (ins instanceof IKVStorage) {
 					IKVStorage kv_ins = (IKVStorage) ins;
 					t.set(kv_ins.marshalKey(), kv_ins.marshalValue());
-				}else if (ins instanceof IRangeList)
-				{
-					List<Long> data = ((IRangeList<Long>) ins).lpushCollection();
-					for (int i = 0; i < data.size(); i ++)
-					{
-						t.lpush(ins.marshalKey(), String.valueOf(data).getBytes(StandardCharsets.UTF_8));
+				} else if (ins instanceof IRangeList) {
+					List<Long> data = ((IRangeList<Long>) ins)
+							.lpushCollection();
+					for (int i = 0; i < data.size(); i++) {
+						t.lpush(ins.marshalKey(), String.valueOf(data.get(i))
+								.getBytes(StandardCharsets.UTF_8));
 					}
-					
+
 					((IRangeList<Long>) ins).cleanlpush();
 				}
-					
-				
-				
+
 			}
 			t.exec();
 		}
 
 	}
 
-	
 	@Override
 	public Long nextID(String key) {
-		try(Jedis con = dbhandle.getConn())
-		{
+		try (Jedis con = dbhandle.getConn()) {
 			return con.incr(key);
 		}
 	}
 
 	@Override
 	public Long curID(String key) {
-		try(Jedis con = dbhandle.getConn())
-		{
+		try (Jedis con = dbhandle.getConn()) {
 			return Long.parseLong(con.get(key));
 		}
 	}
 
 	@Override
 	public List<Long> loadRange(String key, long begin, long end) {
-		
-		try(Jedis con = dbhandle.getConn())
-		{
-			return Lists.transform(con.lrange(key, begin, end), new Function<String, Long>() {
-				public Long apply(String k)
-				{
-					return Long.parseLong(k);
-				}
-			});
+
+		try (Jedis con = dbhandle.getConn()) {
+			return Lists.transform(con.lrange(
+					key.getBytes(StandardCharsets.UTF_8), begin, end),
+					new Function<byte[], Long>() {
+						public Long apply(byte[] k) {
+							return Long.parseLong(new String(k,
+									StandardCharsets.UTF_8));
+						}
+					});
 		}
-		
+
 	}
 
 	@Override
 	public Long lsize(String key) {
-		
-		try(Jedis con = dbhandle.getConn())
-		{
-			return con.llen(key);
+
+		try (Jedis con = dbhandle.getConn()) {
+			return con.llen(key.getBytes(StandardCharsets.UTF_8));
 		}
 	}
 
 	@Override
 	public Long lpush(String key, List<Long> data) {
-		try(Jedis con = dbhandle.getConn())
-		{
-			String[] sdata = new String[data.size()];
-			for (int i = 0; i < data.size(); i ++)
-			{
-				sdata[i] = String.valueOf(data.get(i));
+		try (Jedis con = dbhandle.getConn()) {
+			for (int i = 0; i < data.size(); i++) {
+				con.lpush(key.getBytes(StandardCharsets.UTF_8), String.valueOf(data.get(i)).getBytes(StandardCharsets.UTF_8));
 			}
-			
-			long s =  con.lpush(key, sdata);
-			Verify.verify(s == data.size());
-			return s;
+			return (long) data.size();
 		}
 	}
 
 	@Override
 	public void remove(String key) {
 		throw new UnsupportedOperationException();
-		
+
 	}
 
 	@Override

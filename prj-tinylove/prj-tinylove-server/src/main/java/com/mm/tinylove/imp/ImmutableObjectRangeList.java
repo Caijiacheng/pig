@@ -39,7 +39,7 @@ public abstract class ImmutableObjectRangeList<E extends IObject> implements
 		return idrange.size();
 	}
 
-	
+	//NOTE: this is lazy laod
 	@Override
 	public List<E> all() {
 		return Lists.transform(idrange.all(), this);
