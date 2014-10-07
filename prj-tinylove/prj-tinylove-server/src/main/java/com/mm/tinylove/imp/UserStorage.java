@@ -3,6 +3,7 @@ package com.mm.tinylove.imp;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IUser;
 
 public class UserStorage extends LongRangeList{
@@ -22,6 +23,16 @@ public class UserStorage extends LongRangeList{
 		iss.add(users);
 		Ins.getStorageService().saveInTransaction(iss);
 		return user;
+	}
+	
+	public IRangeList<IUser> userList() {
+		return new ImmutableObjectRangeList<IUser>(this) 
+				{
+				public IUser apply(Long id)
+				{
+					return Ins.getIUser(id);
+				}
+		};
 	}
 	
 }

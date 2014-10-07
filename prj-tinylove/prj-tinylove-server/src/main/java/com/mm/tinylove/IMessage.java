@@ -13,4 +13,5 @@ public interface IMessage extends IObject{
 	String content();
 	String imgurl();
 	String videourl();
+	long timestamp();
 }

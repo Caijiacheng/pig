@@ -99,4 +99,9 @@ public class DefaultMessage extends ProtoStorage<Msg.Builder> implements
 		return getProto().getVideouri();
 	}
 
+	@Override
+	public long timestamp() {
+		return getProto().getTimestamp();
+	}
+
 }

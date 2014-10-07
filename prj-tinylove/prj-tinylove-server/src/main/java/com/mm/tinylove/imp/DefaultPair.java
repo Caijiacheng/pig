@@ -11,6 +11,9 @@ public class DefaultPair extends ProtoStorage<Pair.Builder> implements IPair{
 		super(id, Pair.newBuilder());
 	}
 	
+	
+	
+	//TODO:处理相同名字的pair.需要重新为名字做一个索引到pairid的映射
 	static DefaultPair create(String name, long creatorid)
 	{
 		DefaultPair pair =  new DefaultPair(INVAID_KEY);

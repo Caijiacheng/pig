@@ -18,17 +18,6 @@ import com.google.common.io.BaseEncoding;
 
 public class DefaultToken extends PojoToken {
 	
-//	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
-//	public static String bytesToHex(byte[] bytes) {
-//	    char[] hexChars = new char[bytes.length * 2];
-//	    for ( int j = 0; j < bytes.length; j++ ) {
-//	        int v = bytes[j] & 0xFF;
-//	        hexChars[j * 2] = hexArray[v >>> 4];
-//	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-//	    }
-//	    return new String(hexChars);
-//	}
-	
 	String getTokenKey()
 	{
 		return "TOKEN:" + _token;
@@ -66,9 +55,6 @@ public class DefaultToken extends PojoToken {
 				}
 				md5 = BaseEncoding.base32Hex().encode(md.digest());
 			}while(!getToken(md5).isPresent());
-			
-//			String md5 = 
-//					BaseEncoding.base64().encode(UUID.randomUUID().toString().getBytes());
 			
 			DefaultToken token = new DefaultToken();
 			

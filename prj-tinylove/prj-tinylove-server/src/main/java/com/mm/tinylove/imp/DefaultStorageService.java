@@ -138,4 +138,15 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 	public void cleanStorage() {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public long time() {
+		try (Jedis con = dbhandle.getConn())
+		{
+			List<String> tt = con.time();
+			return Long.parseLong(tt.get(0)) * 1000 + Long.parseLong(tt.get(1))/1000;
+		}
+	}
+
+
 }
