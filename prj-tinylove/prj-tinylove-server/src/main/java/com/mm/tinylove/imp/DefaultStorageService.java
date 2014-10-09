@@ -2,6 +2,7 @@ package com.mm.tinylove.imp;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
@@ -9,6 +10,7 @@ import redis.clients.jedis.Transaction;
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.db.StorageDB;
 
@@ -20,7 +22,7 @@ import com.mm.tinylove.db.StorageDB;
  */
 
 public class DefaultStorageService implements IStorageService, IUniqService,
-		IRangeService<Long> {
+		ICollectionService<Long> {
 
 	StorageDB dbhandle = new StorageDB();
 
@@ -34,7 +36,6 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 				IKVStorage kv_ins = (IKVStorage) ins;
 				kv_ins.unmarshalValue(value);
 			}
-
 		}
 		return ins;
 	}
@@ -106,7 +107,7 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 	}
 
 	@Override
-	public List<Long> loadRange(String key, long begin, long end) {
+	public List<Long> lloadRange(String key, long begin, long end) {
 
 		try (Jedis con = dbhandle.getConn()) {
 			return Lists.transform(con.lrange(
@@ -163,11 +164,45 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 	}
 
 	@Override
-	public void removeElement(String key, Long e) {
+	public void lrem(String key, Long e) {
 		try (Jedis con = dbhandle.getConn()) {
 			con.lrem(key.getBytes(StandardCharsets.UTF_8), 1, String.valueOf(e)
 					.getBytes(StandardCharsets.UTF_8));
 		}
+	}
+	
+	
+
+	@Override
+	public Set<Long> smem(String key, int count) {
+		try (Jedis con = dbhandle.getConn())
+		{
+			return Sets.transform(
+					 con.srandmember(key.getBytes(StandardCharsets.UTF_8), count),
+					new Function<byte[], Long>() {
+						public Long apply(byte[] k)
+						{
+							return Long.parseLong(new String(k,
+									StandardCharsets.UTF_8));
+						}
+					});
+		}
+		
+	}
+
+	@Override
+	public void sadd(String key, Set<Long> data) {
+		
+	}
+
+	@Override
+	public Set<Long> sall(String key) {
+		return null;
+	}
+
+	@Override
+	public void srem(String key, Long mem) {
+		
 	}
 
 }

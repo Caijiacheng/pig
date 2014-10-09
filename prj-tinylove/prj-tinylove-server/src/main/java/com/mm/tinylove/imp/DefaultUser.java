@@ -290,7 +290,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 		LongRangeList follower_list = (LongRangeList) ((FollowStorage<?>) obj)
 				.getObjectsFollowers();
 		
-		Ins.getLongRangeService().removeElement(follower_list.key, obj.id());
+		Ins.getLongRangeService().lrem(follower_list.key, obj.id());
 	}
 
 	

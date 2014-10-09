@@ -46,12 +46,12 @@ public class LongRangeList implements IRangeList<Long>, IStorage{
 			{
 				int end_index = new_ins.size();
 				oflist.addAll(new_ins.subList(begin_index, end_index));
-				oflist.addAll(Ins.getLongRangeService().loadRange(key, 0, new_end));
+				oflist.addAll(Ins.getLongRangeService().lloadRange(key, 0, new_end));
 				return oflist;
 			}
 		}else
 		{
-			return Ins.getLongRangeService().loadRange(key, new_begin, new_end);
+			return Ins.getLongRangeService().lloadRange(key, new_begin, new_end);
 		}
 	}
 
@@ -67,7 +67,7 @@ public class LongRangeList implements IRangeList<Long>, IStorage{
 
 	@Override
 	public List<Long> lpushCollection() {
-		return Lists.newCopyOnWriteArrayList(new_ins);
+		return Lists.newArrayList(new_ins);
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class LongRangeList implements IRangeList<Long>, IStorage{
 	@Override
 	public void remove(Long e) {
 		new_ins.remove(e);
-		Ins.getLongRangeService().removeElement(key, e);
+		Ins.getLongRangeService().lrem(key, e);
 	}
 
 

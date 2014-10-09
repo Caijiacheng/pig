@@ -34,7 +34,7 @@ public class Ins {
 		return s_storage_service;
 	}
 	
-	public static IRangeService<Long> getLongRangeService()
+	public static ICollectionService<Long> getLongRangeService()
 	{
 		return s_storage_service;
 	}
