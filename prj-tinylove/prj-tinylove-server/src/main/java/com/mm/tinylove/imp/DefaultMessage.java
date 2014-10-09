@@ -12,7 +12,7 @@ import com.mm.tinylove.IStory;
 import com.mm.tinylove.IUser;
 import com.mm.tinylove.proto.Storage.Msg;
 
-public class DefaultMessage extends ProtoStorage<Msg.Builder> implements
+public class DefaultMessage extends FollowStorage<Msg.Builder> implements
 		IMessage {
 
 	static Logger LOG = LoggerFactory.getLogger(DefaultMessage.class);

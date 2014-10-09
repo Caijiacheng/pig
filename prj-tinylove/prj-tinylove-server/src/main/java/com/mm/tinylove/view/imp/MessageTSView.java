@@ -8,10 +8,7 @@ import com.mm.tinylove.view.MessageView;
  * @author apple
  *
  */
-
-
 public class MessageTSView extends MessageView{
-
 	
 	static final public String MSG_TS_SORT_VIEW = "MESSAGE:TS:VIEW";
 	

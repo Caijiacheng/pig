@@ -15,4 +15,6 @@ public interface IRangeList<E> {
 	
 	List<E> all();
 	
+	void remove(E e);
+	
 }

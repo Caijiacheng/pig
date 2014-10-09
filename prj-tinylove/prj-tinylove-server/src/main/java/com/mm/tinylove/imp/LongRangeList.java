@@ -86,5 +86,12 @@ public class LongRangeList implements IRangeList<Long>, IStorage{
 	}
 
 
+	@Override
+	public void remove(Long e) {
+		new_ins.remove(e);
+		Ins.getLongRangeService().removeElement(key, e);
+	}
+
+
 
 }

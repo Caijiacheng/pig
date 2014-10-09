@@ -4526,6 +4526,620 @@ public final class Storage {
     // @@protoc_insertion_point(class_scope:com.mm.tinylove.proto.UserInfo)
   }
 
+  public interface NotifyOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required .com.mm.tinylove.proto.Notify.Type type = 1;
+    /**
+     * <code>required .com.mm.tinylove.proto.Notify.Type type = 1;</code>
+     */
+    boolean hasType();
+    /**
+     * <code>required .com.mm.tinylove.proto.Notify.Type type = 1;</code>
+     */
+    com.mm.tinylove.proto.Storage.Notify.Type getType();
+
+    // required bytes value = 2;
+    /**
+     * <code>required bytes value = 2;</code>
+     */
+    boolean hasValue();
+    /**
+     * <code>required bytes value = 2;</code>
+     */
+    com.google.protobuf.ByteString getValue();
+  }
+  /**
+   * Protobuf type {@code com.mm.tinylove.proto.Notify}
+   */
+  public static final class Notify extends
+      com.google.protobuf.GeneratedMessage
+      implements NotifyOrBuilder {
+    // Use Notify.newBuilder() to construct.
+    private Notify(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Notify(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Notify defaultInstance;
+    public static Notify getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Notify getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Notify(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              com.mm.tinylove.proto.Storage.Notify.Type value = com.mm.tinylove.proto.Storage.Notify.Type.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                type_ = value;
+              }
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              value_ = input.readBytes();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.mm.tinylove.proto.Storage.internal_static_com_mm_tinylove_proto_Notify_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.mm.tinylove.proto.Storage.internal_static_com_mm_tinylove_proto_Notify_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.mm.tinylove.proto.Storage.Notify.class, com.mm.tinylove.proto.Storage.Notify.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Notify> PARSER =
+        new com.google.protobuf.AbstractParser<Notify>() {
+      public Notify parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Notify(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Notify> getParserForType() {
+      return PARSER;
+    }
+
+    /**
+     * Protobuf enum {@code com.mm.tinylove.proto.Notify.Type}
+     */
+    public enum Type
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>NEW_COMMENT = 1;</code>
+       */
+      NEW_COMMENT(0, 1),
+      /**
+       * <code>NEW_PRISE = 2;</code>
+       */
+      NEW_PRISE(1, 2),
+      /**
+       * <code>NEW_COMMENT_PRISE = 3;</code>
+       */
+      NEW_COMMENT_PRISE(2, 3),
+      /**
+       * <code>NEW_STORY_MESSAGE = 4;</code>
+       */
+      NEW_STORY_MESSAGE(3, 4),
+      /**
+       * <code>NEW_PRIVATE_USER_MESSAGE = 5;</code>
+       */
+      NEW_PRIVATE_USER_MESSAGE(4, 5),
+      ;
+
+      /**
+       * <code>NEW_COMMENT = 1;</code>
+       */
+      public static final int NEW_COMMENT_VALUE = 1;
+      /**
+       * <code>NEW_PRISE = 2;</code>
+       */
+      public static final int NEW_PRISE_VALUE = 2;
+      /**
+       * <code>NEW_COMMENT_PRISE = 3;</code>
+       */
+      public static final int NEW_COMMENT_PRISE_VALUE = 3;
+      /**
+       * <code>NEW_STORY_MESSAGE = 4;</code>
+       */
+      public static final int NEW_STORY_MESSAGE_VALUE = 4;
+      /**
+       * <code>NEW_PRIVATE_USER_MESSAGE = 5;</code>
+       */
+      public static final int NEW_PRIVATE_USER_MESSAGE_VALUE = 5;
+
+
+      public final int getNumber() { return value; }
+
+      public static Type valueOf(int value) {
+        switch (value) {
+          case 1: return NEW_COMMENT;
+          case 2: return NEW_PRISE;
+          case 3: return NEW_COMMENT_PRISE;
+          case 4: return NEW_STORY_MESSAGE;
+          case 5: return NEW_PRIVATE_USER_MESSAGE;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+              public Type findValueByNumber(int number) {
+                return Type.valueOf(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.mm.tinylove.proto.Storage.Notify.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Type[] VALUES = values();
+
+      public static Type valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int index;
+      private final int value;
+
+      private Type(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:com.mm.tinylove.proto.Notify.Type)
+    }
+
+    private int bitField0_;
+    // required .com.mm.tinylove.proto.Notify.Type type = 1;
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private com.mm.tinylove.proto.Storage.Notify.Type type_;
+    /**
+     * <code>required .com.mm.tinylove.proto.Notify.Type type = 1;</code>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .com.mm.tinylove.proto.Notify.Type type = 1;</code>
+     */
+    public com.mm.tinylove.proto.Storage.Notify.Type getType() {
+      return type_;
+    }
+
+    // required bytes value = 2;
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString value_;
+    /**
+     * <code>required bytes value = 2;</code>
+     */
+    public boolean hasValue() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required bytes value = 2;</code>
+     */
+    public com.google.protobuf.ByteString getValue() {
+      return value_;
+    }
+
+    private void initFields() {
+      type_ = com.mm.tinylove.proto.Storage.Notify.Type.NEW_COMMENT;
+      value_ = com.google.protobuf.ByteString.EMPTY;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasValue()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, type_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, value_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, type_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, value_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.mm.tinylove.proto.Storage.Notify parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mm.tinylove.proto.Storage.Notify parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mm.tinylove.proto.Storage.Notify parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.mm.tinylove.proto.Storage.Notify parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.mm.tinylove.proto.Storage.Notify parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mm.tinylove.proto.Storage.Notify parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.mm.tinylove.proto.Storage.Notify parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.mm.tinylove.proto.Storage.Notify parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.mm.tinylove.proto.Storage.Notify parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.mm.tinylove.proto.Storage.Notify parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.mm.tinylove.proto.Storage.Notify prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.mm.tinylove.proto.Notify}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.mm.tinylove.proto.Storage.NotifyOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.mm.tinylove.proto.Storage.internal_static_com_mm_tinylove_proto_Notify_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.mm.tinylove.proto.Storage.internal_static_com_mm_tinylove_proto_Notify_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.mm.tinylove.proto.Storage.Notify.class, com.mm.tinylove.proto.Storage.Notify.Builder.class);
+      }
+
+      // Construct using com.mm.tinylove.proto.Storage.Notify.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        type_ = com.mm.tinylove.proto.Storage.Notify.Type.NEW_COMMENT;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        value_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.mm.tinylove.proto.Storage.internal_static_com_mm_tinylove_proto_Notify_descriptor;
+      }
+
+      public com.mm.tinylove.proto.Storage.Notify getDefaultInstanceForType() {
+        return com.mm.tinylove.proto.Storage.Notify.getDefaultInstance();
+      }
+
+      public com.mm.tinylove.proto.Storage.Notify build() {
+        com.mm.tinylove.proto.Storage.Notify result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.mm.tinylove.proto.Storage.Notify buildPartial() {
+        com.mm.tinylove.proto.Storage.Notify result = new com.mm.tinylove.proto.Storage.Notify(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.type_ = type_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.value_ = value_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.mm.tinylove.proto.Storage.Notify) {
+          return mergeFrom((com.mm.tinylove.proto.Storage.Notify)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.mm.tinylove.proto.Storage.Notify other) {
+        if (other == com.mm.tinylove.proto.Storage.Notify.getDefaultInstance()) return this;
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        if (other.hasValue()) {
+          setValue(other.getValue());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasType()) {
+          
+          return false;
+        }
+        if (!hasValue()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.mm.tinylove.proto.Storage.Notify parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.mm.tinylove.proto.Storage.Notify) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required .com.mm.tinylove.proto.Notify.Type type = 1;
+      private com.mm.tinylove.proto.Storage.Notify.Type type_ = com.mm.tinylove.proto.Storage.Notify.Type.NEW_COMMENT;
+      /**
+       * <code>required .com.mm.tinylove.proto.Notify.Type type = 1;</code>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .com.mm.tinylove.proto.Notify.Type type = 1;</code>
+       */
+      public com.mm.tinylove.proto.Storage.Notify.Type getType() {
+        return type_;
+      }
+      /**
+       * <code>required .com.mm.tinylove.proto.Notify.Type type = 1;</code>
+       */
+      public Builder setType(com.mm.tinylove.proto.Storage.Notify.Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .com.mm.tinylove.proto.Notify.Type type = 1;</code>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        type_ = com.mm.tinylove.proto.Storage.Notify.Type.NEW_COMMENT;
+        onChanged();
+        return this;
+      }
+
+      // required bytes value = 2;
+      private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>required bytes value = 2;</code>
+       */
+      public boolean hasValue() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required bytes value = 2;</code>
+       */
+      public com.google.protobuf.ByteString getValue() {
+        return value_;
+      }
+      /**
+       * <code>required bytes value = 2;</code>
+       */
+      public Builder setValue(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        value_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bytes value = 2;</code>
+       */
+      public Builder clearValue() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        value_ = getDefaultInstance().getValue();
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.mm.tinylove.proto.Notify)
+    }
+
+    static {
+      defaultInstance = new Notify(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.mm.tinylove.proto.Notify)
+  }
+
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_com_mm_tinylove_proto_Location_descriptor;
   private static
@@ -4561,6 +5175,11 @@ public final class Storage {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_mm_tinylove_proto_UserInfo_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_mm_tinylove_proto_Notify_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_mm_tinylove_proto_Notify_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -4581,7 +5200,12 @@ public final class Storage {
       "\n\006userid\030\002 \002(\003\022\017\n\007content\030\003 \002(\t\"%\n\004Pair\022" +
       "\014\n\004name\030\001 \002(\t\022\017\n\007creator\030\003 \002(\003\"\'\n\005Story\022",
       "\016\n\006userid\030\001 \002(\003\022\016\n\006pairid\030\002 \002(\003\"\030\n\010UserI" +
-      "nfo\022\014\n\004name\030\001 \001(\t"
+      "nfo\022\014\n\004name\030\001 \001(\t\"\275\001\n\006Notify\0220\n\004type\030\001 \002" +
+      "(\0162\".com.mm.tinylove.proto.Notify.Type\022\r" +
+      "\n\005value\030\002 \002(\014\"r\n\004Type\022\017\n\013NEW_COMMENT\020\001\022\r" +
+      "\n\tNEW_PRISE\020\002\022\025\n\021NEW_COMMENT_PRISE\020\003\022\025\n\021" +
+      "NEW_STORY_MESSAGE\020\004\022\034\n\030NEW_PRIVATE_USER_" +
+      "MESSAGE\020\005"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -4630,6 +5254,12 @@ public final class Storage {
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_mm_tinylove_proto_UserInfo_descriptor,
               new java.lang.String[] { "Name", });
+          internal_static_com_mm_tinylove_proto_Notify_descriptor =
+            getDescriptor().getMessageTypes().get(7);
+          internal_static_com_mm_tinylove_proto_Notify_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_com_mm_tinylove_proto_Notify_descriptor,
+              new java.lang.String[] { "Type", "Value", });
           return null;
         }
       };

@@ -17,4 +17,5 @@ public interface IRangeService<E> {
 	List<E> loadRange(String key, long begin, long end);
 	Long lsize(String key);
 	Long lpush(String key, List<E> data);
+	void removeElement(String key, E e);
 }

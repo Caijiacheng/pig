@@ -18,7 +18,6 @@ public class EventTrigger {
 	@AllowConcurrentEvents
 	public void creatMessageTrigger(MessageEvent.Creater creator)
 	{
-//		LOG.error("createMessageTrigger");
 		new MessageHotView().add(creator.getMsg());
 		new MessageTSView().add(creator.getMsg());
 	}

@@ -8,6 +8,8 @@ import com.google.common.collect.Lists;
 import com.mm.tinylove.IComment;
 import com.mm.tinylove.ILocation;
 import com.mm.tinylove.IMessage;
+import com.mm.tinylove.INotify;
+import com.mm.tinylove.IObject;
 import com.mm.tinylove.IPair;
 import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IStory;
@@ -17,7 +19,7 @@ import com.mm.tinylove.event.CommentEvent;
 import com.mm.tinylove.event.MessageEvent;
 import com.mm.tinylove.proto.Storage.UserInfo;
 
-public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
+public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 		IUser {
 
 	public DefaultUser(long id) {
@@ -38,6 +40,7 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 	static final String PAIRS_TAG = ":pairs";
 	static final String MSG_PRISE_TAG = ":msg:prise";
 	static final String COMMENT_PRISE_TAG = ":comment:prise";
+	static final String NOTIFY_TAG = ":notify";
 
 	IRangeList<Long> getUserStorysIDs() {
 		return new LongRangeList(getKey() + STORYS_TAG);
@@ -57,6 +60,11 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 
 	IRangeList<Long> getUserCommentPriseIDs() {
 		return new LongRangeList(getKey() + COMMENT_PRISE_TAG);
+	}
+	
+	IRangeList<Long> getUserNotifyIDs()
+	{
+		return new LongRangeList(getKey() + NOTIFY_TAG);
 	}
 
 	@Override
@@ -105,6 +113,11 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 		};
 	}
 
+	@Override
+	public IRangeList<INotify<?>> userNotifys() {
+		return null;
+	}
+	
 	/**
 	 * 这里需要处理各个存储的id关联关系.比较复杂.最终所有的存储数据用事务一起存到数据库中
 	 */
@@ -123,8 +136,6 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 		message.getProto().setVideouri(videourl == null ? "" : videourl);
 		// message.getProto().setTimestamp(System.currentTimeMillis());
 		message.getProto().setTimestamp(Ins.getStorageService().time()); // storage
-																			// service
-																			// time
 
 		// check ipair in the pairs
 		if (!Iterables.any(getUserPairsIDs().all(), new Predicate<Long>() {
@@ -227,7 +238,7 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 		ins_to_save.add(prise_ids);
 		ins_to_save.add(user_msg_prise);
 		Ins.getStorageService().saveInTransaction(ins_to_save);
-		
+
 		Ins.getEventBus().post(new MessageEvent.AddPrise(msg, this));
 	}
 
@@ -265,5 +276,23 @@ public class DefaultUser extends ProtoStorage<UserInfo.Builder> implements
 		Ins.getStorageService().saveInTransaction(ins_to_save);
 		return pair;
 	}
+
+	@Override
+	public void follow(IObject obj) {
+		LongRangeList follower_list = (LongRangeList) ((FollowStorage<?>) obj)
+				.getObjectsFollowers();
+		follower_list.lpush(this.id());
+		Ins.getStorageService().save(follower_list);
+	}
+
+	@Override
+	public void unfollow(IObject obj) {
+		LongRangeList follower_list = (LongRangeList) ((FollowStorage<?>) obj)
+				.getObjectsFollowers();
+		
+		Ins.getLongRangeService().removeElement(follower_list.key, obj.id());
+	}
+
+	
 
 }

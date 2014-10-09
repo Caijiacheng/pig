@@ -7,7 +7,6 @@ public interface IMessage extends IObject{
 	IPair pair();
 	IRangeList<IComment> comments();
 	IRangeList<IUser> prisers();
-//	IRangeList<IPrise> prises();
 	IStory parent();
 	ILocation location();
 	String content();

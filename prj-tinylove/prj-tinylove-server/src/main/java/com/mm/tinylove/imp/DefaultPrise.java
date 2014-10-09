@@ -6,7 +6,7 @@ import com.mm.tinylove.IUser;
 import com.mm.tinylove.proto.Storage.Prise;
 
 @Deprecated
-public class DefaultPrise extends ProtoStorage<Prise.Builder> implements IPrise{
+public class DefaultPrise extends FollowStorage<Prise.Builder> implements IPrise{
 
 	public DefaultPrise(long id) {
 		super(id, Prise.newBuilder());

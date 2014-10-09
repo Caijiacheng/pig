@@ -5,7 +5,7 @@ import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IUser;
 import com.mm.tinylove.proto.Storage.Pair;
 
-public class DefaultPair extends ProtoStorage<Pair.Builder> implements IPair{
+public class DefaultPair extends FollowStorage<Pair.Builder> implements IPair{
 
 	public DefaultPair(long id) {
 		super(id, Pair.newBuilder());

@@ -7,7 +7,7 @@ import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IStory;
 import com.mm.tinylove.proto.Storage.Story;
 
-public class DefaultStory extends ProtoStorage<Story.Builder> implements IStory {
+public class DefaultStory extends FollowStorage<Story.Builder> implements IStory {
 
 	public DefaultStory(long id) {
 		super(id, Story.newBuilder());

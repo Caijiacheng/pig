@@ -6,7 +6,7 @@ import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IUser;
 import com.mm.tinylove.proto.Storage.Comment;
 
-public class DefaultComment extends ProtoStorage<Comment.Builder> implements IComment{
+public class DefaultComment extends FollowStorage<Comment.Builder> implements IComment{
 
 	public DefaultComment(long id) {
 		super(id, Comment.newBuilder());

@@ -59,5 +59,10 @@ public abstract class ImmutableObjectRangeList<E extends IObject> implements
 	public void cleanlpush() {
 		throw new UnsupportedOperationException();
 	}
+	
+	@Override
+	public void remove(E e) {
+		throw new UnsupportedOperationException();
+	}
 
 }
