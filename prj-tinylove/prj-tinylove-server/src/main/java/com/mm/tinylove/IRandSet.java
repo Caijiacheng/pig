@@ -4,14 +4,22 @@ import java.util.List;
 import java.util.Set;
 
 public interface IRandSet<E> {
-	Set<E> randMember(int count);
+	List<E> randMember(int count);
+	List<E> all();
 	
 	long size();
 	
-	Set<E> all();
+	@Deprecated
+	Set<E> srandMember(int count);
+	@Deprecated
+	Set<E> sall();
+	
 	void remove(E e);
 
-	void sadd();
+	void sadd(E e);
 	
-	void saddCollection();
+	Set<E> saddCollection();
+	
+	
+	void cleanAdd();
 }

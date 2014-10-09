@@ -18,10 +18,10 @@ public interface ICollectionService<E> {
 	void lrem(String key, E e);
 	//
 	
-	Set<E> smem(String key, int count);
-	
+	Set<E> srandmem(String key, int count);
 	void sadd(String key, Set<E> data);
 	Set<E> sall(String key);
 	void srem(String key, E mem);
+	long scard(String key);
 	
 }

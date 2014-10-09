@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Set;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Transaction;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.mm.tinylove.IRandSet;
 import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.db.StorageDB;
 
@@ -39,7 +42,7 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 		}
 		return ins;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends IStorage> void save(T ins) {
@@ -48,15 +51,28 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 			if (ins instanceof IKVStorage) {
 				IKVStorage kv_ins = (IKVStorage) ins;
 				con.set(kv_ins.marshalKey(), kv_ins.marshalValue());
-			}else if (ins instanceof IRangeList) {
-				List<Long> data = ((IRangeList<Long>) ins)
-						.lpushCollection();
+			} else if (ins instanceof IRangeList) {
+				List<Long> data = ((IRangeList<Long>) ins).lpushCollection();
+
+				byte[][] bdata = new byte[data.size()][];
+
 				for (int i = 0; i < data.size(); i++) {
-					con.lpush(ins.marshalKey(), String.valueOf(data.get(i))
-							.getBytes(StandardCharsets.UTF_8));
+					bdata[i] = String.valueOf(data.get(i)).getBytes(
+							StandardCharsets.UTF_8);
 				}
+				con.lpush(ins.marshalKey(), bdata);
 
 				((IRangeList<Long>) ins).cleanlpush();
+			} else if (ins instanceof IRandSet) {
+				Set<Long> data = ((IRandSet<Long>) ins).saddCollection();
+				byte[][] bdata = new byte[data.size()][];
+				Object[] arr = data.toArray();
+				for (int i = 0; i < data.size(); i++) {
+					bdata[i] = String.valueOf((Long) (arr[i])).getBytes(
+							StandardCharsets.UTF_8);
+				}
+				con.sadd(ins.marshalKey(), bdata);
+				((IRandSet<Long>) ins).cleanAdd();
 			}
 
 		}
@@ -78,14 +94,27 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 				} else if (ins instanceof IRangeList) {
 					List<Long> data = ((IRangeList<Long>) ins)
 							.lpushCollection();
+
+					byte[][] bdata = new byte[data.size()][];
+
 					for (int i = 0; i < data.size(); i++) {
-						t.lpush(ins.marshalKey(), String.valueOf(data.get(i))
-								.getBytes(StandardCharsets.UTF_8));
+						bdata[i] = String.valueOf(data.get(i)).getBytes(
+								StandardCharsets.UTF_8);
 					}
+					t.lpush(ins.marshalKey(), bdata);
 
 					((IRangeList<Long>) ins).cleanlpush();
+				} else if (ins instanceof IRandSet) {
+					Set<Long> data = ((IRandSet<Long>) ins).saddCollection();
+					byte[][] bdata = new byte[data.size()][];
+					Object[] arr = data.toArray();
+					for (int i = 0; i < data.size(); i++) {
+						bdata[i] = String.valueOf((Long) (arr[i])).getBytes(
+								StandardCharsets.UTF_8);
+					}
+					t.sadd(ins.marshalKey(), bdata);
+					((IRandSet<Long>) ins).cleanAdd();
 				}
-
 			}
 			t.exec();
 		}
@@ -132,13 +161,17 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 
 	@Override
 	public Long lpush(String key, List<Long> data) {
+
+		byte[] k = key.getBytes(StandardCharsets.UTF_8);
 		try (Jedis con = dbhandle.getConn()) {
+			Pipeline pp = con.pipelined();
 			for (int i = 0; i < data.size(); i++) {
-				con.lpush(
-						key.getBytes(StandardCharsets.UTF_8),
+				pp.lpush(
+						k,
 						String.valueOf(data.get(i)).getBytes(
 								StandardCharsets.UTF_8));
 			}
+			pp.sync();
 			return (long) data.size();
 		}
 	}
@@ -170,39 +203,61 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 					.getBytes(StandardCharsets.UTF_8));
 		}
 	}
-	
-	
 
 	@Override
-	public Set<Long> smem(String key, int count) {
-		try (Jedis con = dbhandle.getConn())
-		{
-			return Sets.transform(
-					 con.srandmember(key.getBytes(StandardCharsets.UTF_8), count),
+	public Set<Long> srandmem(String key, int count) {
+		try (Jedis con = dbhandle.getConn()) {
+			return Sets.newTreeSet(Iterables.transform(con.srandmember(
+					key.getBytes(StandardCharsets.UTF_8), count),
 					new Function<byte[], Long>() {
-						public Long apply(byte[] k)
-						{
+						public Long apply(byte[] k) {
 							return Long.parseLong(new String(k,
 									StandardCharsets.UTF_8));
 						}
-					});
+					}));
 		}
-		
 	}
 
 	@Override
 	public void sadd(String key, Set<Long> data) {
-		
+		try (Jedis con = dbhandle.getConn()) {
+			byte[] k = key.getBytes(StandardCharsets.UTF_8);
+			Pipeline pp = con.pipelined();
+			for (Long d : data) {
+				pp.sadd(k, String.valueOf(d).getBytes(StandardCharsets.UTF_8));
+			}
+			pp.sync();
+			return;
+		}
 	}
 
 	@Override
 	public Set<Long> sall(String key) {
-		return null;
+		try (Jedis con = dbhandle.getConn()) {
+			return Sets.newTreeSet(Iterables.transform(
+					con.smembers(key.getBytes(StandardCharsets.UTF_8)),
+					new Function<byte[], Long>() {
+						public Long apply(byte[] k) {
+							return Long.parseLong(new String(k,
+									StandardCharsets.UTF_8));
+						}
+					}));
+		}
 	}
 
 	@Override
 	public void srem(String key, Long mem) {
-		
+		try (Jedis con = dbhandle.getConn()) {
+			con.srem(key.getBytes(StandardCharsets.UTF_8), String.valueOf(mem)
+					.getBytes(StandardCharsets.UTF_8));
+		}
+	}
+
+	@Override
+	public long scard(String key) {
+		try (Jedis con = dbhandle.getConn()) {
+			return con.scard(key.getBytes(StandardCharsets.UTF_8));
+		}
 	}
 
 }
