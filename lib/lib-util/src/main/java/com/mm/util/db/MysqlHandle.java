@@ -71,7 +71,7 @@ public class MysqlHandle extends AbsDBHandle<Connection> {
 		    conn =
 		       DriverManager.getConnection(mysql_conn);
 		} catch (SQLException ex) {
-		   throw new RuntimeException(ex);
+		   throw new RuntimeException(ex.getMessage() + mysql_conn);
 		}
 		
 		if (s_conn_share_mode.get())

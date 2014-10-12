@@ -3,6 +3,7 @@ package com.mm.tinylove.imp;
 import java.util.List;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.mm.tinylove.IObject;
 import com.mm.tinylove.IRangeList;
@@ -14,21 +15,23 @@ import com.mm.tinylove.IRangeList;
  * 
  * @param <E>
  */
-
-public abstract class ImmutableObjectRangeList<E extends IObject> implements
+public abstract class ObjectRangeList<E extends IObject> implements
 		IRangeList<E>, Function<Long, E> {
 
 	IRangeList<Long> idrange;
+	ICollectionStorage holder;
 
-	public ImmutableObjectRangeList(String key) {
+	public ObjectRangeList(String key, ICollectionStorage holder) {
 		idrange = new LongRangeList(key);
+		this.holder = holder;
 	}
 
-	public ImmutableObjectRangeList(IRangeList<Long> idrange)
-	{
+	public ObjectRangeList(IRangeList<Long> idrange,
+			ICollectionStorage holder) {
 		this.idrange = idrange;
+		this.holder = holder;
 	}
-	
+
 	@Override
 	public List<E> range(long begin, long end) {
 		return Lists.transform(idrange.range(begin, end), this);
@@ -39,30 +42,22 @@ public abstract class ImmutableObjectRangeList<E extends IObject> implements
 		return idrange.size();
 	}
 
-	//NOTE: this is lazy laod
+	// NOTE: this is lazy laod
 	@Override
 	public List<E> all() {
 		return Lists.transform(idrange.all(), this);
 	}
-	
+
 	@Override
 	public void lpush(E e) {
-		throw new UnsupportedOperationException();
+		idrange.lpush(e.id());
+		Preconditions.checkNotNull(holder).add2Save((IStorage)this);
 	}
 
 	@Override
-	public List<E> lpushCollection() {
+	public List<E> savelpushCollection() {
 		throw new UnsupportedOperationException();
-	}
-	
-	@Override
-	public void cleanlpush() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Override
-	public void remove(E e) {
-		throw new UnsupportedOperationException();
+		// return Lists.transform(idrange.savelpushCollection(), this);
 	}
 
 }

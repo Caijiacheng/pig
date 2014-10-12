@@ -1,7 +1,7 @@
 package com.mm.tinylove;
 
 
-public interface IMessage extends IObject{
+public interface IMessage extends IFollowObject{
 
 	IUser publisher();
 	IPair pair();

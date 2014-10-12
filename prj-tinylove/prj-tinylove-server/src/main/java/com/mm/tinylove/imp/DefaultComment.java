@@ -39,7 +39,7 @@ public class DefaultComment extends FollowStorage<Comment.Builder> implements IC
 
 	@Override
 	public IRangeList<IUser> prisers() {
-		return new ImmutableObjectRangeList<IUser>(getCommentPriserIds()) {
+		return new ObjectRangeList<IUser>(getCommentPriserIds(), this) {
 			public IUser apply(Long id) {
 				return Ins.getIUser(id);
 			}

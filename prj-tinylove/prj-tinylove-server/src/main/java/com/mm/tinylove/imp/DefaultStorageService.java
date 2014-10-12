@@ -1,7 +1,9 @@
 package com.mm.tinylove.imp;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import redis.clients.jedis.Jedis;
@@ -12,6 +14,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 import com.mm.tinylove.IRandSet;
 import com.mm.tinylove.IRangeList;
@@ -44,15 +47,24 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public <T extends IStorage> void save(T ins) {
-		try (Jedis con = dbhandle.getConn()) {
-
+	static void saveInPipeBase(Collection<IStorage> all_ins, Transaction con)
+	{
+		Queue<IStorage> q_ins = Queues.newArrayDeque(all_ins);
+		
+		while(!q_ins.isEmpty())
+		{
+			IStorage ins = q_ins.poll();
+			if (ins instanceof ICollectionStorage)
+			{
+				ICollectionStorage cs = (ICollectionStorage)ins;
+				q_ins.addAll(cs.saveCollections());
+			}
+			
 			if (ins instanceof IKVStorage) {
 				IKVStorage kv_ins = (IKVStorage) ins;
 				con.set(kv_ins.marshalKey(), kv_ins.marshalValue());
 			} else if (ins instanceof IRangeList) {
-				List<Long> data = ((IRangeList<Long>) ins).lpushCollection();
+				List<Long> data = ((IRangeList<Long>) ins).savelpushCollection();
 
 				byte[][] bdata = new byte[data.size()][];
 
@@ -62,7 +74,6 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 				}
 				con.lpush(ins.marshalKey(), bdata);
 
-				((IRangeList<Long>) ins).cleanlpush();
 			} else if (ins instanceof IRandSet) {
 				Set<Long> data = ((IRandSet<Long>) ins).saddCollection();
 				byte[][] bdata = new byte[data.size()][];
@@ -72,58 +83,51 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 							StandardCharsets.UTF_8);
 				}
 				con.sadd(ins.marshalKey(), bdata);
-				((IRandSet<Long>) ins).cleanAdd();
+				
+				Set<Long> rdata = ((IRandSet<Long>) ins).sremCollection();
+				bdata = new byte[rdata.size()][];
+				arr = rdata.toArray();
+				for (int i = 0; i < rdata.size(); i++) {
+					bdata[i] = String.valueOf((Long) (arr[i])).getBytes(
+							StandardCharsets.UTF_8);
+				}
+				con.srem(ins.marshalKey(), bdata);
 			}
-
+		}
+	}
+	
+	
+	@Override
+	public <T extends IStorage> void save(T ins) {
+		try (Jedis con = dbhandle.getConn()) {
+			Transaction t = con.multi();
+			saveInPipeBase(Lists.newArrayList((IStorage)ins), t);
+			t.exec();
 		}
 	}
 
 	byte[] MSG_KEY_INCR = (this.getClass().getCanonicalName() + ":MSG")
 			.getBytes(Charsets.UTF_8);
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends IStorage> void saveInTransaction(List<IStorage> inslist) {
-
 		try (Jedis con = dbhandle.getConn()) {
 			Transaction t = con.multi();
-			for (IStorage ins : inslist) {
-				if (ins instanceof IKVStorage) {
-					IKVStorage kv_ins = (IKVStorage) ins;
-					t.set(kv_ins.marshalKey(), kv_ins.marshalValue());
-				} else if (ins instanceof IRangeList) {
-					List<Long> data = ((IRangeList<Long>) ins)
-							.lpushCollection();
-
-					byte[][] bdata = new byte[data.size()][];
-
-					for (int i = 0; i < data.size(); i++) {
-						bdata[i] = String.valueOf(data.get(i)).getBytes(
-								StandardCharsets.UTF_8);
-					}
-					t.lpush(ins.marshalKey(), bdata);
-
-					((IRangeList<Long>) ins).cleanlpush();
-				} else if (ins instanceof IRandSet) {
-					Set<Long> data = ((IRandSet<Long>) ins).saddCollection();
-					byte[][] bdata = new byte[data.size()][];
-					Object[] arr = data.toArray();
-					for (int i = 0; i < data.size(); i++) {
-						bdata[i] = String.valueOf((Long) (arr[i])).getBytes(
-								StandardCharsets.UTF_8);
-					}
-					t.sadd(ins.marshalKey(), bdata);
-					((IRandSet<Long>) ins).cleanAdd();
-				}
-			}
+			saveInPipeBase(inslist, t);
 			t.exec();
 		}
-
 	}
 
-	
-	
-	
+	@Override
+	public void checkAndSaveInTransaction(List<Object> inslist) {
+		saveInTransaction(Lists.transform(inslist,
+				new Function<Object, IStorage>() {
+					public IStorage apply(Object obj) {
+						return (IStorage) obj;
+					}
+				}));
+	}
+
 	@Override
 	public Long nextID(String key) {
 		try (Jedis con = dbhandle.getConn()) {

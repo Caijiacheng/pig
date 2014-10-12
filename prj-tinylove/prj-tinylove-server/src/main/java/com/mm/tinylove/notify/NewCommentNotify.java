@@ -11,6 +11,13 @@ public class NewCommentNotify extends AbsBundleNotify {
 		super(id, Notify.newBuilder().setType(Notify.Type.NEW_COMMENT));
 	}
 
+	static public NewCommentNotify create(long msgid, long commentid) {
+		NewCommentNotify notify = new NewCommentNotify(INVAID_KEY);
+		notify.bundle.put(K_MESSAGE, msgid);
+		notify.bundle.put(K_COMMENT, commentid);
+		return notify;
+	}
+
 	public IMessage getIMessage() {
 		return Ins.getIMessage(bundle.get(K_MESSAGE));
 	}

@@ -11,6 +11,17 @@
 	<description>for request token and access token</description>
 
 
+<!-- 	<properties>
+		test
+		<test.storage.redis.server>127.0.0.1:6379</test.storage.redis.server>
+		<test.storage.redis.password>qwe123!</test.storage.redis.password>
+		<test.storage.redis.dbnum>0</test.storage.redis.dbnum>
+		
+		<test.memory.redis.server>127.0.0.1:6379</test.memory.redis.server>
+		<test.memory.redis.password>qwe123!</test.memory.redis.password>
+		<test.memory.redis.dbnum>1</test.memory.redis.dbnum>		
+	</properties> -->
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.mm.sde</groupId>

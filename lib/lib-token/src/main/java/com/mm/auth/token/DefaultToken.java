@@ -23,6 +23,8 @@ public class DefaultToken extends PojoToken {
 		return "TOKEN:" + _token;
 	}
 	
+	static Logger LOG = LoggerFactory.getLogger(DefaultToken.class);
+	
 	public static class Service implements ITokenService
 	{
 
@@ -54,7 +56,8 @@ public class DefaultToken extends PojoToken {
 					throw new RuntimeException(e);
 				}
 				md5 = BaseEncoding.base32Hex().encode(md.digest());
-			}while(!getToken(md5).isPresent());
+				//LOG.error("md5 collistion: {}", md5);
+			}while(getToken(md5).isPresent());
 			
 			DefaultToken token = new DefaultToken();
 			

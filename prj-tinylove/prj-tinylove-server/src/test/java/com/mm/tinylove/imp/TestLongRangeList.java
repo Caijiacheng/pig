@@ -32,7 +32,7 @@ public class TestLongRangeList {
 		Assert.assertEquals(range.size(), 0);
 		range.lpush(new Long(1L));
 		range.lpush(new Long(2L));
-		Assert.assertEquals(range.lpushCollection().size(), 2);
+		Assert.assertEquals(range.savelpushCollection().size(), 2);
 		Assert.assertEquals(range.size(), 2);
 		Assert.assertEquals(range.range(0, range.size()).size(), 2);
 		

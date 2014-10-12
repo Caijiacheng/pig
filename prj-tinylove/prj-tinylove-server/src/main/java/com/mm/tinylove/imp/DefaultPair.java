@@ -36,7 +36,7 @@ public class DefaultPair extends FollowStorage<Pair.Builder> implements IPair{
 	
 	@Override
 	public IRangeList<IUser> user() {
-		return new ImmutableObjectRangeList<IUser>(getPairsUserIDs()) 
+		return new ObjectRangeList<IUser>(getPairsUserIDs(), this) 
 				{
 				public IUser apply(Long id)
 				{

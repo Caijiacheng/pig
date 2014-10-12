@@ -66,8 +66,10 @@ public class LongRangeList implements IRangeList<Long>, IStorage{
 	}
 
 	@Override
-	public List<Long> lpushCollection() {
-		return Lists.newArrayList(new_ins);
+	public List<Long> savelpushCollection() {
+		List<Long> ret = new_ins;
+		new_ins = Lists.newArrayList();
+		return ret;
 	}
 
 	@Override
@@ -80,17 +82,13 @@ public class LongRangeList implements IRangeList<Long>, IStorage{
 		return range(0, size());
 	}
 
-	@Override
-	public void cleanlpush() {
-		new_ins.clear();
-	}
 
 
-	@Override
-	public void remove(Long e) {
-		new_ins.remove(e);
-		Ins.getLongRangeService().lrem(key, e);
-	}
+//	@Override
+//	public void remove(Long e) {
+//		new_ins.remove(e);
+//		Ins.getLongRangeService().lrem(key, e);
+//	}
 
 
 

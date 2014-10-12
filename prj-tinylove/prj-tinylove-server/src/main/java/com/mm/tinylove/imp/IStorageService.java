@@ -10,6 +10,8 @@ public interface IStorageService {
 	
 	<T extends IStorage> void saveInTransaction(List<IStorage> inslist);
 	
+	void checkAndSaveInTransaction(List<Object> inslist);
+	
 	long time();
 	
 	void remove(String key);

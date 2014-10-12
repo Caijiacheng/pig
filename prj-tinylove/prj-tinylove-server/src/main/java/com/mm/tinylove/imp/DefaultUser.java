@@ -70,7 +70,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 	@Override
 	public IRangeList<IStory> userStorys() {
 
-		return new ImmutableObjectRangeList<IStory>(getUserStorysIDs()) {
+		return new ObjectRangeList<IStory>(getUserStorysIDs(), this) {
 			public IStory apply(Long id) {
 				return Ins.getIStory(id);
 			}
@@ -79,7 +79,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 
 	@Override
 	public IRangeList<IComment> userComments() {
-		return new ImmutableObjectRangeList<IComment>(getUserCommentIDs()) {
+		return new ObjectRangeList<IComment>(getUserCommentIDs(), this) {
 			public IComment apply(Long id) {
 				return Ins.getIComment(id);
 			}
@@ -88,7 +88,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 
 	@Override
 	public IRangeList<IPair> userPairs() {
-		return new ImmutableObjectRangeList<IPair>(getUserPairsIDs()) {
+		return new ObjectRangeList<IPair>(getUserPairsIDs(), this) {
 			public IPair apply(Long id) {
 				return Ins.getIPair(id);
 			}
@@ -97,7 +97,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 
 	@Override
 	public IRangeList<IMessage> msgPrise() {
-		return new ImmutableObjectRangeList<IMessage>(getUserMsgPriseIDs()) {
+		return new ObjectRangeList<IMessage>(getUserMsgPriseIDs(), this) {
 			public IMessage apply(Long id) {
 				return Ins.getIMessage(id);
 			}
@@ -106,7 +106,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 
 	@Override
 	public IRangeList<IComment> commentPrise() {
-		return new ImmutableObjectRangeList<IComment>(getUserCommentPriseIDs()) {
+		return new ObjectRangeList<IComment>(getUserCommentPriseIDs(), this) {
 			public IComment apply(Long id) {
 				return Ins.getIComment(id);
 			}

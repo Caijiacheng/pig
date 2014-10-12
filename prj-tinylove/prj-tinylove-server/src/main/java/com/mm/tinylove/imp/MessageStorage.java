@@ -14,10 +14,11 @@ public class MessageStorage extends LongRangeList{
 	
 	public IRangeList<IMessage> messageList()
 	{
-		return new ImmutableObjectRangeList<IMessage>(this) {
+		return new ObjectRangeList<IMessage>(this, null) {
 			public IMessage apply(Long id) {
 				return Ins.getIMessage(id);
 			}
+
 		};
 	}
 	

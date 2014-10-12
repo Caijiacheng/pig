@@ -9,7 +9,7 @@ import com.google.protobuf.Message;
 import com.mm.tinylove.IObject;
 import com.mm.tinylove.error.UnmarshalException;
 
-public class ProtoStorage<T extends Message.Builder> extends KVStorage {
+public class ProtoStorage<T extends Message.Builder> extends CollectionStorage {
 
 	static Logger LOG = LoggerFactory.getLogger(ProtoStorage.class);
 
@@ -49,5 +49,7 @@ public class ProtoStorage<T extends Message.Builder> extends KVStorage {
 		}
 		return super.equals(obj);
 	}
+
+	
 
 }

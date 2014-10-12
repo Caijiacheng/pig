@@ -34,7 +34,7 @@ public class DefaultStory extends FollowStorage<Story.Builder> implements IStory
 	@Override
 	public IRangeList<IMessage> message() {
 
-		return new ImmutableObjectRangeList<IMessage>(getStorysMessagesIDs()) 
+		return new ObjectRangeList<IMessage>(getStorysMessagesIDs(), this) 
 				{
 				public IMessage apply(Long id)
 				{

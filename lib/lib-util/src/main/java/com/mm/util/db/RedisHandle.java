@@ -8,7 +8,7 @@ public class RedisHandle extends AbsDBHandle<Jedis> {
 	static public class Conf
 	{
 		public String host;
-		public int port = 3306;
+		public int port = 6379;
 		public int dbnum = 0;
 		public String passwd = null;
 		
@@ -24,7 +24,6 @@ public class RedisHandle extends AbsDBHandle<Jedis> {
 		}
 		return default_config;
 	}
-	
 	
 	private Conf conf;
 	

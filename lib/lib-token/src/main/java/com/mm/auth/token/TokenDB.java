@@ -46,7 +46,7 @@ public class TokenDB extends RedisHandle {
 		token_conf = new Conf();
 		token_conf.host = prop.getProperty("token.redis.server.host");
 		token_conf.passwd = prop.getProperty("token.redis.password", null);
-		token_conf.port = Integer.parseInt(prop.getProperty("token.redis.server.port", "6397"));
+		token_conf.port = Integer.parseInt(prop.getProperty("token.redis.server.port", "6379"));
 		token_conf.dbnum = Integer.parseInt(prop.getProperty("token.redis.dbnum", "0"));
 
 

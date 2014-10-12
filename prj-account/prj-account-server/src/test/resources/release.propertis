@@ -1,5 +1,5 @@
 redis.server=${test.storage.redis.server}
-redis.password=${test.storage.redis.passowrd}
+redis.password=${test.storage.redis.password}
 redis.dbnum=${test.storage.redis.dbnum}
 
 mysql.server=${mysql.master.server}

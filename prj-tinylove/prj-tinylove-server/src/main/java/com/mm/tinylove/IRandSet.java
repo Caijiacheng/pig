@@ -19,7 +19,6 @@ public interface IRandSet<E> {
 	void sadd(E e);
 	
 	Set<E> saddCollection();
+	Set<E> sremCollection();
 	
-	
-	void cleanAdd();
 }

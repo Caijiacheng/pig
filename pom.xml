@@ -22,7 +22,7 @@
 		<storage.redis.password>qwe123!</storage.redis.password>
 		<storage.redis.dbnum>14</storage.redis.dbnum>
 		
-		<mysql.master.server>127.0.0.1:3660</mysql.master.server>
+		<mysql.master.server>127.0.0.1:3306</mysql.master.server>
 		<mysql.user>root</mysql.user>
 		<mysql.password>qwe123!</mysql.password>
 		<restful.bind.port>8081</restful.bind.port>
@@ -216,5 +216,6 @@
 		<module>prj-account</module>
 		<module>prj-photo</module>
 		<module>prj-tinylove</module>
+		<module>tools-db</module>
 	</modules>
 </project>

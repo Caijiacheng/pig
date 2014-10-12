@@ -1,7 +1,7 @@
 package com.mm.tinylove;
 
 
-public interface IPair extends IObject{
+public interface IPair extends IFollowObject{
 
 	String name();
 	IRangeList<IUser> user();

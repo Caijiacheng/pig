@@ -31,6 +31,11 @@ public class MessageEvent {
 			this.comment = comment;
 		}
 		IComment comment;
+		
+		public IComment getComment()
+		{
+			return comment;
+		}
 	}
 	
 	public static class AddPrise extends MessageEvent
@@ -40,6 +45,11 @@ public class MessageEvent {
 		{
 			super(msg);
 			this.priser = priser;
+		}
+		
+		public IUser getPriser()
+		{
+			return priser;
 		}
 	}
 }

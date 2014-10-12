@@ -9,12 +9,8 @@ public interface IRangeList<E> {
 	
 	void lpush(E e);
 	
-	List<E> lpushCollection();
-	
-	void cleanlpush();
+	List<E> savelpushCollection();
 	
 	List<E> all();
-	
-	void remove(E e);
 	
 }

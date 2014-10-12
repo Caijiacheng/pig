@@ -12,6 +12,7 @@ public class LongRandSet implements IRandSet<Long>, IStorage{
 
 	String key;
 	Set<Long> new_ins = Sets.newTreeSet();
+	Set<Long> rem_ins = Sets.newTreeSet();
 	
 	public LongRandSet(String key)
 	{
@@ -20,36 +21,43 @@ public class LongRandSet implements IRandSet<Long>, IStorage{
 	
 	@Override
 	public Set<Long> srandMember(int count) {
-		return Ins.getLongRangeService().srandmem(key, count);
+		Set<Long> ret = Ins.getLongRangeService().srandmem(key, count);
+		ret.removeAll(rem_ins);
+		return ret;
 	}
 
 	@Override
 	public long size() {
-		return Ins.getLongRangeService().scard(key) + new_ins.size();
+		return Ins.getLongRangeService().scard(key) + new_ins.size() - rem_ins.size();
 	}
 
 	@Override
 	public Set<Long> sall() {
 		Set<Long> s = Ins.getLongRangeService().sall(key);
 		s.addAll(new_ins);
+		s.removeAll(rem_ins);
 		return s;
 	}
 
 	@Override
 	public void remove(Long e) {
 		if (!new_ins.remove(e))
-			Ins.getLongRangeService().srem(key, e);
+			rem_ins.add(e);
+			//Ins.getLongRangeService().srem(key, e);
 		
 	}
 
 	@Override
 	public void sadd(Long e) {
 		new_ins.add(e);
+		rem_ins.remove(e);
 	}
 	
 	@Override
 	public Set<Long> saddCollection() {
-		return new_ins;
+		Set<Long> ret = new_ins;
+		new_ins = Sets.newTreeSet();
+		return ret;
 	}
 
 	@Override
@@ -58,18 +66,24 @@ public class LongRandSet implements IRandSet<Long>, IStorage{
 	}
 
 	@Override
-	public void cleanAdd() {
-		new_ins.clear();
-	}
-
-	@Override
 	public List<Long> randMember(int count) {
-		return Lists.newArrayList(srandMember(count));
+		List<Long> ret =  Lists.newArrayList(srandMember(count));
+		ret.removeAll(rem_ins);
+		return ret;
 	}
 
 	@Override
 	public List<Long> all() {
-		return Lists.newArrayList(sall());
+		List<Long> ret = Lists.newArrayList(sall());
+		ret.removeAll(rem_ins);
+		return ret;
+	}
+
+	@Override
+	public Set<Long> sremCollection() {
+		Set<Long> ret = rem_ins;
+		rem_ins = Sets.newTreeSet();
+		return ret;
 	}
 
 

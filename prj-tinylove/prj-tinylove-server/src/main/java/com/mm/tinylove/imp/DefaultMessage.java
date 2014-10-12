@@ -48,22 +48,12 @@ public class DefaultMessage extends FollowStorage<Msg.Builder> implements
 
 	@Override
 	public IRangeList<IComment> comments() {
-		return new ImmutableObjectRangeList<IComment>(getMsgCommentsIds()) {
+		return new ObjectRangeList<IComment>(getMsgCommentsIds(), this) {
 			public IComment apply(Long id) {
 				return Ins.getIComment(id);
 			}
 		};
 	}
-
-	// @Override
-	// public IRangeList<IPrise> prises() {
-	//
-	// return new ImmutableObjectRangeList<IPrise>(getMsgPriseIds()) {
-	// public IPrise apply(Long id) {
-	// return Ins.getIPrise(id);
-	// }
-	// };
-	// }
 
 	@Override
 	public IStory parent() {
@@ -77,7 +67,7 @@ public class DefaultMessage extends FollowStorage<Msg.Builder> implements
 
 	@Override
 	public IRangeList<IUser> prisers() {
-		return new ImmutableObjectRangeList<IUser>(getMsgPriserIds()) {
+		return new ObjectRangeList<IUser>(getMsgPriserIds(), this) {
 			public IUser apply(Long id) {
 				return Ins.getIUser(id);
 			}
