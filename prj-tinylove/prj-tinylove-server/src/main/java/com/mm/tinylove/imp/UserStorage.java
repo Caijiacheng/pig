@@ -26,7 +26,7 @@ public class UserStorage extends LongRangeList{
 	}
 	
 	public IRangeList<IUser> userList() {
-		return new ObjectRangeList<IUser>(this, null) 
+		return new ObjectRangeList<IUser>(this) 
 				{
 				public IUser apply(Long id)
 				{

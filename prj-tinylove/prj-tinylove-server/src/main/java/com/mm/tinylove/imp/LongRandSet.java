@@ -53,13 +53,19 @@ public class LongRandSet implements IRandSet<Long>, IStorage {
 	@Override
 	public void remove(Long e) {
 		if (!new_ins.remove(e))
+		{
 			rem_ins.add(e);
+			StorageSaveRunnable.add2Save(this);
+		}
+			
+		
 	}
 
 	@Override
 	public void sadd(Long e) {
 		new_ins.add(e);
 		rem_ins.remove(e);
+		StorageSaveRunnable.add2Save(this);
 	}
 
 	@Override
@@ -92,6 +98,15 @@ public class LongRandSet implements IRandSet<Long>, IStorage {
 		Set<Long> ret = rem_ins;
 		rem_ins = Sets.newTreeSet();
 		return ret;
+	}
+
+	@Override
+	public boolean exist(Long ins) {
+
+		if (new_ins.contains(ins)) {
+			return true;
+		}
+		return Ins.getLongRangeService().sismem(key, ins);
 	}
 
 }

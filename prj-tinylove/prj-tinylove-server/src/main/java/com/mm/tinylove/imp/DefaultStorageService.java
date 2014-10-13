@@ -6,12 +6,16 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Transaction;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
@@ -30,6 +34,8 @@ import com.mm.tinylove.db.StorageDB;
 public class DefaultStorageService implements IStorageService, IUniqService,
 		ICollectionService<Long> {
 
+	
+	static Logger LOG = LoggerFactory.getLogger(DefaultStorageService.class);
 	StorageDB dbhandle = new StorageDB();
 
 	@Override
@@ -37,7 +43,11 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 		try (Jedis con = dbhandle.getConn()) {
 			byte[] key = ins.marshalKey();
 			byte[] value = con.get(key);
-
+			if (value == null)
+			{
+				LOG.error("key is INVAILD: {}", new String(key, StandardCharsets.UTF_8));
+				Preconditions.checkNotNull(value);
+			}
 			if (ins instanceof IKVStorage) {
 				IKVStorage kv_ins = (IKVStorage) ins;
 				kv_ins.unmarshalValue(value);
@@ -52,14 +62,19 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 
 		while (!q_ins.isEmpty()) {
 			IStorage ins = q_ins.poll();
-			if (ins instanceof ICollectionStorage) {
-				ICollectionStorage cs = (ICollectionStorage) ins;
-				q_ins.addAll(cs.saveCollections());
-			}
+//			if (ins instanceof ICollectionStorage) {
+//				ICollectionStorage cs = (ICollectionStorage) ins;
+//				q_ins.addAll(cs.saveCollections());
+//			}
 
 			if (ins instanceof IKVStorage) {
 				IKVStorage kv_ins = (IKVStorage) ins;
-				con.set(kv_ins.marshalKey(), kv_ins.marshalValue());
+				byte[] value = kv_ins.marshalValue();
+				if (value != null)
+				{
+					//LOG.error("key is SAVE: {}", new String(kv_ins.marshalKey(), StandardCharsets.UTF_8));
+					con.set(kv_ins.marshalKey(), value);
+				}
 			} else if (ins instanceof IRangeList) {
 				List<Long> data = ((IRangeList<Long>) ins)
 						.savelpushCollection();
@@ -116,7 +131,7 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 			.getBytes(Charsets.UTF_8);
 
 	@Override
-	public <T extends IStorage> void saveCollection(List<IStorage> inslist) {
+	public <T extends IStorage> void saveCollection(Collection<IStorage> inslist) {
 		try (Jedis con = dbhandle.getConn()) {
 			Transaction t = con.multi();
 			saveInPipeBase(inslist, t);
@@ -270,6 +285,15 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 	public long scard(String key) {
 		try (Jedis con = dbhandle.getConn()) {
 			return con.scard(key.getBytes(StandardCharsets.UTF_8));
+		}
+	}
+
+
+	@Override
+	public boolean sismem(String key, Long e) {
+		try (Jedis con = dbhandle.getConn()) {
+			return con.sismember(key.getBytes(StandardCharsets.UTF_8), String.valueOf(e)
+					.getBytes(StandardCharsets.UTF_8));
 		}
 	}
 

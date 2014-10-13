@@ -7,39 +7,35 @@ import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IStory;
 import com.mm.tinylove.proto.Storage.Story;
 
-public class DefaultStory extends FollowStorage<Story.Builder> implements IStory {
+public class DefaultStory extends FollowStorage<Story> implements IStory {
 
 	public DefaultStory(long id) {
-		super(id, Story.newBuilder());
+		super(id);
 	}
 
-	static DefaultStory create(long userid, long pairid)
-	{
+	static DefaultStory create(long userid, long pairid) {
 		Verify.verify(pairid != INVAID_KEY);
 		Verify.verify(userid != INVAID_KEY);
 		DefaultStory s = new DefaultStory(INVAID_KEY);
-		s.getProto().setUserid(userid).setPairid(pairid);
+		Story.Builder builder = s.getKBuilder();
+		s.rebuildValueAndBrokenImmutable(builder.setUserid(userid).setPairid(
+				pairid));
 		return s;
 	}
-	
+
 	static String MSG_TAG = ":messages";
-	
-	
-	IRangeList<Long> getStorysMessagesIDs()
-	{
+
+	IRangeList<Long> getStorysMessagesIDs() {
 		return new LongRangeList(getKey() + MSG_TAG);
 	}
-	
-	
+
 	@Override
 	public IRangeList<IMessage> message() {
 
-		return new ObjectRangeList<IMessage>(getStorysMessagesIDs(), this) 
-				{
-				public IMessage apply(Long id)
-				{
-					return Ins.getIMessage(id);
-				}
+		return new ObjectRangeList<IMessage>(getStorysMessagesIDs()) {
+			public IMessage apply(Long id) {
+				return Ins.getIMessage(id);
+			}
 		};
 	}
 

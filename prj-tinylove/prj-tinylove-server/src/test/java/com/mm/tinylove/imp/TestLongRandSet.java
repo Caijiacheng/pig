@@ -52,6 +52,8 @@ public class TestLongRandSet {
 
 		Assert.assertEquals(rand.randMember(ls.length * 3).size(), rand.all().size());
 		Assert.assertEquals(rand.randMember(1).size(), 1);
+		
+		Assert.assertTrue(rand_1.exist(ls[ls.length-1]));
 
 	}
 }

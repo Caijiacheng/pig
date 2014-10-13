@@ -6,18 +6,20 @@ import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IUser;
 import com.mm.tinylove.proto.Storage.Comment;
 
-public class DefaultComment extends FollowStorage<Comment.Builder> implements IComment{
+public class DefaultComment extends FollowStorage<Comment> implements IComment{
 
 	public DefaultComment(long id) {
-		super(id, Comment.newBuilder());
+		super(id);
 	}
 	
 	static DefaultComment create(long msgid, long userid, String comment)
 	{
 		DefaultComment c =  new DefaultComment(KVStorage.INVAID_KEY);
-		c.getProto().setMsgid(msgid);
-		c.getProto().setUserid(userid);
-		c.getProto().setContent(comment);
+		Comment.Builder builder = c.getKBuilder();
+		builder.setMsgid(msgid);
+		builder.setUserid(userid);
+		builder.setContent(comment);
+		c.rebuildValueAndBrokenImmutable(builder);
 		return c;
 	}
 	
@@ -39,7 +41,7 @@ public class DefaultComment extends FollowStorage<Comment.Builder> implements IC
 
 	@Override
 	public IRangeList<IUser> prisers() {
-		return new ObjectRangeList<IUser>(getCommentPriserIds(), this) {
+		return new ObjectRangeList<IUser>(getCommentPriserIds()) {
 			public IUser apply(Long id) {
 				return Ins.getIUser(id);
 			}

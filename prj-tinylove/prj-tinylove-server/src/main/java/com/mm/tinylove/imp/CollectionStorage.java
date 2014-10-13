@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.google.common.collect.Sets;
 
+@Deprecated
 abstract public class CollectionStorage extends KVStorage implements
 		ICollectionStorage {
 

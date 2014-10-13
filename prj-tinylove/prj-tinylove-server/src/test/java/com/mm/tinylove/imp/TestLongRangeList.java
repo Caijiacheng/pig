@@ -92,6 +92,7 @@ public class TestLongRangeList {
 		Assert.assertEquals(range.range(0,  ls.length*10).size(), ls.length * 2);
 		LOG.error("rangeAll: {}", range.all());
 		
+		Assert.assertTrue(range.exist(7L));
 		Assert.assertEquals(range.range(0, 2).get(0), new Long(7L));
 		Assert.assertEquals(range.range(0, 2).get(1), new Long(6L));
 		Assert.assertEquals(range.range(ls.length, ls.length + 2).get(1), new Long(6L));

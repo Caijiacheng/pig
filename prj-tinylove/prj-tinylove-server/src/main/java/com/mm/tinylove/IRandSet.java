@@ -9,6 +9,8 @@ public interface IRandSet<E> {
 	
 	long size();
 	
+	boolean exist(E ins);
+	
 	@Deprecated
 	Set<E> srandMember(int count);
 	@Deprecated

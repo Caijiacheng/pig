@@ -22,6 +22,7 @@ public interface ICollectionService<E> {
 	void sadd(String key, Set<E> data);
 	Set<E> sall(String key);
 	void srem(String key, E mem);
+	boolean sismem(String key, E e);
 	long scard(String key);
 	
 }

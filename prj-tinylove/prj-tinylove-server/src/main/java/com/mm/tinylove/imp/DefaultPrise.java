@@ -6,10 +6,10 @@ import com.mm.tinylove.IUser;
 import com.mm.tinylove.proto.Storage.Prise;
 
 @Deprecated
-public class DefaultPrise extends FollowStorage<Prise.Builder> implements IPrise{
+public class DefaultPrise extends FollowStorage<Prise> implements IPrise{
 
 	public DefaultPrise(long id) {
-		super(id, Prise.newBuilder());
+		super(id);
 	}
 
 	
@@ -21,8 +21,8 @@ public class DefaultPrise extends FollowStorage<Prise.Builder> implements IPrise
 	static DefaultPrise create(IUser user, IMessage msg)
 	{
 		DefaultPrise prise = new DefaultPrise(INVAID_KEY);
-		prise.getProto().setUserid(user.id());
-		prise.getProto().setMsgid(msg.id());
+//		prise.getProto().setUserid(user.id());
+//		prise.getProto().setMsgid(msg.id());
 		return prise;
 	}
 	

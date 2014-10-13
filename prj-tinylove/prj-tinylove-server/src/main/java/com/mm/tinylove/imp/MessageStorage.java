@@ -14,7 +14,7 @@ public class MessageStorage extends LongRangeList{
 	
 	public IRangeList<IMessage> messageList()
 	{
-		return new ObjectRangeList<IMessage>(this, null) {
+		return new ObjectRangeList<IMessage>(this) {
 			public IMessage apply(Long id) {
 				return Ins.getIMessage(id);
 			}

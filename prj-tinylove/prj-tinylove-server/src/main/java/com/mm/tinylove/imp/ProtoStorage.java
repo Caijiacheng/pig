@@ -1,9 +1,12 @@
 package com.mm.tinylove.imp;
 
+import java.lang.reflect.Method;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
+import com.google.common.reflect.TypeToken;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.mm.tinylove.IObject;
@@ -19,37 +22,89 @@ import com.mm.tinylove.error.UnmarshalException;
  * 当然，可能会有些数据类型会打破这个规则，比如说用户信息IUser
  * 	1）由于这个更新的内容不是敏感的，所以，完全可以扔到缓存中，等缓存中的数据失效了重新加载
  * 
+ * 
+ * QA:
+ * FIXME:
+ *  1. Cache support CopyOnWrite()?
  * @author caijiacheng
  *
  * @param <T>
  */
 
-public class ProtoStorage<T extends Message.Builder> extends CollectionStorage {
+public class ProtoStorage<T extends Message> extends KVStorage {
 
 	static Logger LOG = LoggerFactory.getLogger(ProtoStorage.class);
 
 	protected T value;
+	@SuppressWarnings("serial")
+	TypeToken<T> genericType = new TypeToken<T>(getClass()) {};
 
-	public ProtoStorage(long id, T ins) {
+	boolean immutable = true;
+	
+	public ProtoStorage(long id) {
 		super(id);
-		value = ins;
+		if (id == INVAID_KEY)
+		{
+			immutable = false;
+			StorageSaveRunnable.add2Save(this);
+		}
 	}
 
-	T getProto() {
-		return value;
+	public T getProto() {
+		return Preconditions.checkNotNull(value, "The Message is not load");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void rebuildValueAndBrokenImmutable(Message.Builder b)
+	{
+		immutable = false;
+		value = (T) b.build();
+		StorageSaveRunnable.add2Save(this);
 	}
 
+	
+	public Message.Builder getBuilder()
+	{
+		return newBuilder();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <K extends Message.Builder> K getKBuilder()
+	{
+		return (K)getBuilder();
+	}
+	
+	Message.Builder newBuilder()
+	{
+		try {
+			Method m = genericType.getRawType().getDeclaredMethod(
+					"getDefaultInstance");
+			@SuppressWarnings("unchecked")
+			T v = (T) m.invoke(null, new Object[]{});
+			return v.newBuilderForType();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} 
+	}
+	
 	// 这里先toByteString(),再ToStringUtf8().主要是为了让数据进行压缩序列化
 	@Override
 	public byte[] marshalValue() {
-		return Preconditions.checkNotNull(value).build().toByteArray();
+		if (immutable)
+		{
+			return null;
+		}
+		immutable = true;
+		return Preconditions.checkNotNull(value).toByteArray();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void unmarshalValue(byte[] data) {
 		try {
-			Preconditions.checkNotNull(value).mergeFrom(
-					data);
+			value = (T) newBuilder().mergeFrom(
+					data).build();
+			immutable = true;
 		} catch (InvalidProtocolBufferException e) {
 			throw new UnmarshalException(e);
 		}
@@ -63,7 +118,4 @@ public class ProtoStorage<T extends Message.Builder> extends CollectionStorage {
 		}
 		return super.equals(obj);
 	}
-
-	
-
 }

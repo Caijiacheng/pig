@@ -13,17 +13,13 @@ abstract public class ObjectRandSet<E extends IObject> implements
 		IRandSet<E>, Function<Long, E> {
 
 	IRandSet<Long> idset;
-	ICollectionStorage holder;
 
-	public ObjectRandSet(String key, ICollectionStorage changeHolder) {
+	public ObjectRandSet(String key) {
 		idset = new LongRandSet(key);
-		holder = changeHolder;
 	}
 
-	public ObjectRandSet(IRandSet<Long> idset,
-			ICollectionStorage changeHolder) {
+	public ObjectRandSet(IRandSet<Long> idset) {
 		this.idset = idset;
-		holder = changeHolder;
 	}
 
 	// suggest user randmember() and all() which use delay load
@@ -56,13 +52,11 @@ abstract public class ObjectRandSet<E extends IObject> implements
 	@Override
 	public void remove(E e) {
 		idset.remove(e.id());
-		holder.add2Save((IStorage)idset);
 	}
 
 	@Override
 	public void sadd(E e) {
 		idset.sadd(e.id());
-		holder.add2Save((IStorage)idset);
 	}
 
 	@Override
@@ -86,6 +80,10 @@ abstract public class ObjectRandSet<E extends IObject> implements
 		return Lists.transform(idset.all(), this);
 	}
 	
-	
+	@Override
+	public boolean exist(E e)
+	{
+		return idset.exist(e.id());
+	}
 
 }

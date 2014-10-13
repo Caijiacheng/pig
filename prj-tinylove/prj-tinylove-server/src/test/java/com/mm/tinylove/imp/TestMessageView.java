@@ -70,7 +70,6 @@ public class TestMessageView {
 		
 		Assert.assertTrue(user_num > 30);
 		
-		
 		String content_prefix = "i love it ";
 		for (int i=0; i<user_num; i++)
 		{

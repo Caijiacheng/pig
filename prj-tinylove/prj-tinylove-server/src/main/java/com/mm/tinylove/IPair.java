@@ -4,6 +4,6 @@ package com.mm.tinylove;
 public interface IPair extends IFollowObject{
 
 	String name();
-	IRangeList<IUser> user();
+	IRandSet<IUser> user();
 	IUser creator();
 }

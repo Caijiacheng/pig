@@ -5,11 +5,11 @@ import com.mm.tinylove.IFollowObject;
 import com.mm.tinylove.IRandSet;
 import com.mm.tinylove.IUser;
 
-public class FollowStorage<T extends Message.Builder> extends ProtoStorage<T>
+public class FollowStorage<T extends Message> extends ProtoStorage<T>
 		implements IFollowObject {
 
-	public FollowStorage(long id, T ins) {
-		super(id, ins);
+	public FollowStorage(long id) {
+		super(id);
 	}
 
 	static String TAG_OBJ_FOLLOWERS = ":follwers";
@@ -20,7 +20,7 @@ public class FollowStorage<T extends Message.Builder> extends ProtoStorage<T>
 
 	@Override
 	public IRandSet<IUser> followers() {
-		return new ObjectRandSet<IUser>(getObjectsFollowers(), this) {
+		return new ObjectRandSet<IUser>(getObjectsFollowers()) {
 			public IUser apply(Long id) {
 				return Ins.getIUser(id);
 			}

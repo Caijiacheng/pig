@@ -12,13 +12,13 @@ import com.mm.tinylove.IStory;
 import com.mm.tinylove.IUser;
 import com.mm.tinylove.proto.Storage.Msg;
 
-public class DefaultMessage extends FollowStorage<Msg.Builder> implements
+public class DefaultMessage extends FollowStorage<Msg> implements
 		IMessage {
 
 	static Logger LOG = LoggerFactory.getLogger(DefaultMessage.class);
 
 	public DefaultMessage(long id) {
-		super(id, Msg.newBuilder());
+		super(id);
 	}
 
 	static DefaultMessage create() {
@@ -48,7 +48,7 @@ public class DefaultMessage extends FollowStorage<Msg.Builder> implements
 
 	@Override
 	public IRangeList<IComment> comments() {
-		return new ObjectRangeList<IComment>(getMsgCommentsIds(), this) {
+		return new ObjectRangeList<IComment>(getMsgCommentsIds()) {
 			public IComment apply(Long id) {
 				return Ins.getIComment(id);
 			}
@@ -67,7 +67,7 @@ public class DefaultMessage extends FollowStorage<Msg.Builder> implements
 
 	@Override
 	public IRangeList<IUser> prisers() {
-		return new ObjectRangeList<IUser>(getMsgPriserIds(), this) {
+		return new ObjectRangeList<IUser>(getMsgPriserIds()) {
 			public IUser apply(Long id) {
 				return Ins.getIUser(id);
 			}

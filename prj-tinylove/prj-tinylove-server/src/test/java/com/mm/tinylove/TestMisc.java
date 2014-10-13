@@ -106,4 +106,59 @@ public class TestMisc {
 
 		LOG.error("maps2={}", maps2);
 	}
+
+//	static class AProtoc<T extends Message> {
+//		T message;
+//		TypeToken<T> genericType = new TypeToken<T>(getClass()) {
+//		};
+//		Builder b;
+//
+//		@SuppressWarnings("unchecked")
+//		public AProtoc() {
+//
+//			LOG.error("genericType:{}", genericType.getRawType());
+//			try {
+//				
+//				Method m = genericType.getRawType().getDeclaredMethod(
+//						"getDefaultInstance");
+//				message = (T) m.invoke(null, null);
+//				b = message.newBuilderForType();
+//			} catch (NoSuchMethodException | SecurityException e) {
+//				e.printStackTrace();
+//			} catch (IllegalAccessException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IllegalArgumentException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (InvocationTargetException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		public Builder getB()
+//		{
+//			return b;
+//		}
+//		
+//		public <K extends Builder> K getBuilder()
+//		{
+//			return (K)b;
+//		}
+//
+//	}
+//
+//	static class ABProtoc extends AProtoc<UserInfo> {
+//
+//
+//	}
+//
+//	@Test
+//	public void testABProtoc() {
+//		ABProtoc pro = new ABProtoc();
+//		Assert.assertNotNull(pro.getB());
+//		pro.getBuilder();
+//	}
+
 }

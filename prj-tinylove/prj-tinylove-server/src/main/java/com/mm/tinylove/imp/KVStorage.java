@@ -15,6 +15,7 @@ abstract public class KVStorage implements IKVStorage {
 
 	public KVStorage(long id) {
 		this.id = id;
+		
 	}
 
 	String uniqKey() {
@@ -38,11 +39,6 @@ abstract public class KVStorage implements IKVStorage {
 		return getKey().getBytes(StandardCharsets.UTF_8);
 	}
 	
-//	@Override
-//	public byte[] marshalValue()
-//	{
-//		
-//	}
 	@Override
 	@Deprecated
 	public void unmarshalKey(String k) {

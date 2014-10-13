@@ -10,7 +10,7 @@ public interface IUser extends IObject {
 
 	IRangeList<IPair> userPairs();
 
-	IRangeList<IMessage> msgPrise();
+	IRangeList<IMessage> msgPrised();
 
 	IRangeList<IComment> commentPrise();
 

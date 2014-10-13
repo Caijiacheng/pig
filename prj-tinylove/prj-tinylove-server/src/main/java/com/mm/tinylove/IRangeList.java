@@ -13,4 +13,7 @@ public interface IRangeList<E> {
 	
 	List<E> all();
 	
+	boolean exist(E ins);
+
+	
 }

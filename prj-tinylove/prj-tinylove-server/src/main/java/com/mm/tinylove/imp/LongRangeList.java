@@ -63,6 +63,7 @@ public class LongRangeList implements IRangeList<Long>, IStorage{
 	@Override
 	public void lpush(Long e) {
 		new_ins.add(e);
+		StorageSaveRunnable.add2Save(this);
 	}
 
 	@Override
@@ -83,13 +84,19 @@ public class LongRangeList implements IRangeList<Long>, IStorage{
 	}
 
 
-
-//	@Override
-//	public void remove(Long e) {
-//		new_ins.remove(e);
-//		Ins.getLongRangeService().lrem(key, e);
-//	}
-
-
-
+	@Override
+	public boolean exist(Long ins) {
+		
+		if (new_ins.contains(ins))
+		{
+			return true;
+		}
+		
+		if (all().contains(ins))
+		{
+			return true;
+		}
+		
+		return false;
+	}
 }

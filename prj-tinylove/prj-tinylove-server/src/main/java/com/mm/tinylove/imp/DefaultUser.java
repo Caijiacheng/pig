@@ -1,10 +1,5 @@
 package com.mm.tinylove.imp;
 
-import java.util.List;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.mm.tinylove.IComment;
 import com.mm.tinylove.ILocation;
 import com.mm.tinylove.IMessage;
@@ -15,19 +10,20 @@ import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IStory;
 import com.mm.tinylove.IUser;
 import com.mm.tinylove.error.NotExistException;
-import com.mm.tinylove.event.CommentEvent;
 import com.mm.tinylove.event.MessageEvent;
+import com.mm.tinylove.proto.Storage.Msg;
 import com.mm.tinylove.proto.Storage.UserInfo;
 
-public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
-		IUser {
+public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 
 	public DefaultUser(long id) {
-		super(id, UserInfo.newBuilder());
+		super(id);
 	}
 
 	static DefaultUser create() {
-		return new DefaultUser(INVAID_KEY);
+		DefaultUser user = new DefaultUser(INVAID_KEY);
+		user.rebuildValueAndBrokenImmutable(user.getBuilder());
+		return user;
 	}
 
 	@Override
@@ -61,16 +57,15 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 	IRangeList<Long> getUserCommentPriseIDs() {
 		return new LongRangeList(getKey() + COMMENT_PRISE_TAG);
 	}
-	
-	IRangeList<Long> getUserNotifyIDs()
-	{
+
+	IRangeList<Long> getUserNotifyIDs() {
 		return new LongRangeList(getKey() + NOTIFY_TAG);
 	}
 
 	@Override
 	public IRangeList<IStory> userStorys() {
 
-		return new ObjectRangeList<IStory>(getUserStorysIDs(), this) {
+		return new ObjectRangeList<IStory>(getUserStorysIDs()) {
 			public IStory apply(Long id) {
 				return Ins.getIStory(id);
 			}
@@ -79,7 +74,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 
 	@Override
 	public IRangeList<IComment> userComments() {
-		return new ObjectRangeList<IComment>(getUserCommentIDs(), this) {
+		return new ObjectRangeList<IComment>(getUserCommentIDs()) {
 			public IComment apply(Long id) {
 				return Ins.getIComment(id);
 			}
@@ -88,7 +83,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 
 	@Override
 	public IRangeList<IPair> userPairs() {
-		return new ObjectRangeList<IPair>(getUserPairsIDs(), this) {
+		return new ObjectRangeList<IPair>(getUserPairsIDs()) {
 			public IPair apply(Long id) {
 				return Ins.getIPair(id);
 			}
@@ -96,8 +91,8 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 	}
 
 	@Override
-	public IRangeList<IMessage> msgPrise() {
-		return new ObjectRangeList<IMessage>(getUserMsgPriseIDs(), this) {
+	public IRangeList<IMessage> msgPrised() {
+		return new ObjectRangeList<IMessage>(getUserMsgPriseIDs()) {
 			public IMessage apply(Long id) {
 				return Ins.getIMessage(id);
 			}
@@ -106,7 +101,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 
 	@Override
 	public IRangeList<IComment> commentPrise() {
-		return new ObjectRangeList<IComment>(getUserCommentPriseIDs(), this) {
+		return new ObjectRangeList<IComment>(getUserCommentPriseIDs()) {
 			public IComment apply(Long id) {
 				return Ins.getIComment(id);
 			}
@@ -117,182 +112,173 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 	public IRangeList<INotify<?>> userNotifys() {
 		return null;
 	}
-	
+
 	/**
 	 * 这里需要处理各个存储的id关联关系.比较复杂.最终所有的存储数据用事务一起存到数据库中
 	 */
 	@Override
-	public IMessage publishMsg(final IPair pair, String content,
-			ILocation location, String imgurl, String videourl) {
+	public IMessage publishMsg(final IPair pair, final String content,
+			final ILocation location, final String imgurl, final String videourl) {
 
-		List<IStorage> ins_to_save = Lists.newArrayList();
+		StorageSaveRunnable r = new StorageSaveRunnable() {
 
-		DefaultMessage message = DefaultMessage.create();
-		ins_to_save.add(message);
-		message.getProto().setPairid(pair.id());
-		message.getProto().setUserid(this.id());
-		message.getProto().setContent(content);
-		message.getProto().setPhotouri(imgurl == null ? "" : imgurl);
-		message.getProto().setVideouri(videourl == null ? "" : videourl);
-		// message.getProto().setTimestamp(System.currentTimeMillis());
-		message.getProto().setTimestamp(Ins.getStorageService().time()); // storage
+			@Override
+			Object onSaveTransactionRun() {
 
-		// check ipair in the pairs
-		if (!Iterables.any(getUserPairsIDs().all(), new Predicate<Long>() {
-			public boolean apply(Long p) {
-				if (p.equals(pair.id())) {
-					return true;
+				DefaultMessage message = DefaultMessage.create();
+
+				Msg.Builder msgbuilder = message.getKBuilder();
+				msgbuilder.setPairid(pair.id()).setUserid(id())
+						.setContent(content)
+						.setPhotouri(imgurl == null ? "" : imgurl)
+						.setVideouri(videourl == null ? "" : videourl)
+						.setTimestamp(Ins.getStorageService().time());
+				// check ipair in the pairs
+
+				if (!userPairs().exist(pair)) {
+					throw new NotExistException(
+							"Not exist IPair in userPairs(): " + pair);
 				}
-				return false;
+
+				DefaultStory relate = null;
+
+				for (IStory story : userStorys().all()) {
+					if (story.pair().id() == pair.id()) {
+						relate = (DefaultStory) story;
+						break;
+					}
+				}
+
+				if (relate == null)// new
+				{
+					relate = DefaultStory.create(id(), pair.id());
+					userStorys().lpush(relate);
+				}
+
+				msgbuilder.setStoryid(relate.id());
+				msgbuilder.setLocation(new DefaultLocation(location)
+						.toLocation());
+				message.rebuildValueAndBrokenImmutable(msgbuilder);
+
+				// add message to story
+				relate.message().lpush(message);
+
+				MessageStorage msgstorage = new MessageStorage();
+				msgstorage.lpush(message.id());
+
+				DefaultPair d_pair = (DefaultPair) pair;
+				if (d_pair.creator().id() != id()) {
+					// use common pair. so, maybe we need to add to the list
+					if (!d_pair.user().exist(DefaultUser.this)) {
+						d_pair.user().sadd(DefaultUser.this);
+					}
+				}
+
+				return message;
 			}
 
-		})) {
-			throw new NotExistException("Not exist IPair: " + pair);
-		}
-
-		DefaultStory relate = null;
-
-		for (IStory story : userStorys().all()) {
-			if (story.pair().id() == pair.id()) {
-				relate = (DefaultStory) story;
-				break;
+			void onSuccess() {
+				Ins.getEventBus().post(
+						new MessageEvent.Creater((IMessage) getResult()));
 			}
-		}
+		};
 
-		if (relate == null)// new
+		r.run();
+		return (IMessage) r.getResult();
+
+	
+	}
+
+	@Override
+	public IComment publishComment(final IMessage msg, final String content) {
+
+		StorageSaveRunnable r = new StorageSaveRunnable() {
+
+			@Override
+			Object onSaveTransactionRun() {
+				DefaultComment comment = DefaultComment.create(msg.id(), id(),
+						content);
+				msg.comments().lpush(comment);
+				userComments().lpush(comment);
+				return comment;
+			}
+
+			void onSuccess() {
+				Ins.getEventBus()
+						.post(new MessageEvent.AddComment(msg,
+								(IComment) getResult()));
+			}
+		};
+
+		r.run();
+
+		return (IComment) r.getResult();
+	}
+
+	@Override
+	public void publishPrise(final IMessage msg) {
+
+		new StorageSaveRunnable() {
+			@Override
+			Object onSaveTransactionRun() {
+				if (msgPrised().exist(msg)) {
+					return null;
+				}
+				msg.prisers().lpush(DefaultUser.this);
+				msgPrised().lpush(msg);
+				return null;
+			}
+
+			void onSuccess() {
+				Ins.getEventBus().post(
+						new MessageEvent.AddPrise(msg, DefaultUser.this));
+			}
+
+		}.run();
+
+	}
+
+	@Override
+	public void publishPriseOfComment(final IComment comment) {
+
+		new StorageSaveRunnable() {
+			Object onSaveTransactionRun() {
+				if (commentPrise().exist(comment)) {
+					return null;
+				}
+				comment.prisers().lpush(DefaultUser.this);
+				commentPrise().lpush(comment);
+				return null;
+			}
+		}.run();
+
+	}
+
+	@Override
+	public IPair createPair(final String name) {
+		
+		StorageSaveRunnable r = new StorageSaveRunnable()
 		{
-			relate = DefaultStory.create(this.id(), pair.id());
-			LongRangeList l_storys = (LongRangeList) getUserStorysIDs();
-			l_storys.lpush(relate.id());
-			ins_to_save.add(relate);
-			ins_to_save.add(l_storys);
-		}
-		message.value.setStoryid(relate.id());
-		message.value.setLocation(new DefaultLocation(location).toLocation());
-		// add message to story
-		LongRangeList msgids = (LongRangeList) relate.getStorysMessagesIDs();
-		msgids.lpush(message.id());
-		ins_to_save.add(msgids);
 
-		MessageStorage msgstorage = new MessageStorage();
-		msgstorage.lpush(message.id());
-		ins_to_save.add(msgstorage);
-
-		DefaultPair d_pair = (DefaultPair) pair;
-		if (d_pair.creator().id() != this.id()) {
-			// use common pair. so, maybe we need to add to the list
-			LongRangeList userids = (LongRangeList) d_pair.getPairsUserIDs();
-
-			if (!Iterables.any(userids.all(), new Predicate<Long>() {
-				public boolean apply(Long id) {
-					return id.longValue() == DefaultUser.this.id();
-				}
-			})) {
-				userids.lpush(this.id());
-				ins_to_save.add(userids);
+			@Override
+			Object onSaveTransactionRun() {
+				
+				DefaultPair pair = DefaultPair.create(name, id());
+				userPairs().lpush(pair);
+				return pair;
 			}
-		}
-
-		Ins.getStorageService().saveCollection(ins_to_save);
-
-		Ins.getEventBus().post(new MessageEvent.Creater(message));
-
-		return message;
-	}
-
-	@Override
-	public IComment publishComment(IMessage msg, String content) {
-		DefaultMessage d_msg = (DefaultMessage) msg;
-
-		IRangeList<Long> commentids = d_msg.getMsgCommentsIds();
-
-		DefaultComment comment = DefaultComment.create(msg.id(), this.id(),
-				content);
-		commentids.lpush(comment.id());
-
-		List<IStorage> ins_to_save = Lists.newArrayList();
-		ins_to_save.add((LongRangeList) commentids);
-		ins_to_save.add(comment);
-		Ins.getStorageService().saveCollection(ins_to_save);
-
-		Ins.getEventBus().post(new MessageEvent.AddComment(msg, comment));
-
-		return comment;
-	}
-
-	@Override
-	public void publishPrise(IMessage msg) {
-		// check: 我是否已经赞过这个msg
-		for (Long msgid : getUserMsgPriseIDs().all()) {
-			if (msgid.longValue() == msg.id()) {
-				return;
-			}
-		}
-		DefaultMessage d_msg = (DefaultMessage) msg;
-		LongRangeList prise_ids = (LongRangeList) d_msg.getMsgPriserIds();
-		prise_ids.lpush(this.id());
-		LongRangeList user_msg_prise = (LongRangeList) this
-				.getUserMsgPriseIDs();
-		user_msg_prise.lpush(msg.id());
-		List<IStorage> ins_to_save = Lists.newArrayList();
-		ins_to_save.add(prise_ids);
-		ins_to_save.add(user_msg_prise);
-		Ins.getStorageService().saveCollection(ins_to_save);
-
-		Ins.getEventBus().post(new MessageEvent.AddPrise(msg, this));
-	}
-
-	@Override
-	public void publishPriseOfComment(IComment comment) {
-		for (Long commentid : getUserCommentPriseIDs().all()) {
-			if (commentid.longValue() == comment.id()) {
-				return;
-			}
-		}
-		DefaultComment d_comment = (DefaultComment) comment;
-		LongRangeList prise_ids = (LongRangeList) d_comment
-				.getCommentPriserIds();
-		prise_ids.lpush(this.id());
-		LongRangeList user_comment_prise = (LongRangeList) this
-				.getUserCommentPriseIDs();
-		user_comment_prise.lpush(d_comment.id());
-		List<IStorage> ins_to_save = Lists.newArrayList();
-		ins_to_save.add(prise_ids);
-		ins_to_save.add(user_comment_prise);
-		Ins.getStorageService().saveCollection(ins_to_save);
-
-		Ins.getEventBus().post(new CommentEvent.AddPrise(d_comment, this));
-	}
-
-	@Override
-	public IPair createPair(String name) {
-		DefaultPair pair = DefaultPair.create(name, this.id());
-		LongRangeList pair_list = (LongRangeList) getUserPairsIDs();
-		pair_list.lpush(pair.id());
-
-		List<IStorage> ins_to_save = Lists.newArrayList();
-		ins_to_save.add(pair);
-		ins_to_save.add(pair_list);
-		Ins.getStorageService().saveCollection(ins_to_save);
-		return pair;
+			
+		};
+		r.run();
+		return (IPair)r.getResult();
 	}
 
 	@Override
 	public void follow(IObject obj) {
-		LongRangeList follower_list = (LongRangeList) ((FollowStorage<?>) obj)
-				.getObjectsFollowers();
-		follower_list.lpush(this.id());
-		Ins.getStorageService().save(follower_list);
 	}
 
 	@Override
 	public void unfollow(IObject obj) {
-		LongRangeList follower_list = (LongRangeList) ((FollowStorage<?>) obj)
-				.getObjectsFollowers();
-		
-		Ins.getLongRangeService().lrem(follower_list.key, obj.id());
 	}
-
-	
 
 }

@@ -5,13 +5,12 @@ import java.util.Map;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.mm.tinylove.imp.AbstractNotify;
-import com.mm.tinylove.proto.Storage.Notify.Builder;
 import com.mm.tinylove.util.BytesToType;
 
 abstract public class AbsBundleNotify extends AbstractNotify{
 
-	public AbsBundleNotify(long id, Builder builder) {
-		super(id, builder);
+	public AbsBundleNotify(long id) {
+		super(id);
 	}
 
 	public void setBundle(String key, Long id)

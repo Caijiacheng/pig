@@ -1,6 +1,7 @@
 package com.mm.tinylove.imp;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import junit.framework.Assert;
@@ -10,7 +11,9 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mm.tinylove.proto.Storage.Location;
+import com.mm.tinylove.proto.Storage.Msg;
 
 public class TestStorageService {
 
@@ -62,13 +65,54 @@ public class TestStorageService {
 		Assert.assertEquals(commentStorage1.size(), 2);
 	}
 
+	
+	@Test
+	public void testSaveInTransicationInRunnable()
+	{
+		StorageSaveRunnable r = new StorageSaveRunnable()
+		{
+
+			Map<String, DefaultComment> bundle = Maps.newHashMap();
+			
+			@Override
+			Object onSaveTransactionRun() {
+				DefaultComment comment = DefaultComment.create(1L, 2L, "1");
+				DefaultComment comment1 = DefaultComment.create(2L, 3L, "12");
+
+				LongRangeList commentStorage = new LongRangeList("commentStorage");
+				commentStorage.lpush(comment.id());
+				commentStorage.lpush(comment1.id());
+				
+				bundle.put("comment", comment);
+				bundle.put("comment1", comment1);
+				
+				return bundle;
+			}
+			
+		};
+		r.run();
+		@SuppressWarnings("unchecked")
+		Map<String, DefaultComment> ret = (Map<String, DefaultComment>) r.getResult();
+		DefaultComment comment_load = Ins.getStorageService().load(
+				new DefaultComment(ret.get("comment").id()));
+		DefaultComment comment1_load = Ins.getStorageService().load(
+				new DefaultComment(ret.get("comment1").id()));
+		Assert.assertEquals(comment_load.content(), ret.get("comment").content());
+		Assert.assertEquals(comment1_load.content(), ret.get("comment1").content());
+		LongRangeList commentStorage1 = new LongRangeList("commentStorage");
+
+		Assert.assertEquals(commentStorage1.size(), 2);
+		
+	}
+	
 	@Test
 	public void testSaveAndLoadMessage() {
 		DefaultMessage msg = DefaultMessage.create();
-		msg.getProto().setUserid(1L).setPairid(2L).setContent("hello")
+		msg.rebuildValueAndBrokenImmutable(((Msg.Builder) (msg.getKBuilder()))
+				.setUserid(1L).setPairid(2L).setContent("hello")
 				.setLocation(Location.newBuilder().setX(1).setY(2).build())
 				.setPhotouri("http://hello.comjkjjhjhjhj")
-				.setTimestamp(System.currentTimeMillis());
+				.setTimestamp(System.currentTimeMillis()));
 
 		Ins.getStorageService().save(msg);
 		DefaultMessage msg1 = Ins.getStorageService().load(
@@ -79,31 +123,26 @@ public class TestStorageService {
 		Assert.assertEquals(msg.location().getY(), 2f);
 
 	}
-	
-	
-	
+
 	@Test
-	public void testSetOper()
-	{
-		
+	public void testSetOper() {
+
 		String key = "tSetOper";
-		
+
 		DefaultStorageService service = new DefaultStorageService();
 		service.sadd(key, ImmutableSet.of(1L, 2L, 3L));
-		
+
 		Assert.assertEquals(service.sall(key).size(), 3);
 		Set<Long> t = service.srandmem(key, 5);
-		
+
 		Assert.assertTrue(t.contains(1L));
 		Assert.assertTrue(t.contains(2L));
 		Assert.assertTrue(t.contains(3L));
 
 		service.srem(key, 1L);
-		
+
 		Assert.assertEquals(service.sall(key).size(), 2);
 
 	}
 
-	
-	
 }
