@@ -66,7 +66,7 @@ public class TestMessageView {
 		String imgurl = "http://www.hello.img.com";
 		ILocation location = new DefaultLocation(Location.newBuilder().setX(1.0f).setY(2.0f).build());
 	
-		int user_num = 60;
+		int user_num = 40;
 		
 		Assert.assertTrue(user_num > 30);
 		

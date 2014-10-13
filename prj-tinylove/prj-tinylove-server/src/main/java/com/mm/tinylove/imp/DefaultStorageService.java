@@ -47,61 +47,67 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 	}
 
 	@SuppressWarnings("unchecked")
-	static void saveInPipeBase(Collection<IStorage> all_ins, Transaction con)
-	{
+	static void saveInPipeBase(Collection<IStorage> all_ins, Transaction con) {
 		Queue<IStorage> q_ins = Queues.newArrayDeque(all_ins);
-		
-		while(!q_ins.isEmpty())
-		{
+
+		while (!q_ins.isEmpty()) {
 			IStorage ins = q_ins.poll();
-			if (ins instanceof ICollectionStorage)
-			{
-				ICollectionStorage cs = (ICollectionStorage)ins;
+			if (ins instanceof ICollectionStorage) {
+				ICollectionStorage cs = (ICollectionStorage) ins;
 				q_ins.addAll(cs.saveCollections());
 			}
-			
+
 			if (ins instanceof IKVStorage) {
 				IKVStorage kv_ins = (IKVStorage) ins;
 				con.set(kv_ins.marshalKey(), kv_ins.marshalValue());
 			} else if (ins instanceof IRangeList) {
-				List<Long> data = ((IRangeList<Long>) ins).savelpushCollection();
+				List<Long> data = ((IRangeList<Long>) ins)
+						.savelpushCollection();
 
-				byte[][] bdata = new byte[data.size()][];
+				if (data.size() != 0) {
+					byte[][] bdata = new byte[data.size()][];
 
-				for (int i = 0; i < data.size(); i++) {
-					bdata[i] = String.valueOf(data.get(i)).getBytes(
-							StandardCharsets.UTF_8);
+					for (int i = 0; i < data.size(); i++) {
+						bdata[i] = String.valueOf(data.get(i)).getBytes(
+								StandardCharsets.UTF_8);
+					}
+					con.lpush(ins.marshalKey(), bdata);
 				}
-				con.lpush(ins.marshalKey(), bdata);
 
 			} else if (ins instanceof IRandSet) {
 				Set<Long> data = ((IRandSet<Long>) ins).saddCollection();
-				byte[][] bdata = new byte[data.size()][];
-				Object[] arr = data.toArray();
-				for (int i = 0; i < data.size(); i++) {
-					bdata[i] = String.valueOf((Long) (arr[i])).getBytes(
-							StandardCharsets.UTF_8);
+
+				if (data.size() != 0) {
+					byte[][] bdata = new byte[data.size()][];
+					Object[] arr = data.toArray();
+					for (int i = 0; i < data.size(); i++) {
+						bdata[i] = String.valueOf((Long) (arr[i])).getBytes(
+								StandardCharsets.UTF_8);
+					}
+					con.sadd(ins.marshalKey(), bdata);
 				}
-				con.sadd(ins.marshalKey(), bdata);
-				
+
 				Set<Long> rdata = ((IRandSet<Long>) ins).sremCollection();
-				bdata = new byte[rdata.size()][];
-				arr = rdata.toArray();
-				for (int i = 0; i < rdata.size(); i++) {
-					bdata[i] = String.valueOf((Long) (arr[i])).getBytes(
-							StandardCharsets.UTF_8);
+
+				if (rdata.size() != 0) {
+					byte[][] bdata = new byte[rdata.size()][];
+					Object[] arr = rdata.toArray();
+					for (int i = 0; i < rdata.size(); i++) {
+						bdata[i] = String.valueOf((Long) (arr[i])).getBytes(
+								StandardCharsets.UTF_8);
+					}
+					con.srem(ins.marshalKey(), bdata);
 				}
-				con.srem(ins.marshalKey(), bdata);
+
 			}
 		}
 	}
-	
-	
+
 	@Override
 	public <T extends IStorage> void save(T ins) {
 		try (Jedis con = dbhandle.getConn()) {
 			Transaction t = con.multi();
-			saveInPipeBase(Lists.newArrayList((IStorage)ins), t);
+			saveInPipeBase(Lists.newArrayList((IStorage) ins), t);
 			t.exec();
 		}
 	}
@@ -110,7 +116,7 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 			.getBytes(Charsets.UTF_8);
 
 	@Override
-	public <T extends IStorage> void saveInTransaction(List<IStorage> inslist) {
+	public <T extends IStorage> void saveCollection(List<IStorage> inslist) {
 		try (Jedis con = dbhandle.getConn()) {
 			Transaction t = con.multi();
 			saveInPipeBase(inslist, t);
@@ -120,7 +126,7 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 
 	@Override
 	public void checkAndSaveInTransaction(List<Object> inslist) {
-		saveInTransaction(Lists.transform(inslist,
+		saveCollection(Lists.transform(inslist,
 				new Function<Object, IStorage>() {
 					public IStorage apply(Object obj) {
 						return (IStorage) obj;

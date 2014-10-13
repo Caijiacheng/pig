@@ -32,10 +32,8 @@ public class TestLongRangeList {
 		Assert.assertEquals(range.size(), 0);
 		range.lpush(new Long(1L));
 		range.lpush(new Long(2L));
-		Assert.assertEquals(range.savelpushCollection().size(), 2);
 		Assert.assertEquals(range.size(), 2);
 		Assert.assertEquals(range.range(0, range.size()).size(), 2);
-		
 		
 		LongRangeList range1 = new LongRangeList(test_key);
 		Assert.assertEquals(range1.size(), 0);
@@ -43,7 +41,7 @@ public class TestLongRangeList {
 		List<IStorage> ins_to_save = Lists.newArrayList();
 		ins_to_save.add(range);
 		
-		Ins.getStorageService().saveInTransaction(ins_to_save);
+		Ins.getStorageService().saveCollection(ins_to_save);
 		Assert.assertEquals(range1.size(), range.size());
 		List<Long> a = range1.range(0, 2);
 		Assert.assertEquals(a.get(0), new Long(2L));
@@ -66,7 +64,7 @@ public class TestLongRangeList {
 		
 		List<IStorage> ins_to_save = Lists.newArrayList();
 		ins_to_save.add(range);
-		Ins.getStorageService().saveInTransaction(ins_to_save);
+		Ins.getStorageService().saveCollection(ins_to_save);
 		
 		
 		Assert.assertEquals(range.size(), ls.length);
@@ -83,7 +81,7 @@ public class TestLongRangeList {
 			range.lpush(l);
 		}
 		
-		Ins.getStorageService().saveInTransaction(ins_to_save);
+		Ins.getStorageService().saveCollection(ins_to_save);
 		LOG.error("rangeAll: {}", range.all());
 
 		Assert.assertEquals(range.size(), ls.length * 2);

@@ -8,7 +8,7 @@ public interface IStorageService {
 	<T extends IStorage> T load(T ins) ;
 	<T extends IStorage> void save(T ins);
 	
-	<T extends IStorage> void saveInTransaction(List<IStorage> inslist);
+	<T extends IStorage> void saveCollection(List<IStorage> inslist);
 	
 	void checkAndSaveInTransaction(List<Object> inslist);
 	

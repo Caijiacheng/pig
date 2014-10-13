@@ -193,7 +193,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 			}
 		}
 
-		Ins.getStorageService().saveInTransaction(ins_to_save);
+		Ins.getStorageService().saveCollection(ins_to_save);
 
 		Ins.getEventBus().post(new MessageEvent.Creater(message));
 
@@ -213,7 +213,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 		List<IStorage> ins_to_save = Lists.newArrayList();
 		ins_to_save.add((LongRangeList) commentids);
 		ins_to_save.add(comment);
-		Ins.getStorageService().saveInTransaction(ins_to_save);
+		Ins.getStorageService().saveCollection(ins_to_save);
 
 		Ins.getEventBus().post(new MessageEvent.AddComment(msg, comment));
 
@@ -237,7 +237,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 		List<IStorage> ins_to_save = Lists.newArrayList();
 		ins_to_save.add(prise_ids);
 		ins_to_save.add(user_msg_prise);
-		Ins.getStorageService().saveInTransaction(ins_to_save);
+		Ins.getStorageService().saveCollection(ins_to_save);
 
 		Ins.getEventBus().post(new MessageEvent.AddPrise(msg, this));
 	}
@@ -259,7 +259,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 		List<IStorage> ins_to_save = Lists.newArrayList();
 		ins_to_save.add(prise_ids);
 		ins_to_save.add(user_comment_prise);
-		Ins.getStorageService().saveInTransaction(ins_to_save);
+		Ins.getStorageService().saveCollection(ins_to_save);
 
 		Ins.getEventBus().post(new CommentEvent.AddPrise(d_comment, this));
 	}
@@ -273,7 +273,7 @@ public class DefaultUser extends FollowStorage<UserInfo.Builder> implements
 		List<IStorage> ins_to_save = Lists.newArrayList();
 		ins_to_save.add(pair);
 		ins_to_save.add(pair_list);
-		Ins.getStorageService().saveInTransaction(ins_to_save);
+		Ins.getStorageService().saveCollection(ins_to_save);
 		return pair;
 	}
 

@@ -21,7 +21,7 @@ public class UserStorage extends LongRangeList{
 		List<IStorage> iss = Lists.newArrayList();
 		iss.add(user);
 		iss.add(users);
-		Ins.getStorageService().saveInTransaction(iss);
+		Ins.getStorageService().saveCollection(iss);
 		return user;
 	}
 	

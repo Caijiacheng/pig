@@ -1,12 +1,14 @@
 package com.mm.tinylove.imp;
 
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.mm.tinylove.proto.Storage.Location;
 
@@ -47,7 +49,7 @@ public class TestStorageService {
 		iss.add(comment1);
 		iss.add(commentStorage);
 
-		Ins.getStorageService().saveInTransaction(iss);
+		Ins.getStorageService().saveCollection(iss);
 
 		DefaultComment comment_load = Ins.getStorageService().load(
 				new DefaultComment(comment.id()));
@@ -77,5 +79,31 @@ public class TestStorageService {
 		Assert.assertEquals(msg.location().getY(), 2f);
 
 	}
+	
+	
+	
+	@Test
+	public void testSetOper()
+	{
+		
+		String key = "tSetOper";
+		
+		DefaultStorageService service = new DefaultStorageService();
+		service.sadd(key, ImmutableSet.of(1L, 2L, 3L));
+		
+		Assert.assertEquals(service.sall(key).size(), 3);
+		Set<Long> t = service.srandmem(key, 5);
+		
+		Assert.assertTrue(t.contains(1L));
+		Assert.assertTrue(t.contains(2L));
+		Assert.assertTrue(t.contains(3L));
 
+		service.srem(key, 1L);
+		
+		Assert.assertEquals(service.sall(key).size(), 2);
+
+	}
+
+	
+	
 }
