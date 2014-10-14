@@ -5,6 +5,8 @@ import com.mm.tinylove.IUser;
 import com.mm.tinylove.imp.Ins;
 import com.mm.tinylove.proto.Storage.Notify;
 
+
+@Deprecated
 public class NewCommentPriseNotify extends AbsBundleNotify {
 
 	public NewCommentPriseNotify(long id) {

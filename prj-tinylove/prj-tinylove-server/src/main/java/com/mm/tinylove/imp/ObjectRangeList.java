@@ -20,7 +20,7 @@ public abstract class ObjectRangeList<E extends IObject> implements
 	IRangeList<Long> idrange;
 
 	public ObjectRangeList(String key) {
-		idrange = new LongRangeList(key);
+		idrange = LongRangeList.getIns(key);
 	}
 
 	public ObjectRangeList(IRangeList<Long> idrange) {

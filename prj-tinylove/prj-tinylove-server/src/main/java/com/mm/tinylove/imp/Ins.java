@@ -22,6 +22,8 @@ public class Ins {
 	static EventBus s_event_bus = new AsyncEventBus("DefautEventBus",
 			Executors.newCachedThreadPool());
 
+	
+	
 	public static IStorageService getStorageService() {
 		return s_storage_service;
 	}

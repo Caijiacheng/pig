@@ -40,7 +40,7 @@ public class TestMessageView {
 		String content_prefix = "i love it ";
 		for (int i=0; i<user_num; i++)
 		{
-			IUser user = UserStorage.creatAndSave();
+			IUser user = UserStorage.createUserAndSave();
 			String content = content_prefix + i;
 			IPair pair = user.createPair("tt" + i);
 			user.publishMsg(pair, content, location, imgurl, null);
@@ -73,7 +73,7 @@ public class TestMessageView {
 		String content_prefix = "i love it ";
 		for (int i=0; i<user_num; i++)
 		{
-			IUser user = UserStorage.creatAndSave();
+			IUser user = UserStorage.createUserAndSave();
 			String content = content_prefix + i;
 			IPair pair = user.createPair("tt" + i);
 			user.publishMsg(pair, content, location, imgurl, null);

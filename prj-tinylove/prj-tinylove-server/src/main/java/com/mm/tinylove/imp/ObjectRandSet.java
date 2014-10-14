@@ -15,7 +15,7 @@ abstract public class ObjectRandSet<E extends IObject> implements
 	IRandSet<Long> idset;
 
 	public ObjectRandSet(String key) {
-		idset = new LongRandSet(key);
+		idset = LongRandSet.getIns(key);
 	}
 
 	public ObjectRandSet(IRandSet<Long> idset) {

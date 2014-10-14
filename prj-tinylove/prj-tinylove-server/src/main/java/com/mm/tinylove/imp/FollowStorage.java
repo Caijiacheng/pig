@@ -15,7 +15,7 @@ public class FollowStorage<T extends Message> extends ProtoStorage<T>
 	static String TAG_OBJ_FOLLOWERS = ":follwers";
 
 	IRandSet<Long> getObjectsFollowers() {
-		return new LongRandSet(getKey() + TAG_OBJ_FOLLOWERS);
+		return LongRandSet.getIns(getKey() + TAG_OBJ_FOLLOWERS);
 	}
 
 	@Override

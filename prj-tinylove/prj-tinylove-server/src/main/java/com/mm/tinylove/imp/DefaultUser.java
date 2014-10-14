@@ -1,10 +1,10 @@
 package com.mm.tinylove.imp;
 
 import com.mm.tinylove.IComment;
+import com.mm.tinylove.IFollowObject;
 import com.mm.tinylove.ILocation;
 import com.mm.tinylove.IMessage;
 import com.mm.tinylove.INotify;
-import com.mm.tinylove.IObject;
 import com.mm.tinylove.IPair;
 import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IStory;
@@ -39,27 +39,27 @@ public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 	static final String NOTIFY_TAG = ":notify";
 
 	IRangeList<Long> getUserStorysIDs() {
-		return new LongRangeList(getKey() + STORYS_TAG);
+		return LongRangeList.getIns(getKey() + STORYS_TAG);
 	}
 
 	IRangeList<Long> getUserCommentIDs() {
-		return new LongRangeList(getKey() + COMMENT_TAG);
+		return LongRangeList.getIns(getKey() + COMMENT_TAG);
 	}
 
 	IRangeList<Long> getUserPairsIDs() {
-		return new LongRangeList(getKey() + PAIRS_TAG);
+		return LongRangeList.getIns(getKey() + PAIRS_TAG);
 	}
 
 	IRangeList<Long> getUserMsgPriseIDs() {
-		return new LongRangeList(getKey() + MSG_PRISE_TAG);
+		return LongRangeList.getIns(getKey() + MSG_PRISE_TAG);
 	}
 
 	IRangeList<Long> getUserCommentPriseIDs() {
-		return new LongRangeList(getKey() + COMMENT_PRISE_TAG);
+		return LongRangeList.getIns(getKey() + COMMENT_PRISE_TAG);
 	}
 
 	IRangeList<Long> getUserNotifyIDs() {
-		return new LongRangeList(getKey() + NOTIFY_TAG);
+		return LongRangeList.getIns(getKey() + NOTIFY_TAG);
 	}
 
 	@Override
@@ -123,6 +123,7 @@ public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 		StorageSaveRunnable r = new StorageSaveRunnable() {
 
 			@Override
+			protected
 			Object onSaveTransactionRun() {
 
 				DefaultMessage message = DefaultMessage.create();
@@ -151,7 +152,7 @@ public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 
 				if (relate == null)// new
 				{
-					relate = DefaultStory.create(id(), pair.id());
+					relate = DefaultStory.create(DefaultUser.this, pair);
 					userStorys().lpush(relate);
 				}
 
@@ -177,7 +178,7 @@ public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 				return message;
 			}
 
-			void onSuccess() {
+			protected void onSuccess() {
 				Ins.getEventBus().post(
 						new MessageEvent.Creater((IMessage) getResult()));
 			}
@@ -186,7 +187,6 @@ public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 		r.run();
 		return (IMessage) r.getResult();
 
-	
 	}
 
 	@Override
@@ -195,15 +195,16 @@ public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 		StorageSaveRunnable r = new StorageSaveRunnable() {
 
 			@Override
+			protected
 			Object onSaveTransactionRun() {
-				DefaultComment comment = DefaultComment.create(msg.id(), id(),
+				DefaultComment comment = DefaultComment.create(msg, DefaultUser.this,
 						content);
 				msg.comments().lpush(comment);
 				userComments().lpush(comment);
 				return comment;
 			}
 
-			void onSuccess() {
+			protected void onSuccess() {
 				Ins.getEventBus()
 						.post(new MessageEvent.AddComment(msg,
 								(IComment) getResult()));
@@ -220,6 +221,7 @@ public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 
 		new StorageSaveRunnable() {
 			@Override
+			protected
 			Object onSaveTransactionRun() {
 				if (msgPrised().exist(msg)) {
 					return null;
@@ -229,7 +231,7 @@ public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 				return null;
 			}
 
-			void onSuccess() {
+			protected void onSuccess() {
 				Ins.getEventBus().post(
 						new MessageEvent.AddPrise(msg, DefaultUser.this));
 			}
@@ -242,7 +244,7 @@ public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 	public void publishPriseOfComment(final IComment comment) {
 
 		new StorageSaveRunnable() {
-			Object onSaveTransactionRun() {
+			protected Object onSaveTransactionRun() {
 				if (commentPrise().exist(comment)) {
 					return null;
 				}
@@ -256,29 +258,44 @@ public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 
 	@Override
 	public IPair createPair(final String name) {
-		
-		StorageSaveRunnable r = new StorageSaveRunnable()
-		{
+
+		StorageSaveRunnable r = new StorageSaveRunnable() {
 
 			@Override
+			protected
 			Object onSaveTransactionRun() {
-				
-				DefaultPair pair = DefaultPair.create(name, id());
+
+				DefaultPair pair = DefaultPair.create(name, DefaultUser.this);
 				userPairs().lpush(pair);
 				return pair;
 			}
-			
 		};
 		r.run();
-		return (IPair)r.getResult();
+		return (IPair) r.getResult();
 	}
 
 	@Override
-	public void follow(IObject obj) {
+	public void follow(final IFollowObject obj) {
+		new StorageSaveRunnable() {
+			@Override
+			protected
+			Object onSaveTransactionRun() {
+				obj.followers().sadd(DefaultUser.this);
+				return null;
+			}
+		}.run();
 	}
 
 	@Override
-	public void unfollow(IObject obj) {
+	public void unfollow(final IFollowObject obj) {
+		new StorageSaveRunnable() {
+			@Override
+			protected
+			Object onSaveTransactionRun() {
+				obj.followers().remove(DefaultUser.this);
+				return null;
+			}
+		}.run();
 	}
 
 }

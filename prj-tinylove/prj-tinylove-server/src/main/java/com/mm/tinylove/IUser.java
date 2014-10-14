@@ -25,9 +25,9 @@ public interface IUser extends IObject {
 
 	IPair createPair(String name);
 
-	void follow(IObject obj);
+	void follow(IFollowObject obj);
 
-	void unfollow(IObject obj);
+	void unfollow(IFollowObject obj);
 
 	IRangeList<INotify<?>> userNotifys();
 

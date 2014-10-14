@@ -2,6 +2,7 @@ package com.mm.tinylove.imp;
 
 import junit.framework.Assert;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,11 +14,19 @@ public class TestLongRandSet {
 	public void setup() {
 		Ins.s_storage_service = new RemoveStorageService();
 		Ins.getStorageService().cleanStorage();
+		
+		StorageSaveRunnable.TL_IN_RUNNABLE.set(1);
+	}
+	
+	@After
+	public void tear()
+	{
+		StorageSaveRunnable.TL_IN_RUNNABLE.set(0);
 	}
 
 	@Test
 	public void testLongRandSet() {
-		LongRandSet rand = new LongRandSet(test_key);
+		LongRandSet rand = LongRandSet.getIns(test_key);
 
 		Assert.assertEquals(rand.size(), 0);
 
@@ -35,8 +44,8 @@ public class TestLongRandSet {
 		rand.remove(ls[0]);
 		Assert.assertEquals(rand.size(), ls.length-1);
 	
-		LongRandSet rand_1 = new LongRandSet(test_key);
-		Assert.assertEquals(rand_1.size(), 0);
+		LongRandSet rand_1 = LongRandSet.getIns(test_key);
+		Assert.assertEquals(rand_1.size(), ls.length - 1);
 		
 		Ins.getStorageService().save(rand);
 		Assert.assertEquals(rand.saddCollection().size(), 0);
@@ -45,7 +54,7 @@ public class TestLongRandSet {
 		
 		//test remove
 		rand_1.remove(ls[1]);
-		Assert.assertEquals(rand_1.size(), rand.size()-1);
+		Assert.assertEquals(rand_1.size(), rand.size());
 		Ins.getStorageService().save(rand_1);
 		Assert.assertEquals(rand.sremCollection().size(), 0);
 		Assert.assertEquals(rand_1.size(), rand.size());

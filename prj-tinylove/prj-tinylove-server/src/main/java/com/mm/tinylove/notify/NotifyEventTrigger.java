@@ -1,13 +1,10 @@
 package com.mm.tinylove.notify;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
 import com.mm.tinylove.IComment;
 import com.mm.tinylove.IMessage;
 import com.mm.tinylove.IUser;
 import com.mm.tinylove.event.MessageEvent;
-import com.mm.tinylove.imp.Ins;
+import com.mm.tinylove.imp.StorageSaveRunnable;
 
 public class NotifyEventTrigger {
 
@@ -15,32 +12,45 @@ public class NotifyEventTrigger {
 
 	}
 
-	public void MessageNewComment(MessageEvent.AddComment change) {
-		
-		IMessage msg = change.getMsg();
-		IComment comment = change.getComment();
-		
-		List<Object> ins_to_save = Lists.newArrayList();
+	public void messageNewCommentTrigger(final MessageEvent.AddComment change) {
+		new StorageSaveRunnable() {
+			@Override
+			protected Object onSaveTransactionRun() {
 
-		NewCommentNotify notify = NewCommentNotify.create(msg.id(),
-				comment.id());
-		ins_to_save.add(notify);
-		// message user add notify
-		IUser creator = change.getMsg().publisher();
-		creator.userNotifys().lpush(notify);
-		ins_to_save.add(creator);
-		// message follower add notify
-		for (IUser follower : msg.followers().all())
-		{
-			follower.userNotifys().lpush(notify);
-			ins_to_save.add(follower);
-		}
-		// comment user follow the message
-		IUser commentor = comment.user();
-		commentor.follow(msg);
-		ins_to_save.add(commentor);
-		
-		Ins.getStorageService().checkAndSaveInTransaction(ins_to_save);
+				IMessage msg = change.getMsg();
+				IComment comment = change.getComment();
+				NewCommentNotify notify = NewCommentNotify.create(msg.id(),
+						comment.id());
+				IUser creator = msg.publisher();
+				creator.userNotifys().lpush(notify);
+				for (IUser follower : msg.followers().all()) {
+					follower.userNotifys().lpush(notify);
+				}
+				IUser commentor = comment.user();
+				commentor.follow(msg);
+				return null;
+			}
+		}.run();
+	}
+
+	public void messageNewPriseTrigger(final MessageEvent.AddPrise ev_prise) {
+		new StorageSaveRunnable() {
+			@Override
+			protected Object onSaveTransactionRun() {
+
+				IMessage msg = ev_prise.getMsg();
+				IUser priser = ev_prise.getPriser();
+				NewPriseNotify notify = NewPriseNotify.create(priser
+						.id(), msg.id());
+				IUser creator = msg.publisher();
+				creator.userNotifys().lpush(notify);
+				for (IUser follower : msg.followers().all()) {
+					follower.userNotifys().lpush(notify);
+				}
+				priser.follow(msg);
+				return null;
+			}
+		}.run();
 	}
 
 }

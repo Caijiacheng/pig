@@ -11,6 +11,14 @@ import com.google.common.base.Verify;
 import com.google.common.collect.Lists;
 import com.mm.tinylove.db.StorageDB;
 
+/**
+ * 这里的实现与 com.mm.tinylove.imp完全没有关系
+ * @author caijiacheng
+ *
+ * @param <E>
+ */
+
+
 public abstract class SortSetStorage<E> implements ISortSetView<E> {
 
 	StorageDB db = new StorageDB();
@@ -52,7 +60,6 @@ public abstract class SortSetStorage<E> implements ISortSetView<E> {
 			} else {
 				data = con.zrange(rawkey, begin, end);
 			}
-
 			return Lists.transform(Lists.newArrayList(data),
 					new Function<byte[], E>() {
 						public E apply(byte[] v) {

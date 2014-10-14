@@ -2,9 +2,11 @@ package com.mm.tinylove.imp;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mm.tinylove.IRandSet;
 
@@ -14,10 +16,29 @@ public class LongRandSet implements IRandSet<Long>, IStorage {
 	Set<Long> new_ins = Sets.newTreeSet();
 	Set<Long> rem_ins = Sets.newTreeSet();
 
-	public LongRandSet(String key) {
+	private LongRandSet(String key) {
 		this.key = key;
 	}
 
+	
+	static ThreadLocal<Map<String, LongRandSet>> TL_LONG_RAND_SET = 
+			new ThreadLocal<Map<String, LongRandSet>>() {
+		protected Map<String,LongRandSet> initialValue() {
+			return Maps.newHashMap();
+		};
+
+	};
+
+	static public LongRandSet getIns(String key) {
+		LongRandSet ins = TL_LONG_RAND_SET.get().get(key);
+		if (ins == null)
+		{
+			ins = new LongRandSet(key);
+			TL_LONG_RAND_SET.get().put(key, ins);
+		}
+		return ins;
+	}
+	
 	@Override
 	public Set<Long> srandMember(int count) {
 

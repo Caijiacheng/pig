@@ -11,6 +11,7 @@ public interface IStorageService {
 	
 	<T extends IStorage> void saveCollection(Collection<IStorage> inslist);
 	
+	@Deprecated
 	void checkAndSaveInTransaction(List<Object> inslist);
 	
 	long time();

@@ -1,28 +1,43 @@
 package com.mm.tinylove.imp;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
 import com.mm.tinylove.IRangeList;
 import com.mm.tinylove.IUser;
 
 public class UserStorage extends LongRangeList{
 	
 	static final String USER_RANGE_LIST = "UserRangeList";
-	public UserStorage() {
+	private UserStorage() {
 		super(USER_RANGE_LIST);
 	}
 	
-	static IUser creatAndSave()
+	
+	static ThreadLocal<UserStorage> TL_USER_STORAGE = new ThreadLocal<UserStorage>()
+			{
+				protected UserStorage initialValue() {
+					return new UserStorage();
+				};
+			};
+	
+	static public UserStorage getIns()
 	{
-		DefaultUser user = DefaultUser.create();
-		UserStorage users = new UserStorage();
-		users.lpush(user.id());
-		List<IStorage> iss = Lists.newArrayList();
-		iss.add(user);
-		iss.add(users);
-		Ins.getStorageService().saveCollection(iss);
-		return user;
+		return TL_USER_STORAGE.get();
+	}
+	
+	public static IUser createUserAndSave()
+	{
+		
+		StorageSaveRunnable r = new StorageSaveRunnable() {
+			
+			@Override
+			protected Object onSaveTransactionRun() {
+				DefaultUser user = DefaultUser.create();
+				UserStorage users = new UserStorage();
+				users.lpush(user.id());
+				return user;
+			}
+		};
+		r.run();
+		return (IUser)r.getResult();
 	}
 	
 	public IRangeList<IUser> userList() {

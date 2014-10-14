@@ -39,11 +39,11 @@ public class DefaultMessage extends FollowStorage<Msg> implements
 	static final public String TAG_MSG_PRISES = ":prisers";
 
 	IRangeList<Long> getMsgCommentsIds() {
-		return new LongRangeList(getKey() + TAG_MSG_COMMENTS);
+		return LongRangeList.getIns(getKey() + TAG_MSG_COMMENTS);
 	}
 
 	IRangeList<Long> getMsgPriserIds() {
-		return new LongRangeList(getKey() + TAG_MSG_PRISES);
+		return LongRangeList.getIns(getKey() + TAG_MSG_PRISES);
 	}
 
 	@Override

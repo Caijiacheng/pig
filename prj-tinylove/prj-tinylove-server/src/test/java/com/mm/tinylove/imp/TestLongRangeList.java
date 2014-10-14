@@ -4,6 +4,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -20,9 +21,16 @@ public class TestLongRangeList {
 	{
 		Ins.s_storage_service = new RemoveStorageService();
 		Ins.getStorageService().remove(test_key);
+		StorageSaveRunnable.TL_IN_RUNNABLE.set(1);
+
 	}
 	
-	
+	@After
+	public void tear()
+	{
+		StorageSaveRunnable.TL_IN_RUNNABLE.set(0);
+	}
+
 	static Logger LOG = LoggerFactory.getLogger(TestLongRangeList.class);
 	
 	@Test

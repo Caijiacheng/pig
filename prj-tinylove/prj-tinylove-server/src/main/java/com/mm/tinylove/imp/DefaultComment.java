@@ -12,12 +12,12 @@ public class DefaultComment extends FollowStorage<Comment> implements IComment{
 		super(id);
 	}
 	
-	static DefaultComment create(long msgid, long userid, String comment)
+	static DefaultComment create(IMessage msg, IUser user, String comment)
 	{
 		DefaultComment c =  new DefaultComment(KVStorage.INVAID_KEY);
 		Comment.Builder builder = c.getKBuilder();
-		builder.setMsgid(msgid);
-		builder.setUserid(userid);
+		builder.setMsgid(msg.id());
+		builder.setUserid(user.id());
 		builder.setContent(comment);
 		c.rebuildValueAndBrokenImmutable(builder);
 		return c;
@@ -26,7 +26,7 @@ public class DefaultComment extends FollowStorage<Comment> implements IComment{
 	static final public String TAG_COMMENT_PRISE = ":priser";
 
 	IRangeList<Long> getCommentPriserIds() {
-		return new LongRangeList(getKey() + TAG_COMMENT_PRISE);
+		return LongRangeList.getIns(getKey() + TAG_COMMENT_PRISE);
 	}
 	
 	@Override
