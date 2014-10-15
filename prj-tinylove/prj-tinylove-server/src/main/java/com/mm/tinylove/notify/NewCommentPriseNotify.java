@@ -9,7 +9,7 @@ import com.mm.tinylove.proto.Storage.Notify;
 @Deprecated
 public class NewCommentPriseNotify extends AbsBundleNotify {
 
-	public NewCommentPriseNotify(long id) {
+	NewCommentPriseNotify(long id) {
 		super(id);
 	}
 	
@@ -17,9 +17,7 @@ public class NewCommentPriseNotify extends AbsBundleNotify {
 		NewCommentPriseNotify notify = new NewCommentPriseNotify(INVAID_KEY);
 		notify.bundle.put(K_PRISER, priserid);
 		notify.bundle.put(K_COMMENT, commentid);
-		Notify.Builder builder = notify.getKBuilder();
-		notify.rebuildValueAndBrokenImmutable(builder
-				.setType(Notify.Type.NEW_COMMENT_PRISE));
+		notify.rebuildNotify(Notify.Type.NEW_COMMENT_PRISE);
 		return notify;
 	}
 	

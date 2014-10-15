@@ -5,6 +5,7 @@ import java.util.Map;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.mm.tinylove.imp.AbstractNotify;
+import com.mm.tinylove.proto.Storage.Notify;
 import com.mm.tinylove.util.BytesToType;
 
 abstract public class AbsBundleNotify extends AbstractNotify{
@@ -22,6 +23,7 @@ abstract public class AbsBundleNotify extends AbstractNotify{
 	
 	abstract String[] verifyBundleKeys();
 	
+	
 	@Override
 	protected byte[] marshalNotifyValue() {
 		for (String k : verifyBundleKeys())
@@ -34,6 +36,11 @@ abstract public class AbsBundleNotify extends AbstractNotify{
 	@Override
 	protected void unmarshalNotifyValue(byte[] value) {
 		bundle = BytesToType.unmarshalMaps(value);
+	}
+	
+	void setValue(Notify v)
+	{
+		value = v;
 	}
 	
 }

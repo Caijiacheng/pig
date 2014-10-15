@@ -110,7 +110,11 @@ public class DefaultUser extends FollowStorage<UserInfo> implements IUser {
 
 	@Override
 	public IRangeList<INotify<?>> userNotifys() {
-		return null;
+		return new ObjectRangeList<INotify<?>>(getUserCommentPriseIDs()) {
+			public INotify<?> apply(Long id) {
+				return Ins.getINotify(id);
+			}
+		};
 	}
 
 	/**

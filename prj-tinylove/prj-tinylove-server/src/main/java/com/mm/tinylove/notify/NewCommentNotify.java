@@ -7,7 +7,7 @@ import com.mm.tinylove.proto.Storage.Notify;
 
 public class NewCommentNotify extends AbsBundleNotify {
 
-	public NewCommentNotify(long id) {
+	NewCommentNotify(long id) {
 		super(id);
 	}
 
@@ -15,9 +15,7 @@ public class NewCommentNotify extends AbsBundleNotify {
 		NewCommentNotify notify = new NewCommentNotify(INVAID_KEY);
 		notify.bundle.put(K_MESSAGE, msgid);
 		notify.bundle.put(K_COMMENT, commentid);
-		Notify.Builder builder = notify.getKBuilder();
-		notify.rebuildValueAndBrokenImmutable(builder
-				.setType(Notify.Type.NEW_COMMENT));
+		notify.rebuildNotify(Notify.Type.NEW_COMMENT);
 		return notify;
 	}
 

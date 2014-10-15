@@ -26,6 +26,12 @@ public class PojoEms implements IEms {
 	}
 
 	@Override
+	public int hashCode() {
+		return Objects.hash(_code, _phonenum, _type);
+	}
+	
+	
+	@Override
 	public boolean equals(Object obj) {
 
 		if (obj instanceof PojoEms)

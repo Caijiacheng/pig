@@ -7,7 +7,7 @@ import com.mm.tinylove.proto.Storage.Notify;
 
 public class NewPriseNotify extends AbsBundleNotify{
 
-	public NewPriseNotify(long id) {
+	NewPriseNotify(long id) {
 		super(id);
 	}
 	
@@ -15,9 +15,7 @@ public class NewPriseNotify extends AbsBundleNotify{
 		NewPriseNotify notify = new NewPriseNotify(INVAID_KEY);
 		notify.bundle.put(K_PRISER, priserid);
 		notify.bundle.put(K_MESSAGE, msgid);
-		Notify.Builder builder = notify.getKBuilder();
-		notify.rebuildValueAndBrokenImmutable(builder
-				.setType(Notify.Type.NEW_PRISE));
+		notify.rebuildNotify(Notify.Type.NEW_PRISE);
 		return notify;
 	}
 	

@@ -4670,16 +4670,13 @@ public final class Storage {
       NEW_PRISE(1, 2),
       /**
        * <code>NEW_COMMENT_PRISE = 3;</code>
+       *
+       * <pre>
+       *NEW_STORY_MESSAGE = 4;
+       *NEW_PRIVATE_USER_MESSAGE = 5;
+       * </pre>
        */
       NEW_COMMENT_PRISE(2, 3),
-      /**
-       * <code>NEW_STORY_MESSAGE = 4;</code>
-       */
-      NEW_STORY_MESSAGE(3, 4),
-      /**
-       * <code>NEW_PRIVATE_USER_MESSAGE = 5;</code>
-       */
-      NEW_PRIVATE_USER_MESSAGE(4, 5),
       ;
 
       /**
@@ -4692,16 +4689,13 @@ public final class Storage {
       public static final int NEW_PRISE_VALUE = 2;
       /**
        * <code>NEW_COMMENT_PRISE = 3;</code>
+       *
+       * <pre>
+       *NEW_STORY_MESSAGE = 4;
+       *NEW_PRIVATE_USER_MESSAGE = 5;
+       * </pre>
        */
       public static final int NEW_COMMENT_PRISE_VALUE = 3;
-      /**
-       * <code>NEW_STORY_MESSAGE = 4;</code>
-       */
-      public static final int NEW_STORY_MESSAGE_VALUE = 4;
-      /**
-       * <code>NEW_PRIVATE_USER_MESSAGE = 5;</code>
-       */
-      public static final int NEW_PRIVATE_USER_MESSAGE_VALUE = 5;
 
 
       public final int getNumber() { return value; }
@@ -4711,8 +4705,6 @@ public final class Storage {
           case 1: return NEW_COMMENT;
           case 2: return NEW_PRISE;
           case 3: return NEW_COMMENT_PRISE;
-          case 4: return NEW_STORY_MESSAGE;
-          case 5: return NEW_PRIVATE_USER_MESSAGE;
           default: return null;
         }
       }
@@ -5200,12 +5192,10 @@ public final class Storage {
       "\n\006userid\030\002 \002(\003\022\017\n\007content\030\003 \002(\t\"%\n\004Pair\022" +
       "\014\n\004name\030\001 \002(\t\022\017\n\007creator\030\003 \002(\003\"\'\n\005Story\022",
       "\016\n\006userid\030\001 \002(\003\022\016\n\006pairid\030\002 \002(\003\"\030\n\010UserI" +
-      "nfo\022\014\n\004name\030\001 \001(\t\"\275\001\n\006Notify\0220\n\004type\030\001 \002" +
+      "nfo\022\014\n\004name\030\001 \001(\t\"\210\001\n\006Notify\0220\n\004type\030\001 \002" +
       "(\0162\".com.mm.tinylove.proto.Notify.Type\022\r" +
-      "\n\005value\030\002 \002(\014\"r\n\004Type\022\017\n\013NEW_COMMENT\020\001\022\r" +
-      "\n\tNEW_PRISE\020\002\022\025\n\021NEW_COMMENT_PRISE\020\003\022\025\n\021" +
-      "NEW_STORY_MESSAGE\020\004\022\034\n\030NEW_PRIVATE_USER_" +
-      "MESSAGE\020\005"
+      "\n\005value\030\002 \002(\014\"=\n\004Type\022\017\n\013NEW_COMMENT\020\001\022\r" +
+      "\n\tNEW_PRISE\020\002\022\025\n\021NEW_COMMENT_PRISE\020\003"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

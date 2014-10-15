@@ -6,9 +6,13 @@ import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.mm.tinylove.IComment;
 import com.mm.tinylove.IMessage;
+import com.mm.tinylove.INotify;
 import com.mm.tinylove.IPair;
 import com.mm.tinylove.IStory;
 import com.mm.tinylove.IUser;
+import com.mm.tinylove.notify.NotifyEventTrigger;
+import com.mm.tinylove.notify.Notifys;
+import com.mm.tinylove.proto.Storage.Notify;
 import com.mm.tinylove.view.imp.EventTrigger;
 
 //TODO:
@@ -22,8 +26,6 @@ public class Ins {
 	static EventBus s_event_bus = new AsyncEventBus("DefautEventBus",
 			Executors.newCachedThreadPool());
 
-	
-	
 	public static IStorageService getStorageService() {
 		return s_storage_service;
 	}
@@ -56,13 +58,19 @@ public class Ins {
 		return Ins.getStorageService().load(new DefaultPair(id));
 	}
 
+	public static INotify<Notify.Type> getINotify(long id) {
+		Notifys ins = (Notifys) (Ins.getStorageService().load(new Notifys(id)));
+		return ins.ins();
+	}
+
 	public static EventBus getEventBus() {
 		return s_event_bus;
 	}
 
 	static {
-		EventTrigger et = new EventTrigger();
-		Ins.getEventBus().register(et);
+		// EventTrigger et = new EventTrigger();
+		Ins.getEventBus().register(new EventTrigger());
+		Ins.getEventBus().register(new NotifyEventTrigger());
 	}
 
 }

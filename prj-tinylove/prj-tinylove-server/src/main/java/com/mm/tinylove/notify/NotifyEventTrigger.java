@@ -1,5 +1,7 @@
 package com.mm.tinylove.notify;
 
+import com.google.common.eventbus.AllowConcurrentEvents;
+import com.google.common.eventbus.Subscribe;
 import com.mm.tinylove.IComment;
 import com.mm.tinylove.IMessage;
 import com.mm.tinylove.IUser;
@@ -12,6 +14,9 @@ public class NotifyEventTrigger {
 
 	}
 
+	
+	@Subscribe
+	@AllowConcurrentEvents
 	public void messageNewCommentTrigger(final MessageEvent.AddComment change) {
 		new StorageSaveRunnable() {
 			@Override
@@ -32,7 +37,9 @@ public class NotifyEventTrigger {
 			}
 		}.run();
 	}
-
+	
+	@Subscribe
+	@AllowConcurrentEvents
 	public void messageNewPriseTrigger(final MessageEvent.AddPrise ev_prise) {
 		new StorageSaveRunnable() {
 			@Override

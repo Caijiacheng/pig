@@ -16,7 +16,7 @@ import redis.clients.jedis.Transaction;
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
+import com.google.common.base.Verify;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
@@ -53,7 +53,7 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 			if (value == null) {
 				LOG.error("key is INVAILD: {}", new String(key,
 						StandardCharsets.UTF_8));
-				Preconditions.checkNotNull(value);
+				Verify.verify(false);
 			}
 			if (ins instanceof IKVStorage) {
 				IKVStorage kv_ins = (IKVStorage) ins;

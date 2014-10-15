@@ -1,5 +1,6 @@
 package com.mm.tinylove.imp;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import com.mm.tinylove.ILocation;
 import com.mm.tinylove.proto.Storage.Location;
@@ -19,6 +20,12 @@ public class DefaultLocation implements ILocation {
 		this.y = pos.getY();
 	}
 
+	
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(this.x, this.y);
+	}
+	
 	public boolean equals(Object obj) {
 
 		if (obj instanceof ILocation) {

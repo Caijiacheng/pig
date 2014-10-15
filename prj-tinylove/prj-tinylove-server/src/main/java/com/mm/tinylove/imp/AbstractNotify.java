@@ -11,6 +11,12 @@ public abstract class AbstractNotify extends ProtoStorage<Notify> implements
 		super(id);
 	}
 
+	
+	@Override
+	String uniqKey() {
+		return "AbstractNotify";
+	}
+	
 	abstract protected byte[] marshalNotifyValue();
 
 	abstract protected void unmarshalNotifyValue(byte[] value);
@@ -18,14 +24,13 @@ public abstract class AbstractNotify extends ProtoStorage<Notify> implements
 	public Notify.Type type() {
 		return getProto().getType();
 	}
-
-	@Override
-	public byte[] marshalValue() {
-		value = getProto().toBuilder()
-				.setValue(ByteString.copyFrom(marshalNotifyValue())).build();
-		return super.marshalValue();
+	
+	public void rebuildNotify(Notify.Type t)
+	{
+		Notify.Builder builder = getKBuilder();
+		value = builder.setType(t).setValue(ByteString.copyFrom(marshalNotifyValue())).build();
 	}
-
+	
 	@Override
 	public void unmarshalValue(byte[] data) {
 		super.unmarshalValue(data);

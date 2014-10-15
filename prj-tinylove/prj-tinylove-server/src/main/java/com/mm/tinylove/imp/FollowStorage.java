@@ -24,7 +24,6 @@ public class FollowStorage<T extends Message> extends ProtoStorage<T>
 			public IUser apply(Long id) {
 				return Ins.getIUser(id);
 			}
-
 		};
 	}
 

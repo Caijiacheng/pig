@@ -58,7 +58,6 @@ import com.mm.photo.data.IPhoto;
 import com.mm.photo.data.IPhotoService;
 import com.mm.photo.data.IUrl;
 
-
 //1: 是否处理并发上传相同文件的问题? 需要加个全局读写锁?
 //	加了个全局锁来处理
 
@@ -77,18 +76,17 @@ public class HttpPhotoServerHandler extends
 	private OutputStream os_photo;
 
 	IPhotoService photo_service = new DefaultPhoto.Service();
-	
-	static LockMap<String, ReentrantReadWriteLock> s_url_mutex = new LockMap<String, ReentrantReadWriteLock>()
-			{
-				@Override
-				ReentrantReadWriteLock newLock() {
-					return new ReentrantReadWriteLock();
-				}
-			};
-			
-	private ReentrantReadWriteLock rw_lock ;
-	private ReadLock r_lock ;
-	private WriteLock w_lock ;
+
+	static LockMap<String, ReentrantReadWriteLock> s_url_mutex = new LockMap<String, ReentrantReadWriteLock>() {
+		@Override
+		ReentrantReadWriteLock newLock() {
+			return new ReentrantReadWriteLock();
+		}
+	};
+
+	private ReentrantReadWriteLock rw_lock;
+	private ReadLock r_lock;
+	private WriteLock w_lock;
 
 	private static void sendNotModified(ChannelHandlerContext ctx) {
 		FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1,
@@ -137,67 +135,63 @@ public class HttpPhotoServerHandler extends
 		MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
 		response.headers().set(CONTENT_TYPE, mimeTypesMap.getContentType(name));
 	}
-	
+
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		
-		
-		LOG.info("channelInactive(). rw_lock:{}j, w_lock:{}, r_lock:{}", rw_lock, w_lock, r_lock);
+
+		LOG.info("channelInactive(). rw_lock:{}j, w_lock:{}, r_lock:{}",
+				rw_lock, w_lock, r_lock);
 
 		rw_lock = null;
-		if (r_lock != null)
-		{
+		if (r_lock != null) {
 			r_lock.unlock();
 			LOG.info("r_lock.unlock()");
 			r_lock = null;
 		}
-		
-		if (w_lock != null)
-		{
+
+		if (w_lock != null) {
 			w_lock.unlock();
 			LOG.info("w_lock.unlock()");
 			w_lock = null;
 		}
 		super.channelInactive(ctx);
 	}
-	
 
 	@Override
 	protected void messageReceived(ChannelHandlerContext ctx, HttpObject msg)
 			throws Exception {
 
-		
-		//LOG.info("messageReceived: msg:{}, ctx:{}", msg, ctx.channel().remoteAddress());
-		
+		// LOG.info("messageReceived: msg:{}, ctx:{}", msg,
+		// ctx.channel().remoteAddress());
+
 		if (msg instanceof HttpRequest) {
-			
+
 			request = (HttpRequest) msg;
 
 			IUrl url = new DefaultUrl(request.getUri());
 
 			if (request.getMethod().equals(HttpMethod.GET)) {
 
-				///PhotoService暂时不支持图片替换及删除.故只要photo_service.get()得到,就代表是有效的
-				//不会出现上传阶段的时候,读取这个文件失败
+				// /PhotoService暂时不支持图片替换及删除.故只要photo_service.get()得到,就代表是有效的
+				// 不会出现上传阶段的时候,读取这个文件失败
 				final IPhoto photo = photo_service.get(url);
 				rw_lock = s_url_mutex.getLock(url.url());
 				r_lock = rw_lock.readLock();
 				LOG.info("read.tryLock()");
-				if (!r_lock.tryLock())
-				{ //the file is uploading ?
-					try{
+				if (!r_lock.tryLock()) { // the file is uploading ?
+					try {
 						HttpResponse response = new DefaultFullHttpResponse(
 								HttpVersion.HTTP_1_1, HttpResponseStatus.LOCKED);
 						ctx.channel().writeAndFlush(response)
 								.addListener(ChannelFutureListener.CLOSE);
-					}finally{
-//						r_lock.unlock();
+					} finally {
+						// r_lock.unlock();
 						r_lock = null;
 						rw_lock = null;
 					}
 					return;
 				}
-				
+
 				if (!photo.isExist()) {
 					HttpResponse response = new DefaultFullHttpResponse(
 							HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND);
@@ -223,15 +217,14 @@ public class HttpPhotoServerHandler extends
 						photo.data(), 16 * 1024));
 
 				final SocketAddress remote = ctx.channel().remoteAddress();
-				sendFileFuture
-						.addListener(new ChannelFutureListener() {
-							@Override
-							public void operationComplete(ChannelFuture future)
-									throws Exception {
-								LOG.info("[{}]Transfer complete->{}",
-										photo.uniqname(), remote);								
-							}
-						});
+				sendFileFuture.addListener(new ChannelFutureListener() {
+					@Override
+					public void operationComplete(ChannelFuture future)
+							throws Exception {
+						LOG.info("[{}]Transfer complete->{}", photo.uniqname(),
+								remote);
+					}
+				});
 
 				// Write the end marker
 				ChannelFuture lastContentFuture = ctx
@@ -240,7 +233,7 @@ public class HttpPhotoServerHandler extends
 				return;
 			} else if (request.getMethod().equals(HttpMethod.POST)) {
 				if (photo_service.isExist(url)) {
-					//not support to replace the exist photo
+					// not support to replace the exist photo
 					HttpResponse response = new DefaultFullHttpResponse(
 							HttpVersion.HTTP_1_1,
 							HttpResponseStatus.NOT_ACCEPTABLE);
@@ -248,10 +241,10 @@ public class HttpPhotoServerHandler extends
 							.addListener(ChannelFutureListener.CLOSE);
 					return;
 				}
-				
+
 				rw_lock = s_url_mutex.getLock(url.url());
 				w_lock = rw_lock.writeLock();
-				if (rw_lock.isWriteLocked()) //is POST ING
+				if (rw_lock.isWriteLocked()) // is POST ING
 				{
 					HttpResponse response = new DefaultFullHttpResponse(
 							HttpVersion.HTTP_1_1, HttpResponseStatus.LOCKED);
@@ -262,12 +255,12 @@ public class HttpPhotoServerHandler extends
 					return;
 				}
 				w_lock.lock();
-				
+
 				LOG.info("w_lock.getlock()");
-				
-	            if (is100ContinueExpected(request)) {
-	                send100Continue(ctx);
-	            }
+
+				if (is100ContinueExpected(request)) {
+					send100Continue(ctx);
+				}
 
 				os_photo = photo_service.getPhotoOutput(url);
 				return;
@@ -283,29 +276,26 @@ public class HttpPhotoServerHandler extends
 
 		}
 
-		if (os_photo != null && msg instanceof HttpContent && 
-				request.getMethod().equals(HttpMethod.POST)  )
-		{
-			HttpContent chunk = (HttpContent)msg;
-			
-			ByteStreams.copy(new ByteBufInputStream(chunk.content()), 
+		if (os_photo != null && msg instanceof HttpContent
+				&& request.getMethod().equals(HttpMethod.POST)) {
+			HttpContent chunk = (HttpContent) msg;
+
+			ByteStreams.copy(new ByteBufInputStream(chunk.content()),
 					Preconditions.checkNotNull(os_photo));
-			if (chunk instanceof LastHttpContent)
-			{
-				
-				try{
+			if (chunk instanceof LastHttpContent) {
+
+				try {
 					os_photo.close();
-					ctx.channel().writeAndFlush(new DefaultFullHttpResponse(HTTP_1_1, OK)).
-					addListener(ChannelFutureListener.CLOSE);
-				}finally
-				{
-					if (rw_lock != null)
-					{
-						if (rw_lock.isWriteLocked())
-						{
+					ctx.channel()
+							.writeAndFlush(
+									new DefaultFullHttpResponse(HTTP_1_1, OK))
+							.addListener(ChannelFutureListener.CLOSE);
+				} finally {
+					if (rw_lock != null) {
+						if (rw_lock.isWriteLocked()) {
 							w_lock.unlock();
 						}
-						
+
 						w_lock = null;
 						rw_lock = null;
 					}
@@ -315,12 +305,12 @@ public class HttpPhotoServerHandler extends
 		}
 	}
 
+	private static void send100Continue(ChannelHandlerContext ctx) {
+		FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1,
+				CONTINUE);
+		ctx.writeAndFlush(response);
+	}
 
-    private static void send100Continue(ChannelHandlerContext ctx) {
-        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, CONTINUE);
-        ctx.writeAndFlush(response);
-    }
-	
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {

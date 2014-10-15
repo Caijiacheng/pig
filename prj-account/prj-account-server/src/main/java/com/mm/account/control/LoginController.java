@@ -264,7 +264,7 @@ public class LoginController {
 				return ErrorRet.ERROR(51006);
 			}
 
-			if (!acc.get().passwd().equals(info.password)) {
+			if (!acc.get().passwd().get().equals(info.password)) {
 				return ErrorRet.ERROR(51003);
 			}
 
@@ -545,7 +545,7 @@ public class LoginController {
 			final UserUpdatePwd info = new Gson().fromJson(request.getBody()
 					.toString(Charsets.UTF_8), UserUpdatePwd.class);
 
-			if (info.oldPassword.equals(acc.get().passwd())
+			if (info.oldPassword.equals(acc.get().passwd().get())
 					&& info.password.equals(info.passwordConfirm)) {
 				acc_service.modifyPasswd(acc.get().id(), info.password);
 				return ErrorRet.SUCESS();

@@ -59,8 +59,8 @@ message Notify
 		NEW_COMMENT = 1;
 		NEW_PRISE = 2;
 		NEW_COMMENT_PRISE = 3;
-		NEW_STORY_MESSAGE = 4;
-		NEW_PRIVATE_USER_MESSAGE = 5;
+		//NEW_STORY_MESSAGE = 4;
+		//NEW_PRIVATE_USER_MESSAGE = 5;
 	}
 	required Type type = 1;
 	required bytes value = 2;
