@@ -12,29 +12,29 @@
 		<tools.path>${top.dir}/tools</tools.path>
 		<release.dir>release</release.dir>
 		<netty.version>5.0.0.Alpha1</netty.version>
-		
+
 		<!-- distribute -->
 		<memory.redis.server>127.0.0.1:6379</memory.redis.server>
 		<memory.redis.password>qwe123!</memory.redis.password>
 		<memory.redis.dbnum>15</memory.redis.dbnum>
-		
+
 		<storage.redis.server>127.0.0.1:6379</storage.redis.server>
 		<storage.redis.password>qwe123!</storage.redis.password>
 		<storage.redis.dbnum>14</storage.redis.dbnum>
-		
+
 		<mysql.master.server>127.0.0.1:3306</mysql.master.server>
 		<mysql.user>root</mysql.user>
 		<mysql.password>qwe123!</mysql.password>
 		<restful.bind.port>8081</restful.bind.port>
-		
+
 		<!-- test -->
 		<test.storage.redis.server>127.0.0.1:6379</test.storage.redis.server>
 		<test.storage.redis.password>qwe123!</test.storage.redis.password>
 		<test.storage.redis.dbnum>0</test.storage.redis.dbnum>
-		
+
 		<test.memory.redis.server>127.0.0.1:6379</test.memory.redis.server>
 		<test.memory.redis.password>qwe123!</test.memory.redis.password>
-		<test.memory.redis.dbnum>1</test.memory.redis.dbnum>		
+		<test.memory.redis.dbnum>1</test.memory.redis.dbnum>
 	</properties>
 	<!-- all open source version -->
 	<dependencyManagement>
@@ -179,13 +179,45 @@
 					<artifactId>build-helper-maven-plugin</artifactId>
 					<version>1.8</version>
 				</plugin>
-
+			<plugin>
+210                                         <groupId>org.eclipse.m2e</groupId>
+211                                         <artifactId>lifecycle-mapping</artifactId>
+212                                         <version>1.0.0</version>
+213                                         <configuration>
+214                                                 <lifecycleMappingMetadata>
+215                                                         <pluginExecutions>
+216                                                                 <pluginExecution>
+217                                                                         <pluginExecutionFilter>
+218                                                                                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+219                                                                                 <artifactId>android-maven-plugin</artifactId>
+220                                                                                 <versionRange>[3.8.0,)</versionRange>
+221                                                                                 <goals>
+223                                                                                         <goal>consume-aar</goal>
+225                                                                                 </goals>
+226                                                                         </pluginExecutionFilter>
+227                                                                         <action>
+228                                                                                 <ignore />
+229                                                                         </action>
+230                                                                 </pluginExecution>
+231                                                                 <pluginExecution>
+232                                                                         <pluginExecutionFilter>
+233                                                                                 <groupId>org.apache.maven.plugins</groupId>
+234                                                                                 <artifactId>maven-antrun-plugin</artifactId>
+235                                                                                 <versionRange>[1.7,)</versionRange>
+236                                                                                 <goals>
+237                                                                                         <goal>run</goal>
+238                                                                                 </goals>
+239                                                                         </pluginExecutionFilter>
+240                                                                         <action>
+241                                                                                 <ignore />
+242                                                                         </action>
+243                                                                 </pluginExecution>
+244                                                         </pluginExecutions>
+245                                                 </lifecycleMappingMetadata>
+246                                         </configuration>
+247                                 </plugin>
 			</plugins>
 		</pluginManagement>
-		<!-- resources> <resource> <directory>src/main/resources</directory> <filtering>true</filtering> 
-			<includes> <include>*.xml</include> <include>*.properties</include> </includes> 
-			</resource> <resource> <directory>src/main/resources</directory> <includes> 
-			<include>*.*</include> </includes> </resource> </resources -->
 	</build>
 
 	<distributionManagement>

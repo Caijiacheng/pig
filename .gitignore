@@ -32,3 +32,11 @@ prj-account/prj-account-server/downlaod/DefaultPhoto.Service:0:Photo:7
 prj-account/prj-account-server/downlaod/DefaultPhoto.Service:0:Photo:8
 
 prj-account/prj-account-server/downlaod/DefaultPhoto.Service:0:Photo:9
+
+prj-photo/prj-photo-server/example/CURRENT
+
+prj-photo/prj-photo-server/example/LOG
+
+*.old
+
+prj-photo/prj-photo-server/example/LOG.old

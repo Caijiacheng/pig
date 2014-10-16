@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello test-android-robolet!</string>
+    <string name="app_name">test-android-robolet</string>
+</resources>
