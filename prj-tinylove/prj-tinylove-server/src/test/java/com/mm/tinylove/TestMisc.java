@@ -21,6 +21,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.mm.tinylove.util.BytesToType;
 
 public class TestMisc {
 
@@ -84,27 +85,19 @@ public class TestMisc {
 		// Ins.getStorageService().time());
 	}
 
-	static <T, K> byte[] marshalMaps(Map<T, K> ids) {
-		return new Gson().toJson(ids).getBytes(StandardCharsets.UTF_8);
-	}
-
-	@SuppressWarnings("serial")
-	static <T, K> Map<T, K> unmarshalMaps(byte[] bs) {
-		return new Gson().fromJson(new String(bs, StandardCharsets.UTF_8),
-				new TypeToken<TreeMap<T, K>>() {
-				}.getType());
-	}
+	
 
 	@Test
 	public void testGsonToMap() {
 		Map<String, Long> maps = ImmutableMap.of("hello", 1L, "bbbb", 2L);
 
-		byte[] bs = marshalMaps(maps);
+		byte[] bs = BytesToType.marshalMaps(maps);
 
 		Map<String, Long> maps2 = Maps.newTreeMap();
-		maps2 = unmarshalMaps(bs);
+		maps2 = BytesToType.unmarshalMaps(bs);
 
-		LOG.error("maps2={}", maps2);
+		
+		LOG.error("maps2={}", maps2.get("hello").getClass());
 	}
 
 //	static class AProtoc<T extends Message> {

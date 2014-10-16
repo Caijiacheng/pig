@@ -69,10 +69,6 @@ public class DefaultStorageService implements IStorageService, IUniqService,
 
 		while (!q_ins.isEmpty()) {
 			IStorage ins = q_ins.poll();
-			// if (ins instanceof ICollectionStorage) {
-			// ICollectionStorage cs = (ICollectionStorage) ins;
-			// q_ins.addAll(cs.saveCollections());
-			// }
 
 			if (ins instanceof IKVStorage) {
 				IKVStorage kv_ins = (IKVStorage) ins;

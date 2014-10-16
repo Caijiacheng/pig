@@ -34,12 +34,12 @@ final public class Notifys extends AbstractNotify{
 		case NEW_COMMENT:
 			NewCommentNotify notify_comment = new NewCommentNotify(id());
 			notify_comment.setValue(getProto());
-			notify_comment.unmarshalValue(value);
+			notify_comment.unmarshalNotifyValue(value);
 			return notify_comment;
 		case NEW_PRISE:
 			NewPriseNotify notify_prise = new NewPriseNotify(id());
 			notify_prise.setValue(getProto());
-			notify_prise.unmarshalValue(value);
+			notify_prise.unmarshalNotifyValue(value);
 			return notify_prise;
 		default:
 			throw new UnsupportedOperationException();

@@ -35,7 +35,8 @@ abstract public class AbsBundleNotify extends AbstractNotify{
 
 	@Override
 	protected void unmarshalNotifyValue(byte[] value) {
-		bundle = BytesToType.unmarshalMaps(value);
+		Map<String, Long> v = BytesToType.unmarshalMaps(value);
+		bundle = v;
 	}
 	
 	void setValue(Notify v)
